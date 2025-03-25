@@ -1,0 +1,19 @@
+
+/* Tailwind directives */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom delays for animations */
+@layer utilities {
+    .delay-[100ms] { animation-delay: 100ms; }
+    .delay-[200ms] { animation-delay: 200ms; }
+    .delay-[300ms] { animation-delay: 300ms; }
+    .delay-[400ms] { animation-delay: 400ms; }
+    .delay-[500ms] { animation-delay: 500ms; }
+    .delay-[600ms] { animation-delay: 600ms; }
+
+    body{
+        background-color: #f8faff;
+    }
+}
