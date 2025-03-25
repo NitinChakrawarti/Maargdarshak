@@ -1,10 +1,11 @@
-import CareerPlanning from "../components/home/carrier";
-import Resources from "../components/home/resources";
+// import CareerPlanning from "../components/home/carrier";
+import Resources from "../../components/home/resources";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import Layoutcomponent from "../components/layoutcomponent";
-import Beginjourney from "../components/home/beginyourjourney";
-import Mentorscraousel from "../components/home/mentorscraousel";
+import Layoutcomponent from '../../layout/landing/layoutcomponent';
+import Beginjourney from "../../components/home/beginyourjourney";
+import Mentorscraousel from "../../components/home/mentorscraousel";
+import CareerPlanning from "../../components/home/carrier";
 
 const fadeIn = {
     hidden: { opacity: 0, y: 50 },

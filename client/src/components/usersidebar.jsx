@@ -8,7 +8,6 @@ import {
   UserPen,
 } from 'lucide-react'
 
-
 const Sidebar = ({ isOpen, setIsSidebarOpen }) => {
 
   const navigate = useNavigate();

@@ -1,5 +1,5 @@
 import React from 'react';
-import Layoutcomponent from "../components/layoutcomponent";
+import Layoutcomponent from '../../layout/landing/layoutcomponent';
 
 // Import mentors data
 const mentors = [

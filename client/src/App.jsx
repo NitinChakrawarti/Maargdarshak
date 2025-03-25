@@ -1,5 +1,4 @@
 import { AllRoutes } from "./routes/route"
-import { UserContext, BackContext } from "./context/contextapi"
 import { useState } from "react"
 
 const App = () => {
@@ -8,11 +7,7 @@ const App = () => {
 
   return (
     <>
-      <UserContext.Provider value={{ user, setuser }} >
-        <BackContext.Provider value={{ back, setBack }}>
-          <AllRoutes />
-        </BackContext.Provider>
-      </UserContext.Provider>
+      <AllRoutes />
     </>
   )
 }

@@ -1,4 +1,4 @@
-import Layoutcomponent from '../components/layoutcomponent'
+import Layoutcomponent from '../../layout/landing/layoutcomponent';
 
 const Blog = () => {
     return (

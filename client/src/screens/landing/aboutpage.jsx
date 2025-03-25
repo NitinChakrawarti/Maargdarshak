@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { FaUserGraduate, FaHandshake, FaChartLine, FaBullseye, FaBriefcase, FaUsers, FaLightbulb, FaTools, FaPeopleArrows } from 'react-icons/fa';
-import Layoutcomponent from '../components/layoutcomponent';
+import Layoutcomponent from '../../layout/landing/layoutcomponent';
 
 const About = () => {
   const features = [
@@ -65,7 +65,7 @@ const About = () => {
   ];
 
   return (
-    <Layoutcomponent>
+    <Layoutcomponent >
       <section className="bg-bg py-16 px-2 lg:px-20">
         <div className="max-w-7xl mx-auto">
           {/* Header Section */}
