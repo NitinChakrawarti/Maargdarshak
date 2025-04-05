@@ -56,9 +56,8 @@ const Home = () => {
 
         <div className="max-w-7xl flex flex-col mx-auto relative z-10">
           {/* Rearranged welcome section - Start */}
-
           <motion.div
-            className="text-center mb-12 md:mb-6 mt-10 "
+            className="text-center mb-12 md:mb-6 mt-16 md:mt-10 "
             variants={{
               hidden: { opacity: 0, y: 20 },
               visible: {
@@ -94,7 +93,7 @@ const Home = () => {
               }
             }}
           >
-            <div className="flex items-center space-x-4 text-brand-blue text-sm font-medium">
+            <div className="hidden md:flex items-center space-x-4 text-brand-blue text-sm font-medium">
               <div className="flex items-center">
                 <svg className="w-4 h-4 mr-1 text-brand-green" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path>
@@ -117,7 +116,7 @@ const Home = () => {
           </motion.div>
 
           <motion.div
-            className="flex flex-col md:flex-row items-center justify-center md:justify-between gap-8 bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-lg mt-24 border border-brand-sky/30"
+            className="flex flex-col md:flex-row items-center justify-center md:justify-between gap-8 bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-lg md:mt-24 border border-brand-sky/30"
             variants={{
               hidden: { opacity: 0, y: 20 },
               visible: {
@@ -144,7 +143,7 @@ const Home = () => {
                   boxShadow: "0 10px 25px -5px rgba(44, 103, 166, 0.4)"
                 }}
                 whileTap={{ scale: 0.98 }}
-                className="w-full md:w-auto px-8 py-4 bg-gradient-to-r from-brand-blue to-brand-navy text-white rounded-lg shadow-md font-semibold text-lg group relative overflow-hidden"
+                className="w-full md:w-auto px-4 md:px-8 py-4 bg-gradient-to-r from-brand-blue to-brand-navy text-white rounded-lg shadow-md font-semibold text-lg group relative overflow-hidden"
               >
                 <span className="relative z-10 flex items-center justify-center gap-2">
                   Start Your Journey
@@ -179,7 +178,7 @@ const Home = () => {
 
       {/* Career Planning and Resources */}
       <motion.div
-        className="pt-16 px-5 md:px-10 lg:px-20 bg-bg"
+        className= " pt-6 md:pt-16 px-5 md:px-10 lg:px-20 bg-bg"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true }}
@@ -201,7 +200,7 @@ const Home = () => {
               variants={staggerContainer}
             >
               <motion.h2
-                className="text-4xl text-brand-navy font-bold text-secondary mb-8"
+                className=" text-3xl md:text-4xl text-brand-navy font-bold text-secondary mb-8"
                 variants={fadeIn}
               >
                 Why Choose मार्गदर्शक?
@@ -256,7 +255,7 @@ const Home = () => {
         variants={staggerContainer}
       >
         <motion.h2
-          className=" text-4xl font-bold text-brand-navy mb-8"
+          className="text-3xl md:text-4xl font-bold text-brand-navy mb-8"
           variants={fadeIn}
         >
           What Our Users Say
@@ -303,7 +302,7 @@ const Home = () => {
         variants={staggerContainer}
       >
         <motion.h2
-          className=" text-4xl font-bold text-brand-navy mb-12"
+          className=" text-3xl md:text-4xl font-bold text-brand-navy mb-12"
           variants={fadeIn}
         >
           Meet Our Team

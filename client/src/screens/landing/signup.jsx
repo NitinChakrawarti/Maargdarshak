@@ -102,12 +102,12 @@ const SignUp = () => {
 
   return (
     <Layoutcomponent>
-      <div className=" flex max-w-7xl mx-auto pt-24 md:pt-24 justify-evenly ">
+      <div className=" flex max-w-7xl md:mx-auto pt-24 md:pt-24 justify-evenly ">
         <div className="lg:w-[50%] lg:block hidden">
           <img src={signup} alt="" />
         </div>
         {step != 1 ? (
-          <section className=" flex flex-col bg-white gap-10 pb-10 px-5 lg:w-[40%] w-[80%] md:w-[70%] md:px-10 lg:px-12 justify-center">
+          <section className=" flex flex-col bg-white gap-10 pb-10 px-0 lg:w-[40%] w-[90%] md:w-[70%] md:px-10 lg:px-12 justify-center">
             <div className="max-w-md bg-white rounded-lg shadow-lg p-6">
               <h2 className="text-center text-3xl font-semibold text-gray-800 mb-6">
                 {step === 2 ? "Login to Your Account" : "Create an Account"}

@@ -85,7 +85,7 @@ const Resources = () => {
     <section id="resources" className="pt-16 px-4">
       <div className="container mx-auto max-w-7xl">
         <motion.h2 
-          className="text-4xl text-brand-navy font-bold mb-8"
+          className="text-3xl md:text-4xl text-brand-navy font-bold mb-8"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}

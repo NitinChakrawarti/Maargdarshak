@@ -93,7 +93,7 @@ const CareerPlanning = () => {
     <section id="career-planning" className="py-8 px-4 ">
       <div className="container mx-auto max-w-7xl">
         <motion.h2 
-          className="text-4xl text-brand-navy pb-8 font-bold"
+          className="text-3xl md:text-4xl text-brand-navy pb-8 font-bold"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
