@@ -5,6 +5,7 @@ import ResponseHandler from "../utils/APIResponse.js";
 import statusCodeUtility from "../utils/statusCodeUtility.js";
 import Mentorservice from "../services/mentor.service.js";
 import Otp from "../utils/generateotp.js";
+import authService from "../services/auth.service.js";
 
 class mentorController {
 
@@ -65,6 +66,43 @@ class mentorController {
             );
 
         }
+    }
+
+    //-----------this is login mentor controller function --------//
+    async loginMentor(request, response, next) {
+        const { email, password } = request.body;
+        if (!email || !password) {
+            return next(new APIError(statusCodeUtility.BadRequest, "Email and password are required"));
+        }
+
+        const mentorData = await Mentorservice.loginMentor(email, password);
+
+        if (mentorData.UserNotVerified) {
+            return ResponseHandler(
+                statusCodeUtility.Unathorized,
+                "User not verified",
+                userData,
+                response
+            );
+        }
+
+        if (!mentorData) {
+            return next(new APIError(statusCodeUtility.NotFound, "Mentor not found"));
+        }
+
+        const token = await authService.userToken(mentorData);
+
+        // Set token in HTTP-only cookie with 30-day expiration
+        response.cookie("authToken", token, {
+            httpOnly: false,   // Prevents client-side access
+            secure: process.env.NODE_ENV === "production", // Secure only in production
+            sameSite: "Strict", // Prevent CSRF attacks
+            maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days in milliseconds
+        });
+
+        return ResponseHandler(statusCodeUtility.Success, "Mentor logged in successfully", {
+            token: "Token set in HTTP-only cookie"
+        }, response);
     }
 
     //-----------this is update mentor controller function --------//

@@ -7,6 +7,7 @@ const router = express.Router();
 
 router.get('/get-mentor', mentorController.getMentors);
 router.post('/register-mentor', upload.single('profile'), asyncHandler(mentorController.addMentors));
+router.post('/login-mentor', asyncHandler(mentorController.loginMentor));
 router.put('/update-mentor/:id', upload.single('profile'), asyncHandler(mentorController.updateMentor));
 
 export default router;

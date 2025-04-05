@@ -1,19 +1,51 @@
+@import "tailwindcss";
 
-/* Tailwind directives */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Base styles (for body background) */
+@layer base {
+  body {
+    background-color: var(--color-bg);
+  }
+}
 
 /* Custom delays for animations */
 @layer utilities {
-    .delay-[100ms] { animation-delay: 100ms; }
-    .delay-[200ms] { animation-delay: 200ms; }
-    .delay-[300ms] { animation-delay: 300ms; }
-    .delay-[400ms] { animation-delay: 400ms; }
-    .delay-[500ms] { animation-delay: 500ms; }
-    .delay-[600ms] { animation-delay: 600ms; }
+  .delay-[100ms] {
+    animation-delay: 100ms;
+  }
 
-    body{
-        background-color: #f8faff;
-    }
+  .delay-[200ms] {
+    animation-delay: 200ms;
+  }
+
+  .delay-[300ms] {
+    animation-delay: 300ms;
+  }
+
+  .delay-[400ms] {
+    animation-delay: 400ms;
+  }
+
+  .delay-[500ms] {
+    animation-delay: 500ms;
+  }
+
+  .delay-[600ms] {
+    animation-delay: 600ms;
+  }
+}
+
+/* Custom Theme Variables */
+@theme static {
+  --color-primary: #1e40af;
+  --color-light-blue: #3b82f6;
+  --color-dark-blue: #1e3a8a;
+  --color-sky-blue: #0ea5e9;
+  --color-navy-blue: #1e293b;
+  --color-soft-gray: #6b7280;
+  --color-bg: #f8faff;
+  --color-brand-navy: #1a3a6c;
+  --color-brand-blue: #2c67a6;
+  --color-brand-sky: #b5d5e5;
+  --color-brand-orange: #f7a35c;
+  --color-brand-green: #7ba779;
 }

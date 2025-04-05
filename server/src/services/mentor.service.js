@@ -34,6 +34,27 @@ class Mentorservice {
         return new_mentor;
     }
 
+    async loginMentor(email, password) {
+        const mentor = await Mentor.findOne({ email });
+        if (!mentor) {
+            throw new APIError(statusCodeUtility.NotFound, "Mentor not found");
+        }
+        if (mentor.isverified != true) {
+            return {
+                UserNotVerified: true,
+                data: {
+                    email: mentor.email,
+                    role: mentor.role
+                }
+            }
+        }
+        const isMatch = await bcrypt.compare(password, mentor.password);
+        if (!isMatch) {
+            throw new APIError(statusCodeUtility.BadRequest, "Invalid password");
+        }
+        return mentor;
+    }
+
     async getMentors() {
         const mentors = await Mentor.find();
         return mentors;
