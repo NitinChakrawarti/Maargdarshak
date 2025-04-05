@@ -4,6 +4,7 @@ import FileRename from "../utils/filerename.js";
 import statusCodeUtility from "../utils/statusCodeUtility.js";
 import ResponseHandler from "../utils/APIResponse.js";
 import Otp from "../utils/generateotp.js";
+import authService from "../services/auth.service.js";
 
 class UserController {
 
@@ -13,9 +14,8 @@ class UserController {
         if (!request.body) {
             return new APIError(statusCodeUtility.BadRequest, "NO data Provided");
         }
-        const newPath = FileRename(request.file);
-        const { email, password, name, phone } = request.body;
-        const userData = await userService.createUser({ email, password, name, phone, profile: newPath });
+        const { email, password, name } = request.body;
+        const userData = await userService.createUser({ email, password, name });
 
         const otpresponse = await Otp.Generateotp({
             email: userData.email,
@@ -42,7 +42,45 @@ class UserController {
             );
         }
     }
-    
+
+    // ----------------- User Login -----------------
+    async loginUser(request, response) {
+        if (!request.body) {
+            return new APIError(statusCodeUtility.BadRequest, "No data Provided");
+        }
+
+        const { email, password } = request.body;
+        const userData = await userService.loginUser({ email, password });
+
+        if (userData.UserNotVerified) {
+            return ResponseHandler(
+                statusCodeUtility.Unathorized,
+                "User not verified",
+                userData,
+                response
+            );
+        }
+
+        const token = await authService.userToken(userData);
+
+        // Set token in HTTP-only cookie with 30-day expiration
+        response.cookie("authToken", token, {
+            httpOnly: false,   // Prevents client-side access
+            secure: process.env.NODE_ENV === "production", // Secure only in production
+            sameSite: "Strict", // Prevent CSRF attacks
+            maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days in milliseconds
+        });
+
+        return ResponseHandler(
+            statusCodeUtility.Success,
+            "User Login Successfully",
+            {
+                token:"Token set in HTTP-only cookie"
+            },
+            response
+        );
+    }
+
 }
 
 export default new UserController();

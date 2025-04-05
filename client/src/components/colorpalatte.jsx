@@ -121,8 +121,6 @@
 
 // export default CompletePaletteCollection;
 
-
-
 import React from "react";
 
 const CompletePaletteCollection = () => {
@@ -133,7 +131,6 @@ const CompletePaletteCollection = () => {
     { name: "Sky Blue", hex: "#0ea5e9" },
     { name: "Navy Blue", hex: "#1e293b" },
     { name: "Soft Gray", hex: "#6b7280" },
- 
   ];
 
   return (

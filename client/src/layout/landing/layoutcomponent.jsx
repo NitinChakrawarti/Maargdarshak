@@ -1,16 +1,14 @@
-import Footer from "./footer"
-import Navbar from "./navbar"
+import Footer from "./footer";
+import Navbar from "./navbar";
 
 const Layoutcomponent = ({ children }) => {
-    return (
-        <div className="max-w-8xl">
-            <Navbar />
-            <main>
-                {children}
-            </main>
-            <Footer />
-        </div>
-    )
-}
+  return (
+    <div className="max-w-8xl">
+      <Navbar />
+      <main>{children}</main>
+      <Footer />
+    </div>
+  );
+};
 
-export default Layoutcomponent
+export default Layoutcomponent;

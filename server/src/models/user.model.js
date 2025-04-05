@@ -40,6 +40,11 @@ const userSchema = new mongoose.Schema(
                 expire_at: Date
             }
         },
+        role: {
+            type: String,
+            enum: ["user", "mentor", "admin"],
+            default: "user",
+        },
         domains: {
             type: Array,
             default: [],
