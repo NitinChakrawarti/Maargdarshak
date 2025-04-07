@@ -10,7 +10,7 @@
 //   FaTools,
 //   FaPeopleArrows,
 // } from "react-icons/fa";
-// import Layoutcomponent from "../../layout/landing/layoutcomponent";
+// import Layoutcomponent from "../layout/landing/layoutcomponent";
 
 // const About = () => {
 //   const features = [
@@ -168,8 +168,6 @@
 
 // export default About;
 
-
-
 import React from "react";
 import {
   FaUserGraduate,
@@ -182,7 +180,7 @@ import {
   FaTools,
   FaPeopleArrows,
 } from "react-icons/fa";
-import Layoutcomponent from "../../layout/landing/layoutcomponent";
+import Layoutcomponent from "../layout/landing/layoutcomponent";
 
 const About = () => {
   const features = [

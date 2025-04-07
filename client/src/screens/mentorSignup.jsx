@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import Layoutcomponent from "../../layout/landing/layoutcomponent";
-import InputField from "../../components/parts/inputfield";
-import Button from "../../components/parts/button";
-import { MentorLogin, MentorSignup, Signup, VerifyOtp } from "../../api";
+import InputField from "../components/parts/inputfield";
+import Layoutcomponent from "../layout/landing/layoutcomponent";
+import Button from "../components/parts/button";
+import { MentorLogin, MentorSignup, Signup, VerifyOtp } from "../api";
 import { useNavigate } from "react-router-dom";
-import FileUpload from "../../components/parts/fileupload";
-import Enterotp from "../../components/enterotp";
+import FileUpload from "../components/parts/fileupload";
+import Enterotp from "../components/enterotp";
 
 const ExtendedSignUp = () => {
   const [showPassword, setShowPassword] = useState(false);

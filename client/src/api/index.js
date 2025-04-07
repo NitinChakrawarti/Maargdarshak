@@ -10,6 +10,18 @@ export const VerifyOtp = async (data) => {
   }
 };
 
+export const VerifyToken = async () => {
+  try {
+    const response = await instance.post("/auth/verify-token", {}, {
+      withCredentials: true,
+    });
+    return response;
+  } catch (error) {
+    return error.response.data;
+  }
+};
+
+
 // ------------------------------- User ------------------------------- //
 export const Signup = async (data) => {
   try {
@@ -30,6 +42,7 @@ export const Login = async (data) => {
     return error.response.data;
   }
 };
+
 
 // ------------------------------- Mentor ------------------------------- //
 export const MentorSignup = async (data) => {

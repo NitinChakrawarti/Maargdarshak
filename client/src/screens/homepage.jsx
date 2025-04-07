@@ -1,13 +1,13 @@
 
-import Resources from "../../components/home/resources";
+import Resources from "../components/home/resources";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import Layoutcomponent from "../../layout/landing/layoutcomponent";
-import Beginjourney from "../../components/home/beginyourjourney";
-import Mentorscraousel from "../../components/home/mentorscraousel";
-import CareerPlanning from "../../components/home/carrier";
+import Layoutcomponent from "../layout/landing/layoutcomponent";
+import Beginjourney from "../components/home/beginyourjourney";
+import Mentorscraousel from "../components/home/mentorscraousel";
+import CareerPlanning from "../components/home/carrier";
 import { Github, Linkedin, Twitter } from "lucide-react";
-import FAQ from "../../components/home/faq";
+import FAQ from "../components/home/faq";
 
 const fadeIn = {
   hidden: { opacity: 0, y: 50 },

@@ -61,10 +61,16 @@ class UserController {
             );
         }
 
+        const userDatanew = {
+            ...userData._doc,
+            password: undefined,
+            otp: undefined
+        };
+
         const token = await authService.userToken(userData);
 
         // Set token in HTTP-only cookie with 30-day expiration
-        response.cookie("authToken", token, {
+        response.cookie("userToken", token, {
             httpOnly: false,   // Prevents client-side access
             secure: process.env.NODE_ENV === "production", // Secure only in production
             sameSite: "Strict", // Prevent CSRF attacks
@@ -75,7 +81,8 @@ class UserController {
             statusCodeUtility.Success,
             "User Login Successfully",
             {
-                token:"Token set in HTTP-only cookie"
+                token: "Token set in HTTP-only cookie",
+                userData: userDatanew
             },
             response
         );

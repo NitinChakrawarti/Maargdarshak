@@ -1,35 +1,57 @@
 import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 
-const getAuthToken = () => {
+const getuserToken = () => {
   const cookies = document.cookie.split("; ");
-  const authCookie = cookies.find((cookie) => cookie.startsWith("authToken="));
+  const authCookie = cookies.find((cookie) => cookie.startsWith("userToken="));
+  return authCookie ? authCookie.split("=")[1] : "";
+};
+
+const getmentorToken = () => {
+  const cookies = document.cookie.split("; ");
+  const authCookie = cookies.find((cookie) => cookie.startsWith("mentorToken="));
   return authCookie ? authCookie.split("=")[1] : "";
 };
 
 export const Publicroute = ({ children }) => {
-  const [token, setToken] = useState(getAuthToken());
+  const [userToken, setUserToken] = useState(getuserToken());
+  const [mentorToken, setMentorToken] = useState(getmentorToken());
 
   useEffect(() => {
-    setToken(getAuthToken());
+    setUserToken(getuserToken());
+    setMentorToken(getmentorToken());
   }, []);
 
-  if (token) {
+  if (userToken) {
     return <Navigate to="/user" />;
+  }
+  if (mentorToken) {
+    return <Navigate to="/mentor" />;
   }
   return children;
 };
 
 export const Protectedroute = ({ children }) => {
-  const [token, setToken] = useState(getAuthToken());
+  const [userToken, setUserToken] = useState(getuserToken());
+  const [mentorToken, setMentorToken] = useState(getmentorToken());
 
   useEffect(() => {
-    setToken(getAuthToken());
+    setUserToken(getuserToken());
+    setMentorToken(getmentorToken());
   }, []);
 
-  if (!token) {
+  if (!userToken && !mentorToken) {
     return <Navigate to="/" />;
   }
+  
+  if (userToken && window.location.pathname === '/mentor') {
+    return <Navigate to="/user" />;
+  }
+  
+  if (mentorToken && window.location.pathname === '/user') {
+    return <Navigate to="/mentor" />;
+  }
+  
   return children;
 };
 

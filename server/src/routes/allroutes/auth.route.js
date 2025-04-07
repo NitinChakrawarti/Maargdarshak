@@ -4,5 +4,6 @@ import authController from '../../controllers/auth.controller.js'
 const router = express.Router();
 
 router.route('/verify-otp').post(authController.verifyOtp);
+router.route('/verify-token').post(authController.verifyToken);
 
 export default router;

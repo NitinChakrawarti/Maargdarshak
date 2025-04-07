@@ -1,11 +1,11 @@
 import { useState } from "react";
-import signup from "../../assets/3071357.jpg";
+import signup from "../assets/3071357.jpg";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import Enterotp from "../../components/enterotp";
-import Layoutcomponent from "../../layout/landing/layoutcomponent";
-import InputField from "../../components/parts/inputfield";
-import Button from "../../components/parts/button";
-import { Login, Signup, VerifyOtp } from "../../api";
+import Enterotp from "../components/enterotp";
+import Layoutcomponent from "../layout/landing/layoutcomponent";
+import InputField from "../components/parts/inputfield";
+import Button from "../components/parts/button";
+import { Login, Signup, VerifyOtp } from "../api";
 import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
@@ -108,7 +108,7 @@ const SignUp = () => {
         </div>
         {step != 1 ? (
           <section className=" flex flex-col bg-white gap-10 pb-10 px-0 lg:w-[40%] w-[90%] md:w-[70%] md:px-10 lg:px-12 justify-center">
-            <div className="max-w-md bg-white rounded-lg shadow-lg p-6">
+            <div className="md:max-w-md bg-white rounded-lg shadow-lg p-6">
               <h2 className="text-center text-3xl font-semibold text-gray-800 mb-6">
                 {step === 2 ? "Login to Your Account" : "Create an Account"}
               </h2>

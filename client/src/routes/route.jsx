@@ -1,12 +1,13 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import Home from "../screens/landing/homepage";
-import OurMentors from "../screens/landing/mentors.jsx"; // Add Our Mentors component
-import About from "../screens/landing/aboutpage";
+import Home from "../screens/homepage"; 
+import OurMentors from "../screens/mentors"; 
+import About from "../screens/aboutpage";
 import { Pagenotfound } from "../screens/pagenotfound";
-import SignUp from "../screens/landing/signup.jsx";
-import User from "../screens/auth/user.jsx";
-import { Protectedroute, Publicroute } from "./protection.jsx";
-import MentorSignUp from "../screens/landing/mentorSignup.jsx";
+import SignUp from "../screens/signup";
+import User from "../screens/auth/user";
+import { Protectedroute, Publicroute } from "./protection";
+import MentorSignUp from "../screens/mentorSignup";
+import Mentor from "../screens/auth/mentor";
 
 export const AllRoutes = () => {
   return (
@@ -79,6 +80,17 @@ export const AllRoutes = () => {
             </Protectedroute>
           }
         />
+
+        <Route
+          path="/mentor"
+          element={
+            <Protectedroute>
+              <Mentor />
+            </Protectedroute>
+          }
+        />
+
+
       </Routes>
     </Router>
   );
