@@ -8,6 +8,7 @@ import User from "../screens/auth/user";
 import { Protectedroute, Publicroute } from "./protection";
 import MentorSignUp from "../screens/mentorSignup";
 import Mentor from "../screens/auth/mentor";
+import MentorChat from "../screens/mentor/mentorchat";
 
 export const AllRoutes = () => {
   return (
@@ -90,6 +91,14 @@ export const AllRoutes = () => {
           }
         />
 
+        <Route
+          path="/mentor/chat"
+          element={
+            <Protectedroute>
+              <MentorChat />
+            </Protectedroute>
+          }
+        />
 
       </Routes>
     </Router>

@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Bell, User, LogOut, Settings, ChevronDown } from "lucide-react";
+import { Bell, User, LogOut, Settings, ChevronDown, Menu } from "lucide-react";
 
-const Header = () => {
+const Header = ({ toggleSidebar }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
@@ -27,9 +27,16 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-white shadow-sm h-16 flex items-center justify-between px-4 md:px-6">
+    <header className="bg-white shadow-sm h-16 flex items-center justify-between px-4 md:px-6 sticky top-0 z-30">
       <div className="flex items-center">
-        <h1 className="text-xl font-bold text-brand-blue">Dashboard</h1>
+        {/* Mobile menu button */}
+        <button 
+          onClick={toggleSidebar}
+          className="md:hidden mr-4 p-2 text-gray-600 hover:text-brand-blue rounded-md hover:bg-gray-100 transition-colors"
+        >
+          <Menu size={24} />
+        </button>
+        <h1 className="text-xl font-bold text-brand-blue"></h1>
       </div>
       
       <div className="flex items-center space-x-4">
@@ -64,16 +71,7 @@ const Header = () => {
                 <User size={16} className="mr-3" />
                 Profile
               </button>
-              <button 
-                onClick={() => {
-                  setIsDropdownOpen(false);
-                  navigate("/settings");
-                }}
-                className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-              >
-                <Settings size={16} className="mr-3" />
-                Settings
-              </button>
+              
               <div className="border-t border-gray-100 my-1"></div>
               <button 
                 onClick={handleLogout}
