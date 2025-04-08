@@ -1,5 +1,4 @@
 import bcryptjs from 'bcryptjs';
-import User from "../models/user.model.js";
 import jwt from 'jsonwebtoken'
 const salt = bcryptjs.genSaltSync(10);
 

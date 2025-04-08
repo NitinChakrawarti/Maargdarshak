@@ -1,4 +1,5 @@
 import instance from "./axios";
+import axios from "axios";
 
 // ------------------------------- Auth ------------------------------- //
 export const VerifyOtp = async (data) => {
@@ -9,6 +10,18 @@ export const VerifyOtp = async (data) => {
     return error.response.data;
   }
 };
+
+export const VerifyToken = async () => {
+  try {
+    const response = await instance.post("/auth/verify-token", {}, {
+      withCredentials: true,
+    });
+    return response;
+  } catch (error) {
+    return error.response.data;
+  }
+};
+
 
 // ------------------------------- User ------------------------------- //
 export const Signup = async (data) => {
@@ -31,6 +44,7 @@ export const Login = async (data) => {
   }
 };
 
+
 // ------------------------------- Mentor ------------------------------- //
 export const MentorSignup = async (data) => {
   try {
@@ -51,3 +65,27 @@ export const MentorLogin = async (data) => {
     return error.response.data;
   }
 };
+
+export const MentorChatList = async (data) => {
+  try {
+    const response = await axios.get(`${import.meta.env.VITE_CHAT_URL}/api/chat/chat-list/?userId=${data}`, {},
+      {
+        withCredentials: true,
+      });
+    return response;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
+export const MentorChatHistory = async (data) => {
+  try {
+    const response = await axios.get(`${import.meta.env.VITE_CHAT_URL}/api/chat/history?userId1=${data.userId1}&userId2=${data.userId2}`, {},
+      {
+        withCredentials: true,
+      });
+    return response;
+  } catch (error) {
+    return error.response.data;
+  }
+}

@@ -13,6 +13,6 @@ router.use('/mentor', mentorRoute);
 router.use('/auth', authRoute);
 router.use('/post', postRoute)
 router.use('/user', userRoute)
-router.use('/resource', resources )
+router.use('/resource', resources)
 
 export default router;

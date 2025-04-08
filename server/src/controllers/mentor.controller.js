@@ -92,8 +92,14 @@ class mentorController {
 
         const token = await authService.userToken(mentorData);
 
+        const mentorDatanew = {
+            ...mentorData._doc,
+            password: undefined,
+            otp: undefined,
+        }
+
         // Set token in HTTP-only cookie with 30-day expiration
-        response.cookie("authToken", token, {
+        response.cookie("mentorToken", token, {
             httpOnly: false,   // Prevents client-side access
             secure: process.env.NODE_ENV === "production", // Secure only in production
             sameSite: "Strict", // Prevent CSRF attacks
@@ -101,7 +107,8 @@ class mentorController {
         });
 
         return ResponseHandler(statusCodeUtility.Success, "Mentor logged in successfully", {
-            token: "Token set in HTTP-only cookie"
+            token: "Token set in HTTP-only cookie",
+            mentorData: { ...mentorDatanew }
         }, response);
     }
 

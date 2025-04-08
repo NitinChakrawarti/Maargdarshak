@@ -30,7 +30,6 @@ class UserService {
 
     }
 
-
     // ----------------- 2. user login ----------------- //
     async loginUser(data) {
         const { email, password } = data;
