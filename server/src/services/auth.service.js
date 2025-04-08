@@ -8,7 +8,7 @@ class authService {
     async userToken(user) {
         const secret = process.env.JWT_PRIVATE_KEY
         const token = jwt.sign({
-            id:user._id,
+            id: user._id,
             email: user.email,
             name: user.name
         }, secret);

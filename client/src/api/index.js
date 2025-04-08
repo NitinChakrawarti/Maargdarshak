@@ -89,3 +89,17 @@ export const MentorChatHistory = async (data) => {
     return error.response.data;
   }
 }
+
+
+export const chatDetails = async (data) => {
+  try {
+    const response = await instance.post(`/auth/chat-details`, {
+        userIds: data,
+    }, {
+      withCredentials: true,
+    });
+    return response;
+  } catch (error) {
+    return error.response.data;
+  }
+}

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Layout from "../../layout/auth/layout";
 import { MessageCircle, X, Search, ChevronLeft, Menu } from "lucide-react";
-import { MentorChatList } from "../../api";
+import { chatDetails, MentorChatList } from "../../api";
 import { useSelector } from "react-redux";
 import ChatArea from "../../components/chatarea";
 
@@ -43,14 +43,19 @@ const MentorChat = () => {
                 const response = await MentorChatList(mentor?._id || user?._id);
                 const chatData = response.data.data;
                 // Map API response to the required format
+                const userslist = chatData.map(chat => {
+                    const otherParticipant = chat.participants.find(p => p !== mentor?._id && p !== user?._id);
+                    return otherParticipant;
+                });
+                const userdetails = await chatDetails({ userslist });
                 const formattedUsers = chatData.map(chat => {
                     const otherParticipant = chat.participants.find(p => p !== mentor?._id && p !== user?._id);
+                    const userDetail = userdetails.data.data.find(user => user._id === otherParticipant);
                     return {
-                        id: otherParticipant,
-                        name: otherParticipant, // Replace with actual user name if available
+                        id: userDetail?._id,
+                        name: userDetail?.name,
+                        profile: userDetail?.profile,
                         lastMessage: chat.lastMessage.message,
-                        unread: 0, // Replace with actual unread count if available
-                        status: "offline" // Replace with actual status if available
                     };
                 });
                 setUsers(formattedUsers);
@@ -107,8 +112,8 @@ const MentorChat = () => {
                         </div>
                     </div>
                     <div className="overflow-y-auto h-full pb-20">
-                        {filteredUsers.length > 0 ? (
-                            filteredUsers.map(user => (
+                        {filteredUsers?.length > 0 ? (
+                            filteredUsers?.map(user => (
                                 <div
                                     key={user.id}
                                     onClick={() => setSelectedUser(user)}
@@ -118,9 +123,16 @@ const MentorChat = () => {
                                     <div className="flex items-center justify-between">
                                         <div className="flex items-center">
                                             <div className="relative">
-                                                <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center text-gray-600 font-medium">
+                                               { 
+                                               !user?.profile ? <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center text-gray-600 font-medium">
                                                     {user.name.charAt(0).toUpperCase()}
                                                 </div>
+                                                :
+                                                <img
+                                                    src={user?.profile || "https://via.placeholder.com/150"} // Placeholder image if no profile picture  
+                                                    alt={user?.name}
+                                                    className="w-10 h-10 rounded-full object-cover"
+                                                />}
                                                 <span className={`absolute bottom-0 right-0 w-3 h-3 border-2 border-white rounded-full ${user.status === 'online' ? 'bg-green-500' : 'bg-gray-400'
                                                     }`}></span>
                                             </div>

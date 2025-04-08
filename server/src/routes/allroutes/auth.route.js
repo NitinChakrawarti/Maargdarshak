@@ -5,5 +5,6 @@ const router = express.Router();
 
 router.route('/verify-otp').post(authController.verifyOtp);
 router.route('/verify-token').post(authController.verifyToken);
+router.route('/chat-details').post(authController.chatDetails);
 
 export default router;

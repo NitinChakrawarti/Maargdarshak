@@ -6,6 +6,7 @@ import Otp from "../utils/generateotp.js";
 import authService from "../services/auth.service.js";
 import User from "../models/user.model.js";
 import Mentor from "../models/mentor.model.js";
+import chatdetails from "../utils/chatdetails.js";
 
 class authController {
 
@@ -55,6 +56,30 @@ class authController {
             userData,
             response,
         );
+    }
+
+    async chatDetails(request, response) {
+        if (!request.body) {
+            return new APIError(statusCodeUtility.BadRequest, "No data Provided");
+        }
+        const { userIds } = request.body;
+        const userslist = userIds.userslist;
+        const userDetails = await chatdetails.chat(userslist);
+        if (userDetails) {
+            return ResponseHandler(
+                statusCodeUtility.Success,
+                "User Details",
+                userDetails,
+                response,
+            );
+        } else {
+            return ResponseHandler(
+                statusCodeUtility.BadRequest,
+                "Error in fetching user details",
+                userDetails,
+                response,
+            );
+        }
     }
 
 }
