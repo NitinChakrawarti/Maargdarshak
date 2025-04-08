@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import Layout from "../../layout/auth/layout";
 import { MessageCircle, X, Search, ChevronLeft, ChevronRight, Menu } from "lucide-react";
+import { MentorChatList } from "../../api";
+import { useSelector } from "react-redux";
+import ChatArea from "../../components/chatarea";
 
 const MentorChat = () => {
     const [selectedUser, setSelectedUser] = useState(null);
@@ -9,16 +12,19 @@ const MentorChat = () => {
     const [showSidebar, setShowSidebar] = useState(true);
     const [searchTerm, setSearchTerm] = useState("");
     const [isMobile, setIsMobile] = useState(false);
+    const [users, setUsers] = useState([]);
+
+    const { mentor } = useSelector((state) => state.mentor);
 
     // Check if screen is mobile
     useEffect(() => {
         const checkMobile = () => {
             setIsMobile(window.innerWidth < 768);
         };
-        
+
         checkMobile();
         window.addEventListener('resize', checkMobile);
-        
+
         return () => window.removeEventListener('resize', checkMobile);
     }, []);
 
@@ -29,14 +35,30 @@ const MentorChat = () => {
         }
     }, [selectedUser, isMobile]);
 
-    // Mock users data - replace with actual API call
-    const users = [
-        { id: 1, name: "John Doe", lastMessage: "Hello mentor!", unread: 2, status: "online" },
-        { id: 2, name: "Jane Smith", lastMessage: "Thank you for your help", unread: 0, status: "offline" },
-        { id: 3, name: "Mike Johnson", lastMessage: "When is our next session?", unread: 1, status: "online" }
-    ];
+    // Fetch users from API
+    useEffect(() => {
+        const fetchUsers = async () => {
+            const response = await MentorChatList(mentor._id);
+            const chatData = response.data.data;
 
-    const filteredUsers = users.filter(user => 
+            // Map API response to the required format
+            const formattedUsers = chatData.map(chat => {
+                const otherParticipant = chat.participants.find(p => p !== "user1");
+                return {
+                    id: otherParticipant,
+                    name: otherParticipant, // Replace with actual user name if available
+                    lastMessage: chat.lastMessage.message,
+                    unread: 0, // Replace with actual unread count if available
+                    status: "offline" // Replace with actual status if available
+                };
+            });
+            setUsers(formattedUsers);
+        };
+
+        fetchUsers();
+    }, []);
+
+    const filteredUsers = users.filter(user =>
         user.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
@@ -80,9 +102,8 @@ const MentorChat = () => {
                             <div
                                 key={user.id}
                                 onClick={() => setSelectedUser(user)}
-                                className={`p-4 border-b cursor-pointer hover:bg-gray-50 transition-colors ${
-                                    selectedUser?.id === user.id ? 'bg-blue-50 border-l-4 border-l-blue-500' : ''
-                                }`}
+                                className={`p-4 border-b cursor-pointer hover:bg-gray-50 transition-colors ${selectedUser?.id === user.id ? 'bg-blue-50 border-l-4 border-l-blue-500' : ''
+                                    }`}
                             >
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-center">
@@ -90,9 +111,6 @@ const MentorChat = () => {
                                             <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">
                                                 {user.name.charAt(0)}
                                             </div>
-                                            <div className={`absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 border-white ${
-                                                user.status === 'online' ? 'bg-green-500' : 'bg-gray-400'
-                                            }`}></div>
                                         </div>
                                         <div className="ml-3">
                                             <h3 className="font-medium">{user.name}</h3>
@@ -112,91 +130,15 @@ const MentorChat = () => {
 
                 {/* Chat Area */}
                 <div className={`${(!showSidebar || !isMobile) ? 'flex' : 'hidden'} md:flex flex-1 flex-col bg-white`}>
-                    {selectedUser ? (
-                        <>
-                            {/* Chat Header */}
-                            <div className="p-4 border-b bg-white shadow-sm flex justify-between items-center">
-                                <div className="flex items-center">
-                                    {isMobile && (
-                                        <button 
-                                            onClick={handleBackToList}
-                                            className="mr-3 p-2 hover:bg-gray-100 rounded-full transition-colors"
-                                        >
-                                            <ChevronLeft size={20} />
-                                        </button>
-                                    )}
-                                    <div className="relative">
-                                        <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">
-                                            {selectedUser.name.charAt(0)}
-                                        </div>
-                                        <div className={`absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 border-white ${
-                                            selectedUser.status === 'online' ? 'bg-green-500' : 'bg-gray-400'
-                                        }`}></div>
-                                    </div>
-                                    <div className="ml-3">
-                                        <h2 className="text-xl font-semibold">{selectedUser.name}</h2>
-                                        <p className="text-sm text-gray-500">{selectedUser.status}</p>
-                                    </div>
-                                </div>
-                                {!isMobile && (
-                                    <button 
-                                        onClick={() => setSelectedUser(null)}
-                                        className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-                                    >
-                                        <X size={20} />
-                                    </button>
-                                )}
-                            </div>
-
-                            {/* Messages Area */}
-                            <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
-                                {messages.map(message => (
-                                    <div
-                                        key={message.id}
-                                        className={`flex ${message.sender === 'mentor' ? 'justify-end' : 'justify-start'}`}
-                                    >
-                                        <div className={`max-w-[70%] rounded-lg p-3 shadow-sm ${
-                                            message.sender === 'mentor' 
-                                                ? 'bg-blue-500 text-white' 
-                                                : 'bg-white'
-                                        }`}>
-                                            {message.text}
-                                            <div className="text-xs mt-1 opacity-70">
-                                                {message.timestamp.toLocaleTimeString()}
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-
-                            {/* Message Input */}
-                            <form onSubmit={handleSendMessage} className="p-4 bg-white border-t">
-                                <div className="flex gap-2">
-                                    <input
-                                        type="text"
-                                        value={newMessage}
-                                        onChange={(e) => setNewMessage(e.target.value)}
-                                        placeholder="Type your message..."
-                                        className="flex-1 border rounded-full px-6 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                    />
-                                    <button
-                                        type="submit"
-                                        className="bg-blue-500 text-white px-6 py-3 rounded-full hover:bg-blue-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                                    >
-                                        Send
-                                    </button>
-                                </div>
-                            </form>
-                        </>
-                    ) : (
-                        <div className="flex-1 flex items-center justify-center text-gray-500">
-                            <div className="text-center">
-                                <MessageCircle size={48} className="mx-auto mb-2 text-blue-500" />
-                                <p className="text-xl">Select a conversation to start messaging</p>
-                                <p className="text-sm text-gray-400 mt-2">Choose from your conversations on the left</p>
-                            </div>
-                        </div>
-                    )}
+                    <ChatArea
+                        selectedUser={selectedUser}
+                        setSelectedUser={setSelectedUser}
+                        isMobile={isMobile}
+                        messages={messages}
+                        newMessage={newMessage}
+                        setNewMessage={setNewMessage}
+                        handleSendMessage={handleSendMessage}
+                    />
                 </div>
             </div>
         </Layout>

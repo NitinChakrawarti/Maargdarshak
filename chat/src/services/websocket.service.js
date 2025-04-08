@@ -13,7 +13,6 @@ class WebSocketService {
 
             const url = new URL(req.url || '/', 'ws://localhost');
             const userId = url.searchParams.get('userId');
-
             if (!userId) {
                 ws.close(1008, 'User ID is required');
                 return;
@@ -34,6 +33,8 @@ class WebSocketService {
     handleIncomingMessage = async (senderId, msg, ws) => {
         try {
             const data = JSON.parse(msg);
+            console.log(senderId, '->', data);
+            
             await this.handleMessage(senderId, data);
         } catch (err) {
             console.error('Message error:', err);
@@ -74,5 +75,6 @@ class WebSocketService {
         }
     }
 }
+
 
 export const webSocketService = new WebSocketService();

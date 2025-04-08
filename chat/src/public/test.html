@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Chat Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .chat-container {
+            display: flex;
+            gap: 20px;
+        }
+        .chat-box {
+            flex: 1;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .messages {
+            height: 300px;
+            overflow-y: auto;
+            border: 1px solid #eee;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .message {
+            margin: 5px 0;
+            padding: 5px;
+            border-radius: 5px;
+        }
+        .sent {
+            background-color: #e3f2fd;
+            margin-left: 20%;
+        }
+        .received {
+            background-color: #f5f5f5;
+            margin-right: 20%;
+        }
+        .input-area {
+            display: flex;
+            gap: 10px;
+        }
+        input {
+            flex: 1;
+            padding: 5px;
+        }
+        button {
+            padding: 5px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .status {
+            margin-bottom: 10px;
+            padding: 5px;
+            border-radius: 3px;
+        }
+        .connected {
+            background-color: #dff0d8;
+            color: #3c763d;
+        }
+        .disconnected {
+            background-color: #f2dede;
+            color: #a94442;
+        }
+    </style>
+</head>
+<body>
+    <h1>WebSocket Chat Test</h1>
+    
+    <div class="chat-container">
+        <!-- User 1 -->
+        <div class="chat-box">
+            <h2>User 1</h2>
+            <div id="status1" class="status disconnected">Disconnected</div>
+            <div id="messages1" class="messages"></div>
+            <div class="input-area">
+                <input type="text" id="message1" placeholder="Type a message...">
+                <button onclick="sendMessage(1)">Send</button>
+            </div>
+        </div>
+
+        <!-- User 2 -->
+        <div class="chat-box">
+            <h2>User 2</h2>
+            <div id="status2" class="status disconnected">Disconnected</div>
+            <div id="messages2" class="messages"></div>
+            <div class="input-area">
+                <input type="text" id="message2" placeholder="Type a message...">
+                <button onclick="sendMessage(2)">Send</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const userIds = {
+            1: '67f22ddd745b8e0a394b7acf',
+            2: '67f4f2aa3bf278cfc06efa88'
+        };
+        
+        const connections = {};
+        const messageInputs = {};
+        const messageContainers = {};
+        const statusElements = {}
+        // Initialize WebSocket connections
+        function initializeConnections() {
+            for (let i = 1; i <= 2; i++) {
+                const ws = new WebSocket(`ws://localhost:5000?userId=${userIds[i]}`);
+                
+                ws.onopen = () => {
+                    statusElements[i].className = 'status connected';
+                    statusElements[i].textContent = 'Connected';
+                    addMessage(i, 'System', 'Connected to server');
+                };
+
+                ws.onclose = () => {
+                    statusElements[i].className = 'status disconnected';
+                    statusElements[i].textContent = 'Disconnected';
+                    addMessage(i, 'System', 'Disconnected from server');
+                };
+
+                ws.onmessage = (event) => {
+                    const data = JSON.parse(event.data);
+                    handleMessage(i, data);
+                };
+
+                connections[i] = ws;
+                messageInputs[i] = document.getElementById(`message${i}`);
+                messageContainers[i] = document.getElementById(`messages${i}`);
+                statusElements[i] = document.getElementById(`status${i}`);
+            }
+        }
+
+        function sendMessage(userNum) {
+            const message = messageInputs[userNum].value;
+            if (!message) return;
+
+            const receiverNum = userNum === 1 ? 2 : 1;
+            const data = {
+                receiverId: userIds[receiverNum],
+                message: message
+            };
+
+            connections[userNum].send(JSON.stringify(data));
+            messageInputs[userNum].value = '';
+        }
+
+        function handleMessage(userNum, data) {
+            switch (data.type) {
+                case 'private_message':
+                    addMessage(userNum, `From ${data.data.senderId}`, data.data.message);
+                    break;
+                case 'message_sent':
+                    addMessage(userNum, 'System', `Message sent to ${data.data.receiverId}`);
+                    break;
+                case 'error':
+                    addMessage(userNum, 'Error', data.message);
+                    break;
+            }
+        }
+
+        function addMessage(userNum, sender, message) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender === 'System' ? 'system' : sender.includes('From') ? 'received' : 'sent'}`;
+            messageDiv.textContent = `${sender}: ${message}`;
+            messageContainers[userNum].appendChild(messageDiv);
+            messageContainers[userNum].scrollTop = messageContainers[userNum].scrollHeight;
+        }
+
+        // Initialize connections when page loads
+        window.onload = initializeConnections;
+    </script>
+</body>
+</html>

@@ -30,6 +30,10 @@ class ChatController {
             return APIError(statusCodeUtility.BadRequest, 'User ID is required', res);
         }
         const chatList = await chatService.getChatList(userId);
+        if (!chatList || chatList.length === 0) {
+            return APIError(statusCodeUtility.NotFound, 'No chats found', res);
+        }
+        // Transform chatList to include only necessary information
         return ResponseHandler(statusCodeUtility.Success, 'Chat list retrieved successfully', chatList, res);
     }
 }

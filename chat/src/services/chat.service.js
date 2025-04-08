@@ -3,7 +3,6 @@ import Chat from '../models/chat.model.js';
 class ChatService {
     async saveMessage(senderId, receiverId, message) {
         try {
-            // Look for an existing chat between the two users
             let chat = await Chat.findOne({
                 $or: [
                     { 'conversation.p1': senderId, 'conversation.p2': receiverId },
@@ -25,6 +24,8 @@ class ChatService {
                 timestamp: new Date()
             });
             await chat.save();
+            console.log('Message saved:', chat);
+            
             return chat;
         } catch (error) {
             throw new Error('Error saving message: ' + error.message);

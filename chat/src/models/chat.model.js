@@ -21,15 +21,15 @@ const chatSchema = new mongoose.Schema({
         p1: {
             type: String,
             required: true,
-            index: true 
+            index: true
         },
         p2: {
             type: String,
             required: true,
-            index: true 
+            index: true
         }
     },
-    messages: [messageSchema] 
+    messages: [messageSchema]
 }, {
     timestamps: true,
     indexes: [
@@ -38,12 +38,12 @@ const chatSchema = new mongoose.Schema({
 });
 
 
-chatSchema.virtual('participants').get(function() {
+chatSchema.virtual('participants').get(function () {
     return [this.conversation.p1, this.conversation.p2];
 });
 
 
-chatSchema.methods.hasParticipant = function(userId) {
+chatSchema.methods.hasParticipant = function (userId) {
     return this.conversation.p1 === userId || this.conversation.p2 === userId;
 };
 

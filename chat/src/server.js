@@ -3,6 +3,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import chatRoutes from './routes/route.js';
+import cors from 'cors';
 
 // Resolve __dirname in ES Modules
 const __filename = fileURLToPath(import.meta.url);
@@ -15,6 +16,24 @@ const app = express();
 // Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+const allowedOrigins = [
+    process.env.FRONT_URL_,
+    'http://localhost:5173',
+    'http://localhost:5174',
+    'http://192.168.222.90:5173'
+];
+
+app.use(cors({
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true
+}));
 
 // Static files
 app.use(express.static(path.join(__dirname, 'public')));
