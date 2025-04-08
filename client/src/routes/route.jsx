@@ -1,6 +1,6 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import Home from "../screens/homepage"; 
-import OurMentors from "../screens/mentors"; 
+import Home from "../screens/homepage";
+import OurMentors from "../screens/mentors";
 import About from "../screens/aboutpage";
 import { Pagenotfound } from "../screens/pagenotfound";
 import SignUp from "../screens/signup";
@@ -92,7 +92,7 @@ export const AllRoutes = () => {
         />
 
         <Route
-          path="/mentor/chat"
+          path="/chat"
           element={
             <Protectedroute>
               <MentorChat />

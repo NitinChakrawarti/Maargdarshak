@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect } from "react";
-import Sidebar from "../../components/usersidebar";
+import Sidebar from "../../components/authsidebar";
 import Header from "../../components/header";
 
 const Layout = ({ children }) => {
@@ -51,14 +51,6 @@ const Layout = ({ children }) => {
           : 'md:ml-52'
           }`}
       >
-      {/* <div
-        className={`flex-1 flex flex-col transition-all duration-300 ${isSidebarOpen
-          ? 'md:ml-52'
-          : !isSidebarCollapsed
-            ? 'md:ml-52'
-            : 'md:ml-16'
-          }`}
-      > */}
         <Header toggleSidebar={toggleSidebar} />
         <main className="flex-1 overflow-auto">
           {children}
