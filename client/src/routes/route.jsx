@@ -9,6 +9,10 @@ import { Protectedroute, Publicroute } from "./protection";
 import MentorSignUp from "../screens/mentorSignup";
 import Mentor from "../screens/auth/mentor";
 import MentorChat from "../screens/mentor/mentorchat";
+import MentorResources from "../screens/mentor/resources";
+import Mentorblog from "../screens/mentor/blog";
+import Learners from "../screens/mentor/learners";
+import Addresources from "../screens/mentor/addresources";
 
 export const AllRoutes = () => {
   return (
@@ -83,15 +87,6 @@ export const AllRoutes = () => {
         />
 
         <Route
-          path="/mentor"
-          element={
-            <Protectedroute>
-              <Mentor />
-            </Protectedroute>
-          }
-        />
-
-        <Route
           path="/chat"
           element={
             <Protectedroute>
@@ -100,6 +95,59 @@ export const AllRoutes = () => {
           }
         />
 
+        {/* ------------------------------ mentor dashboard routes ------------------------------ */}
+        <Route path="/mentor">
+          <Route
+            index
+            element={
+              <Protectedroute>
+                <Mentor />
+              </Protectedroute>
+            }
+          />
+          <Route
+            path="dashboard"
+            element={
+              <Protectedroute>
+                <Mentor />
+              </Protectedroute>
+            }
+          />
+          <Route path="resources">
+            <Route
+              index
+              element={
+                <Protectedroute>
+                  <MentorResources />
+                </Protectedroute>
+              }
+            />
+            <Route
+              path="add"
+              element={
+                <Protectedroute>
+                  <Addresources />
+                </Protectedroute>
+              }
+            />
+          </Route>
+          <Route
+            path="blog"
+            element={
+              <Protectedroute>
+                <Mentorblog />
+              </Protectedroute>
+            }
+          />
+          <Route
+            path="learners"
+            element={
+              <Protectedroute>
+                <Learners />
+              </Protectedroute>
+            }
+          />
+        </Route>
       </Routes>
     </Router>
   );

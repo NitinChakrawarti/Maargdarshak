@@ -82,7 +82,7 @@ const ChatArea = ({ selectedUser, setSelectedUser, isMobile, newMessage, setNewM
     useEffect(() => {
         if (!selectedUser) return;
 
-        const socket = new WebSocket(`ws://localhost:5000?userId=${mentor?._id || user?._id}`);
+        const socket = new WebSocket(`${import.meta.env.VITE_CHAT_WS}?userId=${mentor?._id || user?._id}`);
         ws.current = socket;
 
         socket.onopen = () => {

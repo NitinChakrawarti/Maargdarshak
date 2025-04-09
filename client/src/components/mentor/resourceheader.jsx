@@ -1,0 +1,36 @@
+// components/mentor/ResourceHeader.jsx
+
+import React from 'react';
+import { Link } from 'react-router-dom';
+
+const ResourceHeader = ({ selectedIndex, handleSelect }) => {
+  const actions = [
+    { label: "All Resources", to: "/mentor/resources" },
+    { label: "Add New", to: "/mentor/resources/add" }
+  ];
+
+  return (
+    <div className="flex md:flex-row flex-col md:items-center justify-between p-4 bg-white rounded-lg shadow-sm">
+      <h1 className="md:text-2xl text-xl font-bold text-[#1a3a6c]">Resources</h1>
+      <div className="flex mt-4 md:mt-0 gap-x-4">
+        {actions.map(({ label, to }, index) => (
+          <Link
+            key={index}
+            to={to}
+            onClick={() => handleSelect(index)}
+            className={`flex gap-2 rounded-lg md:text-md text-sm border-2 items-center py-2 px-4 transition-colors
+              ${selectedIndex === index ? 
+                'bg-[#2c67a6] text-white border-[#2c67a6]' : 
+                'bg-white text-[#1a3a6c] border-[#b5d5e5] hover:bg-[#b5d5e5]/20'
+              }`
+            }
+          >
+            {label}
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default ResourceHeader;
