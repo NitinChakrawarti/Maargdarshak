@@ -115,7 +115,7 @@
         // Initialize WebSocket connections
         function initializeConnections() {
             for (let i = 1; i <= 2; i++) {
-                const ws = new WebSocket(`ws://localhost:5000?userId=${userIds[i]}`);
+                const ws = new WebSocket(`ws://chat-maargdarshak.onrender.com?userId=${userIds[i]}`);
                 
                 ws.onopen = () => {
                     statusElements[i].className = 'status connected';

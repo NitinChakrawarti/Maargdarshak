@@ -1,23 +1,23 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import {
-  Home,
-  BookOpen,
-  FileText,
-  Users,
-  MessageCircle,
   LogOut,
   ChevronLeft,
   ChevronRight,
   X
 } from "lucide-react";
 import logo from "../assets/logo.png";
+import { MentorSidebar, UserSidebar } from "../data/authsidebar";
+import { useSelector } from "react-redux";
 
 const Sidebar = ({ isOpen, setIsSidebarOpen, onCollapse }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const sidebarRef = useRef(null);
+
+  const { mentor } = useSelector((state) => state.mentor);
+  const { user } = useSelector((state) => state.user);
 
   // Update parent component when collapse state changes
   useEffect(() => {
@@ -40,14 +40,6 @@ const Sidebar = ({ isOpen, setIsSidebarOpen, onCollapse }) => {
     };
   }, [setIsSidebarOpen]);
 
-  const sidebarItems = [
-    { label: "Home", component: "/mentor/dashboard", icon: <Home size={20} /> },
-    { label: "Resources", component: "/mentor/resources", icon: <BookOpen size={20} /> },
-    { label: "Blogs", component: "/mentor/blog", icon: <FileText size={20} /> },
-    { label: "Learners", component: "/mentor/learners", icon: <Users size={20} /> },
-    { label: "Chat", component: "/mentor/chat", icon: <MessageCircle size={20} /> },
-  ];
-
   const handleLogout = () => {
     document.cookie = "mentorToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     navigate("/");
@@ -62,7 +54,7 @@ const Sidebar = ({ isOpen, setIsSidebarOpen, onCollapse }) => {
       {/* Mobile overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-30 hidden md:hidden"
+          className="fixed inset-0 bg-black/50 z-30 md:hidden"
           onClick={() => setIsSidebarOpen(false)}
         />
       )}
@@ -70,35 +62,34 @@ const Sidebar = ({ isOpen, setIsSidebarOpen, onCollapse }) => {
       {/* Sidebar */}
       <div
         ref={sidebarRef}
-        className={`fixed z-40 top-0 left-0 h-screen bg-gradient-to-b from-brand-blue to-brand-navy text-white transition-all duration-300 transform ${isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
+        className={`fixed z-40 top-0 left-0 h-screen bg-gradient-to-b from-brand-blue to-brand-navy text-white transition-transform duration-300 transform ${isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
           } ${isCollapsed ? "w-16" : "w-52"}`}
       >
         {/* Mobile close button */}
-        {
-          !isCollapsed && (
-            <button
-              className="absolute top-4 right-2 mt-1 p-1 rounded-full bg-white/10 hover:bg-white/20 text-white md:hidden"
-              onClick={() => setIsSidebarOpen(false)}
-            >
-              <X size={24} />
-            </button>
-          )
-        }
+        {!isCollapsed && (
+          <button
+            className="absolute top-4 right-2 p-1 rounded-full bg-white/10 hover:bg-white/20 text-white md:hidden"
+            onClick={() => setIsSidebarOpen(false)}
+          >
+            <X size={24} />
+          </button>
+        )}
+
+        {/* Logo */}
         <div className="md:p-4 py-4 px-4 md:text-center border-b border-white/10">
-          {!isCollapsed ? (
-            <span className="text-3xl font-extrabold text-white md:block py-2">
-              मार्गदर्शक
-            </span>
-          ) : (
-            <span className="text-3xl font-extrabold text-white hidden md:block py-2">
+          <span className="text-3xl font-extrabold text-white py-2">
+            {isCollapsed ? (
               <img src={logo} alt="logo" className="w-10 h-10" />
-            </span>
-          )}
+            ) : (
+              "मार्गदर्शक"
+            )}
+          </span>
         </div>
 
+        {/* Sidebar content */}
         <div className="flex flex-col h-[calc(100%-4rem)] py-4">
           <div className="flex-1 px-3 space-y-1">
-            {sidebarItems.map((item) => (
+            {(mentor?.role === 'mentor' ? MentorSidebar : user?.role === 'user' ? UserSidebar : []).map((item) => (
               <Link
                 key={item.component}
                 to={item.component}
@@ -126,6 +117,7 @@ const Sidebar = ({ isOpen, setIsSidebarOpen, onCollapse }) => {
             </button>
           </div>
 
+          {/* Collapse button */}
           <div className="px-3 pt-3 mb-4 w-full flex justify-end border-t border-white/10">
             <button
               onClick={toggleCollapse}

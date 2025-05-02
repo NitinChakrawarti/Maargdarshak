@@ -1,23 +1,44 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Layout from "../../layout/auth/layout";
+import { useDispatch, useSelector } from "react-redux";
+import { VerifyToken } from "../../api";
+import { setUser } from "../../redux/features/userSlice";
 
 const User = () => {
   const navigate = useNavigate();
-
   const handleLogout = () => {
     document.cookie =
-      "authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      "userToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     navigate("/");
   };
 
+  const dispatch = useDispatch();
+  const { user, status } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    const verifyToken = async () => {
+      try {
+        const response = await VerifyToken();
+        dispatch(setUser(response.data.data));
+      } catch (error) {
+        console.error('Error verifying token:', error);
+      }
+    }
+    verifyToken();
+  }, [dispatch]);
+
+
   return (
     <>
-      <button
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        onClick={handleLogout}
-      >
-        Logout
-      </button>
+      <Layout>
+        <button
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          onClick={handleLogout}
+        >
+          Logout
+        </button>
+      </Layout>
     </>
   );
 };

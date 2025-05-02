@@ -3,7 +3,6 @@ import Layout from '../../layout/auth/layout'
 
 const MentorPage = () => {
     const { mentor } = useSelector((state) => state.mentor);
-
     return (
         <Layout>
             <div className="min-h-screen bg-gray-100">

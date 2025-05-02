@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { setMentor, clearMentor } from '../../redux/features/mentorSlice';
-import MentorPage from "../../screens/mentor/mentorpage";
+import MentorPage from "../../screens/mentor/mentorhome";
 
 const Mentor = () => {
     const [openDialog, setOpenDialog] = useState(true);
