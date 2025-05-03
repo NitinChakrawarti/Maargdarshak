@@ -28,7 +28,7 @@ const User = () => {
     verifyToken();
   }, [dispatch]);
 
-
+  
   return (
     <>
       <Layout>
