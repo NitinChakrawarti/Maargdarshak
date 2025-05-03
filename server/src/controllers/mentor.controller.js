@@ -100,7 +100,8 @@ class mentorController {
 
         response.cookie("mentorToken", token, {
             httpOnly: true, // or false depending on your setup
-            secure: process.env.NODE_ENV === "production",
+            // secure: process.env.NODE_ENV === "production",
+            secure: true, // set to true if using HTTPS
             sameSite: "None", // allow cross-site cookie sending
             maxAge: 30 * 24 * 60 * 60 * 1000,
         });

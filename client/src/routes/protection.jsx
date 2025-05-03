@@ -4,7 +4,7 @@ import { Navigate } from "react-router-dom";
 const getuserToken = () => {
   const cookies = document.cookie.split("; ");
   const authCookie = cookies.find((cookie) => cookie.startsWith("userToken="));
-  // console.log("userToken", cookies);
+  console.log("userToken", cookies);
   return authCookie ? authCookie.split("=")[1] : "";
 };
 
