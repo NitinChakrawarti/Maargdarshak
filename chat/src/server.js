@@ -4,6 +4,7 @@ import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import chatRoutes from './routes/route.js';
 import cors from 'cors';
+import ServerRestart from "./services/cron.service.js";
 
 // Resolve __dirname in ES Modules
 const __filename = fileURLToPath(import.meta.url);
@@ -12,6 +13,12 @@ const __dirname = path.dirname(__filename);
 dotenv.config();
 
 const app = express();
+
+// if (process.env.NODE_ENV != 'production') {
+if (process.env.NODE_ENV === 'production') {
+    ServerRestart.start();
+    console.log('⏰ Server Restarted every 10 seconds');
+}
 
 // Middlewares
 app.use(express.json());
