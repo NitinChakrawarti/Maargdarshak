@@ -14,14 +14,11 @@ const app = express();
 
 // ------------------ middleware added here ------------------ //
 const allowedOrigins = [
-    process.env.FRONT_URL_
+    process.env.FRONT_URL_,
+    'http://localhost:5173',
+    'http://localhost:5174',
+    'http://192.168.222.90:5173'
 ];
-// const allowedOrigins = [
-//     process.env.FRONT_URL_,
-//     'http://localhost:5173',
-//     'http://localhost:5174',
-//     'http://192.168.222.90:5173'
-// ];
 
 app.use(cors({
     origin: function (origin, callback) {

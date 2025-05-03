@@ -69,12 +69,13 @@ class UserController {
 
         const token = await authService.userToken(userData);
 
+        // Set token in HTTP-only cookie with 30-day expiration
         response.cookie("userToken", token, {
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "None",                             // REQUIRED for cross-site cookie usage
-            maxAge: 30 * 24 * 60 * 60 * 1000,             // 30 days in ms
+            httpOnly: false,   // Prevents client-side access
+            secure: process.env.NODE_ENV === "production", // Secure only in production
+            sameSite: "Strict", // Prevent CSRF attacks
+            maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days in milliseconds
         });
-
 
         return ResponseHandler(
             statusCodeUtility.Success,
