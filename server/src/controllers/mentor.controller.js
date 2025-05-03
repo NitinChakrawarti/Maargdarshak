@@ -98,13 +98,13 @@ class mentorController {
             otp: undefined,
         }
 
-        // Set token in HTTP-only cookie with 30-day expiration
         response.cookie("mentorToken", token, {
-            httpOnly: false,   // Prevents client-side access
-            secure: process.env.NODE_ENV === "production", // Secure only in production
-            sameSite: "Strict", // Prevent CSRF attacks
-            maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days in milliseconds
+            httpOnly: true, // or false depending on your setup
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "None", // allow cross-site cookie sending
+            maxAge: 30 * 24 * 60 * 60 * 1000,
         });
+
 
         return ResponseHandler(statusCodeUtility.Success, "Mentor logged in successfully", {
             token: "Token set in HTTP-only cookie",
