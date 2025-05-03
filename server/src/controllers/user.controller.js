@@ -70,8 +70,7 @@ class UserController {
         const token = await authService.userToken(userData);
 
         response.cookie("userToken", token, {
-            httpOnly: false,
-            secure: process.env.NODE_ENV === "production", // Ensures cookie only works on HTTPS in production
+            secure: process.env.NODE_ENV === "production",
             sameSite: "None",                             // REQUIRED for cross-site cookie usage
             maxAge: 30 * 24 * 60 * 60 * 1000,             // 30 days in ms
         });

@@ -19,7 +19,8 @@ const App = () => {
   };
   
   const cookies = getCookie('userToken');
-  console.log("cookies", cookies); // This will log the value of the userToken cookie
+  console.log("cookies", cookies); 
+  
   useEffect(() => {
     const verifyToken = async () => {
       try {
