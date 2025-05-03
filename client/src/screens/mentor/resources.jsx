@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import Layout from '../../layout/auth/layout';
 import Button from '../../components/parts/button';
-import ResourceHeader from '../../components/mentor/ResourceHeader';
+import ResourceHeader from '../../components/mentor/resourceheader';
 
 const MentorResources = () => {
   const [showAllResources, setShowAllResources] = useState(true);
