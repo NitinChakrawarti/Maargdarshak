@@ -96,7 +96,7 @@ const SignUp = () => {
       });
     }
     if (response.status === 200) {
-      dispatch(setAuth({ role: response.data.data.role, data: response.data.data }));
+      dispatch(setAuth({ role: response.data.data.userData.role, data: response.data.data.userData }));
       navigate("/user");
       console.log("Login Success");
     } else {
