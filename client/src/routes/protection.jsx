@@ -1,57 +1,37 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Navigate } from "react-router-dom";
-
-const getuserToken = () => {
-  const cookies = document.cookie.split("; ");
-  const authCookie = cookies.find((cookie) => cookie.startsWith("userToken="));
-  return authCookie ? authCookie.split("=")[1] : "";
-};
-
-const getmentorToken = () => {
-  const cookies = document.cookie.split("; ");
-  const authCookie = cookies.find((cookie) => cookie.startsWith("mentorToken="));
-  return authCookie ? authCookie.split("=")[1] : "";
-};
+import { useSelector } from "react-redux";
 
 export const Publicroute = ({ children }) => {
-  const [userToken, setUserToken] = useState(getuserToken());
-  const [mentorToken, setMentorToken] = useState(getmentorToken());
+  const { data, role } = useSelector((state) => state.auth);
 
-  useEffect(() => {
-    setUserToken(getuserToken());
-    setMentorToken(getmentorToken());
-  }, []);
-
-  if (userToken) {
+  if (data && role === "user") {
     return <Navigate to="/user" />;
   }
-  if (mentorToken) {
+
+  if (data && role === "mentor") {
     return <Navigate to="/mentor" />;
   }
+
   return children;
 };
 
 export const Protectedroute = ({ children }) => {
-  const [userToken, setUserToken] = useState(getuserToken());
-  const [mentorToken, setMentorToken] = useState(getmentorToken());
+  const { data, role } = useSelector((state) => state.auth);
+  const path = window.location.pathname;
 
-  useEffect(() => {
-    setUserToken(getuserToken());
-    setMentorToken(getmentorToken());
-  }, []);
-
-  if (!userToken && !mentorToken) {
+  if (!data) {
     return <Navigate to="/" />;
   }
-  
-  if (userToken && window.location.pathname === '/mentor') {
+
+  if (role === "user" && path.startsWith("/mentor")) {
     return <Navigate to="/user" />;
   }
-  
-  if (mentorToken && window.location.pathname === '/user') {
+
+  if (role === "mentor" && path.startsWith("/user")) {
     return <Navigate to="/mentor" />;
   }
-  
+
   return children;
 };
 

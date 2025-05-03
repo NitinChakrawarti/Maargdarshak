@@ -22,7 +22,8 @@ class authService {
             const info = jwt.verify(token, secret); // Synchronous verification
             return info;
         } catch (err) {
-            throw new Error("Token verification failed");
+            console.log(err);
+            return null; // Token is invalid or expired
         }
     }
 }

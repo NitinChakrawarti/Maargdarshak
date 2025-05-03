@@ -7,6 +7,8 @@ import { MentorLogin, MentorSignup, Signup, VerifyOtp } from "../api";
 import { useNavigate } from "react-router-dom";
 import FileUpload from "../components/parts/fileupload";
 import Enterotp from "../components/enterotp";
+import { setAuth } from "../redux/features/authSlice";
+import { useDispatch } from "react-redux";
 
 const ExtendedSignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -31,6 +33,7 @@ const ExtendedSignUp = () => {
   });
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -110,6 +113,7 @@ const ExtendedSignUp = () => {
       });
     }
     if (response.status === 200) {
+      dispatch(setAuth({ role: response.data.data.role, data: response.data.data }));
       navigate("/user");
       console.log("Login Success");
     } else {

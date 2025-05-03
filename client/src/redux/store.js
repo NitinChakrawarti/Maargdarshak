@@ -1,22 +1,19 @@
+// store.js
 import { configureStore } from '@reduxjs/toolkit';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-import mentorReducer from './features/mentorSlice';
-import userReducer from './features/userSlice';
+import authReducer from './features/authSlice';
 
-const persistConfig = {
-  key: 'root',
+const authPersistConfig = {
+  key: 'auth',
   storage,
-  whitelist: ['mentor', 'user'] // only mentor will be persisted
 };
 
-const persistedMentorReducer = persistReducer(persistConfig, mentorReducer);
-const persistedUserReducer = persistReducer(persistConfig, userReducer);
+const persistedAuthReducer = persistReducer(authPersistConfig, authReducer);
 
 export const store = configureStore({
   reducer: {
-    mentor: persistedMentorReducer,
-    user: persistedUserReducer,
+    auth: persistedAuthReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -26,4 +23,4 @@ export const store = configureStore({
     }),
 });
 
-export const persistor = persistStore(store); 
+export const persistor = persistStore(store);

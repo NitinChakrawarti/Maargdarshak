@@ -7,6 +7,8 @@ import InputField from "../components/parts/inputfield";
 import Button from "../components/parts/button";
 import { Login, Signup, VerifyOtp } from "../api";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setAuth } from "../redux/features/authSlice";
 
 const SignUp = () => {
   const [isLogin, setIsLogin] = useState(false);
@@ -25,6 +27,8 @@ const SignUp = () => {
   });
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -92,6 +96,7 @@ const SignUp = () => {
       });
     }
     if (response.status === 200) {
+      dispatch(setAuth({ role: response.data.data.role, data: response.data.data }));
       navigate("/user");
       console.log("Login Success");
     } else {

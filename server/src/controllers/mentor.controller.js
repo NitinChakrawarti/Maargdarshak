@@ -100,9 +100,9 @@ class mentorController {
 
         // Set token in HTTP-only cookie with 30-day expiration
         response.cookie("mentorToken", token, {
-            httpOnly: false,   // Prevents client-side access
+            httpOnly: true,   // Prevents client-side access
             secure: process.env.NODE_ENV === "production", // Secure only in production
-            sameSite: "Strict", // Prevent CSRF attacks
+            sameSite: "none", // Prevent CSRF attacks
             maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days in milliseconds
         });
 

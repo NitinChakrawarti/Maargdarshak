@@ -13,22 +13,6 @@ const User = () => {
     navigate("/");
   };
 
-  const dispatch = useDispatch();
-  const { user, status } = useSelector((state) => state.user);
-
-  useEffect(() => {
-    const verifyToken = async () => {
-      try {
-        const response = await VerifyToken();
-        dispatch(setUser(response.data.data));
-      } catch (error) {
-        console.error('Error verifying token:', error);
-      }
-    }
-    verifyToken();
-  }, [dispatch]);
-
-  
   return (
     <>
       <Layout>

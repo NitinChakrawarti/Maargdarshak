@@ -10,23 +10,6 @@ const Mentor = () => {
     const [openDialog, setOpenDialog] = useState(true);
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { mentor, status } = useSelector((state) => state.mentor);
-
-    useEffect(() => {
-        const verifyToken = async () => {
-            try {
-                const response = await VerifyToken();
-                dispatch(setMentor(response.data.data));
-                if (response.data.data?.status === "inactive") {
-                    setOpenDialog(true);
-                }
-            } catch (error) {
-                console.error('Error verifying token:', error);
-            }
-        }
-        verifyToken();
-    }, [dispatch]);
-
     const handleSignOut = () => {
         Cookies.remove('mentorToken');
         dispatch(clearMentor());
