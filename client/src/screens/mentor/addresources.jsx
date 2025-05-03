@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Layout from '../../layout/auth/layout'
-import ResourceHeader from '../../components/mentor/ResourceHeader';
+import ResourceHeader from '../../components/mentor/resourceheader';
 
 const Addresources = () => {
     const [selectedIndex, setSelectedIndex] = useState(0);
