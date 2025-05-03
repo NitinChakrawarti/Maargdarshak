@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import Layout from '../../layout/auth/layout'
 
 const MentorPage = () => {
-    const { mentor } = useSelector((state) => state.mentor);
+    const { data:mentor } = useSelector((state) => state.auth);
     return (
         <Layout>
             <div className="min-h-screen bg-gray-100">

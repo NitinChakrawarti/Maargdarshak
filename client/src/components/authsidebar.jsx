@@ -16,8 +16,7 @@ const Sidebar = ({ isOpen, setIsSidebarOpen, onCollapse }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const sidebarRef = useRef(null);
 
-  const { mentor } = useSelector((state) => state.mentor);
-  const { user } = useSelector((state) => state.user);
+  const { role, data } = useSelector((state) => state.auth);
 
   // Update parent component when collapse state changes
   useEffect(() => {
@@ -42,8 +41,11 @@ const Sidebar = ({ isOpen, setIsSidebarOpen, onCollapse }) => {
 
   const handleLogout = () => {
     document.cookie = "mentorToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    navigate("/");
+    document.cookie = "userToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    localStorage.clear();
+    window.location.href = "/"; 
   };
+
 
   const toggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
@@ -89,7 +91,7 @@ const Sidebar = ({ isOpen, setIsSidebarOpen, onCollapse }) => {
         {/* Sidebar content */}
         <div className="flex flex-col h-[calc(100%-4rem)] py-4">
           <div className="flex-1 px-3 space-y-1">
-            {(mentor?.role === 'mentor' ? MentorSidebar : user?.role === 'user' ? UserSidebar : []).map((item) => (
+            {(role === 'mentor' ? MentorSidebar : role === 'user' ? UserSidebar : []).map((item) => (
               <Link
                 key={item.component}
                 to={item.component}

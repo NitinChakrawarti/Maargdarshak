@@ -113,7 +113,7 @@ const ExtendedSignUp = () => {
       });
     }
     if (response.status === 200) {
-      dispatch(setAuth({ role: response.data.data.role, data: response.data.data }));
+      dispatch(setAuth({ role: response.data.data.mentorData.role, data: response.data.data.mentorData }));
       navigate("/user");
       console.log("Login Success");
     } else {
