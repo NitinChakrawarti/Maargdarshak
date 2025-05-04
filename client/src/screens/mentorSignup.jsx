@@ -206,7 +206,7 @@ const ExtendedSignUp = () => {
               <div className=" gap-4">
                 <Button
                   type="submit"
-                  label="Apply Now"
+                  label={isLoading ? "Please Wait..." : "Sign Up"}
                   disabled={isLoading}
                   className=""
                 />
@@ -237,12 +237,20 @@ const ExtendedSignUp = () => {
                   >
                     Back
                   </button>
-                  <button
-                    onClick={VerifyOtpOnClick}
-                    className="w-full py-3 hover:bg-light-blue bg-primary text-bg rounded-lg shadow-md font-bold text-xl  transition duration-300"
-                  >
-                    Verify
-                  </button>
+                  {
+                    !isloading ? <button
+                      onClick={VerifyOtpOnClick}
+                      className="w-full py-3 hover:bg-light-blue bg-primary text-bg rounded-lg shadow-md font-bold text-xl  transition duration-300"
+                    >
+                      Verify
+                    </button>
+                      :
+                      <button
+                        disabled={true}
+                        className="w-full py-3 hover:bg-light-blue bg-primary text-bg rounded-lg shadow-md font-bold text-xl cursor-not-allowed transition duration-300"
+                      >
+                        Verifying
+                      </button>}
                 </div>
               </div>
             </div>
@@ -278,7 +286,7 @@ const ExtendedSignUp = () => {
                 <div className=" gap-4">
                   <Button
                     type="submit"
-                    label="Login Now"
+                    label={isLoading ? "Please Wait..." : "Login"}
                     disabled={isLoading}
                     className=""
                     onClick={loginreq}

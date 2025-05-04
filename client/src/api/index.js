@@ -117,3 +117,15 @@ export const LogOutFunc = async (data) => {
     return error.response.data;
   }
 }
+
+
+export const GetMentorDetails = async () => {
+  try {
+    const response = await instance.get(`/mentor/get-mentor`, {
+      withCredentials: true,
+    });
+    return response;
+  } catch (error) {
+    return error.response.data;
+  }
+}

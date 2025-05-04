@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
-import { clearMentor } from '../../redux/features/mentorSlice';
 import MentorPage from "../../screens/mentor/mentorhome";
+import { LogOutFunc } from "../../api";
+import { setAuth } from "../../redux/features/authSlice";
 
 const Mentor = () => {
   const [openDialog, setOpenDialog] = useState(true);
@@ -16,10 +16,17 @@ const Mentor = () => {
     setMentor(data);
   }, [data]);
 
-  const handleSignOut = () => {
-    Cookies.remove('mentorToken');
-    dispatch(clearMentor());
-    navigate('/');
+  const { role } = useSelector((state) => state.auth);
+
+  const handleLogout = async () => {
+    const logout = await LogOutFunc({ role: role });
+    if (logout.status === 200) {
+      dispatch(setAuth({ role: null, data: null }));
+      return navigate("/");
+    }
+    else {
+      console.error("Logout failed:", logout.message);
+    }
   };
 
   if (!mentor) return null; // Optional: or a loading screen
@@ -51,8 +58,8 @@ const Mentor = () => {
                       We will notify you once your account has been verified.
                     </p>
                     <button
-                      onClick={handleSignOut}
-                      className="mt-4 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
+                      onClick={handleLogout}
+                      className="mt-4 px-4 py-2 bg-red-600 cursor-pointer text-white rounded-md hover:bg-red-700 transition-colors"
                     >
                       Sign Out
                     </button>

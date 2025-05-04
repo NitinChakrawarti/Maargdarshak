@@ -56,7 +56,7 @@ class Mentorservice {
     }
 
     async getMentors() {
-        const mentors = await Mentor.find();
+        const mentors = await Mentor.find({ status: "active" });
         return mentors;
     }
 

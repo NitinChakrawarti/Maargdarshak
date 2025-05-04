@@ -164,10 +164,22 @@ const SignUp = () => {
                   </button>
                 </div>
                 {/* Submit Button */}
-                <Button
+                {!isloading && <Button
                   type="submit"
-                  label={step === 2 ? "Login" : "Sign Up"}
-                />
+                  label={
+                    step === 2 ? "Login" : "Sign Up"
+                  }
+                />}
+                {
+                  isloading &&
+                  <Button
+                    label={
+                      'Please Wait...'
+                    }
+                    diabled={true}
+                    className="bg-gray-400 text-white cursor-not-allowed"
+                  />
+                }
               </form>
 
               {/* Toggle Form Link */}
@@ -204,12 +216,20 @@ const SignUp = () => {
                 >
                   Back
                 </button>
-                <button
-                  onClick={VerifyOtpOnClick}
-                  className="w-full py-3 hover:bg-light-blue bg-primary text-bg rounded-lg shadow-md font-bold text-xl  transition duration-300"
-                >
-                  Verify
-                </button>
+                {
+                  !isloading ? <button
+                    onClick={VerifyOtpOnClick}
+                    className="w-full py-3 hover:bg-light-blue bg-primary text-bg rounded-lg shadow-md font-bold text-xl  transition duration-300"
+                  >
+                    Verify
+                  </button>
+                    :
+                    <button
+                      onClick={VerifyOtpOnClick}
+                      className="w-full py-3 hover:bg-light-blue bg-primary text-bg rounded-lg shadow-md font-bold text-xl  transition duration-300"
+                    >
+                      Verifying
+                    </button>}
               </div>
             </div>
           </div>

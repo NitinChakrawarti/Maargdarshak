@@ -13,6 +13,7 @@ import MentorResources from "../screens/mentor/resources";
 import Mentorblog from "../screens/mentor/blog";
 import Learners from "../screens/mentor/learners";
 import Addresources from "../screens/mentor/addresources";
+import Explore from "../screens/user/explore";
 
 export const AllRoutes = () => {
   return (
@@ -95,7 +96,16 @@ export const AllRoutes = () => {
           }
         />
 
-        {/* ------------------------------ mentor dashboard routes ------------------------------ */}
+        <Route
+          path="/user/explore"
+          element={
+            <Protectedroute>
+              <Explore />
+            </Protectedroute>
+          }
+        />
+
+          {/* ------------------------------ mentor dashboard routes ------------------------------ */}
         <Route path="/mentor">
           <Route
             index
