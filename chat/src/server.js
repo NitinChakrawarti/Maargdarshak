@@ -54,6 +54,8 @@ app.get("/test", (req, res) => {
 });
 
 app.get("/", (req, res) => {
+    console.log("Request received at root endpoint");
+
     res.status(200).send("chat server is running");
 });
 

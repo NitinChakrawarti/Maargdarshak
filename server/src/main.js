@@ -59,7 +59,7 @@ app.get('/mentors', (req, res) => {
 
 //-------------connection testing of api-----//
 app.get("/", (request, response) => {
-    console.log(request.body);
+    console.log("Request received at root endpoint");
     response.status(200).send("API is working fine");
 });
 

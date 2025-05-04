@@ -24,8 +24,6 @@ class ChatService {
                 timestamp: new Date()
             });
             await chat.save();
-            console.log('Message saved:', chat);
-            
             return chat;
         } catch (error) {
             throw new Error('Error saving message: ' + error.message);
