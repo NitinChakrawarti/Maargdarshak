@@ -2,16 +2,25 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "../../layout/auth/layout";
 import { useDispatch, useSelector } from "react-redux";
-import { VerifyToken } from "../../api";
+import { LogOutFunc, VerifyToken } from "../../api";
 import { setUser } from "../../redux/features/userSlice";
+import { setAuth } from "../../redux/features/authSlice";
 
 const User = () => {
   const navigate = useNavigate();
-  const handleLogout = () => {
-    document.cookie =
-      "userToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    navigate("/");
+  const dispatch = useDispatch();
+  const { role } = useSelector((state) => state.auth);
+  const handleLogout = async () => {
+    const logout = await LogOutFunc({ role: role });
+    if (logout.status === 200) {
+      dispatch(setAuth({ role: null, data: null }));
+      return navigate("/");
+    }
+    else {
+      console.error("Logout failed:", logout.message);
+    }
   };
+
 
   return (
     <>

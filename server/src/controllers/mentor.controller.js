@@ -102,7 +102,7 @@ class mentorController {
         response.cookie("mentorToken", token, {
             httpOnly: true,   // Prevents client-side access
             secure: process.env.NODE_ENV === "production", // Secure only in production
-            sameSite: "none", // Prevent CSRF attacks
+            sameSite: "None", // Prevent CSRF attacks
             maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days in milliseconds
         });
 

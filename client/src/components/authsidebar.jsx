@@ -1,21 +1,23 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import {
-  LogOut,
   ChevronLeft,
   ChevronRight,
+  LogOut,
   X
 } from "lucide-react";
 import logo from "../assets/logo.png";
 import { MentorSidebar, UserSidebar } from "../data/authsidebar";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { LogOutFunc } from "../api";
+import { setAuth } from "../redux/features/authSlice";
 
 const Sidebar = ({ isOpen, setIsSidebarOpen, onCollapse }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const sidebarRef = useRef(null);
-
+  const dispatch = useDispatch();
   const { role, data } = useSelector((state) => state.auth);
 
   // Update parent component when collapse state changes
@@ -39,13 +41,16 @@ const Sidebar = ({ isOpen, setIsSidebarOpen, onCollapse }) => {
     };
   }, [setIsSidebarOpen]);
 
-  const handleLogout = () => {
-    document.cookie = "mentorToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    document.cookie = "userToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    localStorage.clear();
-    window.location.href = "/"; 
+  const handleLogout = async () => {
+    const logout = await LogOutFunc({ role: role });
+    if (logout.status === 200) {
+      dispatch(setAuth({ role: null, data: null }));
+      return navigate("/");
+    }
+    else {
+      console.error("Logout failed:", logout.message);
+    }
   };
-
 
   const toggleCollapse = () => {
     setIsCollapsed(!isCollapsed);

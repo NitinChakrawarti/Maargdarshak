@@ -35,6 +35,14 @@ class authController {
 
     async verifyToken(request, response) {
         const token = request.cookies.userToken || request.cookies.mentorToken;
+        if (!token) {
+            return ResponseHandler(
+                statusCodeUtility.BadRequest,
+                "No token provided",
+                null,
+                response,
+            );
+        }
         const verifyToken = await authService.tokenverify(token);
         const user = await User.findById(verifyToken.id) || await Mentor.findById(verifyToken.id);
         if (!user) {
@@ -82,5 +90,43 @@ class authController {
         }
     }
 
+    async logout(request, response) {
+        const token = request.cookies.userToken || request.cookies.mentorToken;
+        const role = request.body.role;
+        if (role) {
+            if (role === "user") {
+                response.cookie("userToken", "", {
+                    httpOnly: true,
+                    secure: process.env.NODE_ENV === "production",
+                    sameSite: "none",
+                    maxAge: 0,
+                    expires: new Date(0)
+                });
+            }
+
+            if (role === "mentor") {
+                response.cookie("mentorToken", "", {
+                    httpOnly: true,
+                    secure: process.env.NODE_ENV === "production",
+                    sameSite: "none",
+                    maxAge: 0,
+                    expires: new Date(0)
+                });
+            }
+
+            return ResponseHandler(
+                statusCodeUtility.Success,
+                "Logout successful",
+                null,
+                response,
+            );
+        }
+        return ResponseHandler(
+            statusCodeUtility.BadRequest,
+            "No role provided",
+            null,
+            response,
+        );
+    }
 }
 export default new authController();

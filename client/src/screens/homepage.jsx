@@ -294,7 +294,7 @@ const Home = () => {
 
       {/* Team Section */}
 
-      <motion.section
+      {/* <motion.section
         className="bg-brand-sky py-16 px-5 md:px-10 lg:px-16 max-w-7xl mx-auto rounded-lg"
         initial="hidden"
         whileInView="visible"
@@ -360,7 +360,7 @@ const Home = () => {
             Join Our Team
           </button>
         </motion.div>
-      </motion.section>
+      </motion.section> */}
       <FAQ />
 
     </Layoutcomponent>

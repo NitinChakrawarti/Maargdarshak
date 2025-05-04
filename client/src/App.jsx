@@ -16,6 +16,7 @@ const App = () => {
         dispatch(setAuth({ role: userData.role, data: userData }));
       } catch (error) {
         console.error('Error verifying token:', error);
+        dispatch(setAuth({ role: null, data: null }));
         dispatch(setError('Token verification failed'));
       }
     };

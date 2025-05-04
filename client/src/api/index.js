@@ -94,7 +94,21 @@ export const MentorChatHistory = async (data) => {
 export const chatDetails = async (data) => {
   try {
     const response = await instance.post(`/auth/chat-details`, {
-        userIds: data,
+      userIds: data,
+    }, {
+      withCredentials: true,
+    });
+    return response;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
+export const LogOutFunc = async (data) => {
+  const { role } = data;
+  try {
+    const response = await instance.post("/auth/logout", {
+      role: role,
     }, {
       withCredentials: true,
     });
