@@ -14,12 +14,6 @@ dotenv.config();
 
 const app = express();
 
-// if (process.env.NODE_ENV != 'production') {
-if (process.env.NODE_ENV === 'production') {
-    ServerRestart.start();
-    console.log('⏰ Server Restarted every 10 seconds');
-}
-
 // Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
