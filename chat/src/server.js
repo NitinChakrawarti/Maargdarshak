@@ -4,7 +4,6 @@ import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import chatRoutes from './routes/route.js';
 import cors from 'cors';
-import ServerRestart from "./services/cron.service.js";
 
 // Resolve __dirname in ES Modules
 const __filename = fileURLToPath(import.meta.url);
