@@ -1,0 +1,30 @@
+name: Auto Merge to Master
+
+on:
+  push:
+    branches:
+      - nitin-dev
+
+jobs:
+  merge-to-main:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+        with:
+          ref: nitin-dev
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Fetch all branches
+        run: git fetch origin master
+
+      - name: Attempt to merge nitin-dev into main
+        run: |
+          git checkout master
+          git merge --no-ff origin/nitin-dev -m "Auto-merged nitin-dev into master"
+          git push origin master
