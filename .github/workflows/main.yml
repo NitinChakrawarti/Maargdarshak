@@ -9,22 +9,35 @@ jobs:
   merge-to-master:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout nitin-dev
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          ref: nitin-dev
-          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0  # Fetch full history so we can merge
 
       - name: Configure Git
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - name: Fetch master branch
-        run: git fetch origin master
+      - name: Fetch all branches
+        run: git fetch origin
 
-      - name: Merge nitin-dev into master
+      - name: Checkout master branch
         run: |
           git checkout master || git checkout -b master origin/master
-          git merge --no-ff origin/nitin-dev --allow-unrelated-histories -m "Auto-merged nitin-dev into master"
-          git push origin master
+
+      - name: Merge nitin-dev into master
+        id: merge
+        continue-on-error: true
+        run: |
+          git merge origin/nitin-dev --no-ff -m "Auto-merged nitin-dev into master"
+
+      - name: Check merge result
+        if: steps.merge.outcome == 'failure'
+        run: |
+          echo "❌ Merge conflict detected. Please resolve conflicts manually."
+          exit 1
+
+      - name: Push changes to master
+        if: steps.merge.outcome == 'success'
+        run: git push origin master
