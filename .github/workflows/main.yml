@@ -6,10 +6,10 @@ on:
       - nitin-dev
 
 jobs:
-  merge-to-main:
+  merge-to-master:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout the repository
+      - name: Checkout nitin-dev
         uses: actions/checkout@v4
         with:
           ref: nitin-dev
@@ -20,11 +20,11 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - name: Fetch all branches
+      - name: Fetch master branch
         run: git fetch origin master
 
-      - name: Attempt to merge nitin-dev into main
+      - name: Merge nitin-dev into master
         run: |
-          git checkout master
-          git merge --no-ff origin/nitin-dev -m "Auto-merged nitin-dev into master"
+          git checkout master || git checkout -b master origin/master
+          git merge --no-ff origin/nitin-dev --allow-unrelated-histories -m "Auto-merged nitin-dev into master"
           git push origin master
