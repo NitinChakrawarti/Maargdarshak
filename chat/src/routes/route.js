@@ -4,6 +4,9 @@ import { chatController } from '../controllers/chat.controller.js';
 
 const router = express.Router();
 
+// POST /api/chat/create
+router.post('/create', asyncHandler(chatController.createChat));
+
 // POST /api/chat/send
 router.post('/send', asyncHandler(chatController.sendMessage));
 

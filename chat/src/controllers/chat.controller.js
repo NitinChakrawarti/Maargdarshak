@@ -4,6 +4,17 @@ import ResponseHandler from '../utils/APIResponse.js';
 import statusCodeUtility from '../utils/statusCodeUtility.js';
 
 class ChatController {
+
+
+    async createChat(req, res) {
+        const { userId1, userId2 } = req.body;
+        if (!userId1 || !userId2) {
+            return APIError(statusCodeUtility.BadRequest, 'User IDs are required', res);
+        }
+        const chat = await chatService.createChat(userId1, userId2);
+        return ResponseHandler(statusCodeUtility.Success, 'Chat created successfully', chat, res);
+    }
+
     async sendMessage(req, res) {
         const { senderId, receiverId, message } = req.body;
         if (!senderId || !receiverId || !message) {

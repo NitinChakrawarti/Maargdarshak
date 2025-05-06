@@ -1,6 +1,34 @@
 import Chat from '../models/chat.model.js';
 
 class ChatService {
+
+
+    async createChat(userId1, userId2) {
+        try {
+            // Check if a chat already exists between the two users
+            let chat = await Chat.findOne({
+                $or: [
+                    { 'conversation.p1': userId1, 'conversation.p2': userId2 },
+                    { 'conversation.p1': userId2, 'conversation.p2': userId1 }
+                ]
+            });
+
+            // If no chat exists, create a new one
+            if (!chat) {
+                chat = new Chat({
+                    conversation: { p1: userId1, p2: userId2 },
+                    messages: []
+                });
+                await chat.save();
+            }
+            return chat;
+        }
+        catch (error) {
+            throw new Error('Error creating chat: ' + error.message);
+        }
+    }
+
+
     async saveMessage(senderId, receiverId, message) {
         try {
             let chat = await Chat.findOne({
