@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { GetMentorDetails } from "../../api";
+import { GetMentorDetails, IntializeChat } from "../../api";
 import Layout from "../../layout/auth/layout";
+import { useSelector } from "react-redux";
 
 const Explore = () => {
     const [mentors, setMentors] = useState([]);
     const [loading, setLoading] = useState(true);
+
+    const { data } = useSelector((state) => state.auth);
 
     useEffect(() => {
         document.title = "Explore | Mentor-Connect";
@@ -21,6 +24,19 @@ const Explore = () => {
 
         fetchMentors();
     }, []);
+
+
+    const handleChat = async (mentorId) => {
+        console.log(`Mentor ID: ${mentorId}`);
+        
+        const response = await IntializeChat({ userId1: mentorId, userId2: data._id });
+        if (response.status === 200) {
+            console.log(`Initiating chat with mentor ID: ${mentorId}`);
+        }
+        else{
+            console.error("Error initiating chat", response.data.message);
+        }
+    }
 
     return (
         <Layout>
@@ -63,10 +79,11 @@ const Explore = () => {
                                     </p>
                                     <div className="text-soft-gray text-sm mt-3 text-center flex gap-20 items-center">
                                         <p><strong>Expertise:</strong>{" "}
-                                        {mentor.expertise?.join(", ") || "N/A"}</p>
+                                            {mentor.expertise?.join(", ") || "N/A"}</p>
                                         <button
-                                        className="bg-brand-blue text-white px-4 py-1 rounded-sm hover:bg-brand-navy cursor-pointer transition-colors">
-                                            Chat 
+                                            onClick={() => handleChat(mentor._id)}
+                                            className="bg-brand-blue text-white px-4 py-1 rounded-sm hover:bg-brand-navy cursor-pointer transition-colors">
+                                            Chat
                                         </button>
                                     </div>
                                 </div>

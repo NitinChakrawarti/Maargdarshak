@@ -58,7 +58,7 @@ const MentorChat = () => {
                         id: userDetail?._id,
                         name: userDetail?.name,
                         profile: userDetail?.profile,
-                        lastMessage: chat.lastMessage.message,
+                        lastMessage: chat?.lastMessage?.message,
                     };
                 });
                 setUsers(formattedUsers);

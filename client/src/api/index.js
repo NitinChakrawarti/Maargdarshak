@@ -78,6 +78,17 @@ export const MentorChatList = async (data) => {
   }
 }
 
+export const IntializeChat = async (data) => {
+  try {
+    const response = await axios.post(`${import.meta.env.VITE_CHAT_URL}/api/chat/create`, data, {
+      withCredentials: true,
+    });
+    return response;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
 export const MentorChatHistory = async (data) => {
   try {
     const response = await axios.get(`${import.meta.env.VITE_CHAT_URL}/api/chat/history?userId1=${data.userId1}&userId2=${data.userId2}`, {},
