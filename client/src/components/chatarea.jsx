@@ -79,7 +79,7 @@ const ChatArea = React.memo(({ selectedUser, isMobile, handleBackToList }) => {
 
         socket.onmessage = ({ data }) => {
             const parsed = JSON.parse(data);
-            if (parsed.type === "private_message") addMessage("user", parsed.data.message);
+            if (parsed.type === "private_message" && parsed.data.senderId === selectedUser.id) addMessage("user", parsed.data.message);
             if (parsed.type === "error") addMessage("system", parsed.message);
         };
 
