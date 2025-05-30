@@ -71,7 +71,7 @@ const MentorChat = () => {
     }, [mentor?._id, user?._id]);
 
     const filteredUsers = users.filter(user =>
-        user.name.toLowerCase().includes(searchTerm.toLowerCase())
+        user?.name?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     const handleSendMessage = (e) => {
