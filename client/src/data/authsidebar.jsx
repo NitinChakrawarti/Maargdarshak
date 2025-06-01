@@ -17,7 +17,7 @@ export const MentorSidebar = [
 
 export const UserSidebar = [
     { label: "Home", component: "/user/home", icon: <Home size={20} /> },
-    { label: "Explore", component: "/user/explore", icon: <BookOpen size={20} /> },
+    { label: "Explore", component: "/user/resources", icon: <BookOpen size={20} /> },
     { label: "Chat", component: "/chat", icon: <MessageCircle size={20} /> },
     { label: "Bookmarks", component: "/user/bookmarks", icon: <FileText size={20} /> },
 ]
