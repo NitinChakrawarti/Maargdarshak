@@ -140,3 +140,41 @@ export const GetMentorDetails = async () => {
     return error.response.data;
   }
 }
+
+
+export const AddResource = async (data) => {
+  try {
+    const response = await instance.post(`/resource/add-resource`, { ...data }, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+      withCredentials: true,
+    });
+    return response;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
+
+export const GetResources = async () => {
+  try {
+    const response = await instance.get(`/resource/get-resources`, {
+      withCredentials: true,
+    });
+    return response;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
+export const GetResourceById = async (resourceId) => {
+  try {
+    const response = await instance.get(`/resource/get-resource/${resourceId}`, {
+      withCredentials: true,
+    });
+    return response;
+  } catch (error) {
+    return error.response.data;
+  }
+}

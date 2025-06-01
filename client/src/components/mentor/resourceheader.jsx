@@ -21,7 +21,7 @@ const ResourceHeader = () => {
               to={to}
               className={`flex gap-2 rounded-lg md:text-md text-sm border-2 items-center py-2 px-4 transition-colors
                 ${isActive ? 
-                  'bg-[#2c67a6] text-white border-[#2c67a6]' : 
+                  'bg-dark-blue text-white border-brand-navy' : 
                   'bg-white text-[#1a3a6c] border-[#b5d5e5] hover:bg-[#b5d5e5]/20'
                 }`
               }

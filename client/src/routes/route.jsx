@@ -14,6 +14,8 @@ import Mentorblog from "../screens/mentor/blog";
 import Learners from "../screens/mentor/learners";
 import Addresources from "../screens/mentor/addresources";
 import Explore from "../screens/user/explore";
+import ResourceDetailView from "../components/mentor/resourceById";
+import ResourcePage from "../screens/user/resourcePage";
 
 export const AllRoutes = () => {
   return (
@@ -78,14 +80,7 @@ export const AllRoutes = () => {
         />
 
         {/* ------------------------------ all protected routes ------------------------------ */}
-        <Route
-          path="/user"
-          element={
-            <Protectedroute>
-              <User />
-            </Protectedroute>
-          }
-        />
+
 
         <Route
           path="/chat"
@@ -95,17 +90,46 @@ export const AllRoutes = () => {
             </Protectedroute>
           }
         />
+        <Route path="/user">
+          <Route
+            path=""
+            element={
+              <Protectedroute>
+                <User />
+              </Protectedroute>
+            }
+          />
+          <Route
+            path="explore"
+            element={
+              <Protectedroute>
+                <Explore />
+              </Protectedroute>
+            }
+          />
+          <Route path="resources">
+            <Route
+              path=""
+              element={
+                <Protectedroute>
+                  <ResourcePage />
+                </Protectedroute>
+              }
+            />
+            <Route
+              path=":resourceId"
+              element={
+                <Protectedroute>
+                  <ResourceDetailView />
+                </Protectedroute>
+              }
+            />
+          </Route>
+        </Route>
 
-        <Route
-          path="/user/explore"
-          element={
-            <Protectedroute>
-              <Explore />
-            </Protectedroute>
-          }
-        />
 
-          {/* ------------------------------ mentor dashboard routes ------------------------------ */}
+
+        {/* ------------------------------ mentor dashboard routes ------------------------------ */}
         <Route path="/mentor">
           <Route
             index
@@ -140,6 +164,14 @@ export const AllRoutes = () => {
                 </Protectedroute>
               }
             />
+            <Route
+              path=":resourceId"
+              element={
+                <Protectedroute>
+                  <ResourceDetailView />
+                </Protectedroute>
+              }
+            />
           </Route>
           <Route
             path="blog"
@@ -159,6 +191,6 @@ export const AllRoutes = () => {
           />
         </Route>
       </Routes>
-    </Router>
+    </Router >
   );
 };
