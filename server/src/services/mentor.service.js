@@ -67,6 +67,17 @@ class Mentorservice {
         return mentor;
     }
 
+    async getMentorById(id) {
+        const mentor = await Mentor.findById(id);
+        if (!mentor) {
+            throw new APIError(statusCodeUtility.NotFound, "Mentor not found");
+        }
+        mentor.password = undefined; // Remove password from the response
+        mentor.__v = undefined; // Remove version key from the response
+        mentor.otp = undefined; // Remove OTP from the response
+        return mentor;
+    }
+
 }
 
 export default new Mentorservice();
