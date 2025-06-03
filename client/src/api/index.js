@@ -190,3 +190,14 @@ export const EnrollInCourse = async (data) => {
     return error.response.data;
   }
 }
+
+export const AddToFavorites = async (data) => {
+  try {
+    const response = await instance.post(`/user/add-favorite`, { ...data }, {
+      withCredentials: true,
+    });
+    return response;
+  } catch (error) {
+    return error.response.data;
+  }
+}

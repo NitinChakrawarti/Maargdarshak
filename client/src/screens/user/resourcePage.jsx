@@ -1,6 +1,5 @@
-import React from 'react'
 import Layout from '../../layout/auth/layout'
-import ResourcesGrid from '../../components/mentor/resourcegrid'
+import ResourcesGrid from '../../components/resourcegrid'
 
 const ResourcePage = () => {
     return (

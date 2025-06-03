@@ -23,8 +23,15 @@ class Resources {
             return new APIError(statusCodeUtility.BadRequest, "NO data Provided");
         }
 
-        const newPath = FileRename(req.file);
-        const { title, description, domain, rating, reviews, resource, mentorId , mentorname} = req.body;
+        let newPath = "";
+        if (req.file) {
+            newPath = FileRename(req.file);
+        }
+        if (!req.file) {
+            newPath = req.body.banner;
+        }
+
+        const { title, description, domain, rating, reviews, resource, mentorId, mentorname } = req.body;
         const resourceData = await resourceService.addResource({ title, description, domain, rating, reviews, resource, mentorId, mentorname, banner: newPath });
 
         if (resourceData) {

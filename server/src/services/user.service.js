@@ -57,7 +57,7 @@ class UserService {
 
     // ----------------- 3. add course ----------------- //
     async addCourse(data) {
-        const {courseName, description, courseId, userId} = data;
+        const { courseName, description, courseId, userId } = data;
         const response = await User.findByIdAndUpdate(
             userId,
             {
@@ -67,6 +67,24 @@ class UserService {
                         description,
                         courseId
                     }
+                }
+            },
+            { new: true }
+        );
+        return response;
+    }
+
+    async addfavorite(data) {
+        const { courseId, userId } = data;
+        const existingFavorite = await User.findOne({ _id: userId, savedItems: courseId });
+        if (existingFavorite) {
+            throw new APIError(statusCodeUtility.Conflict, "Course already exists in favorites");
+        }
+        const response = await User.findByIdAndUpdate(
+            userId,
+            {
+                $push: {
+                    savedItems: courseId
                 }
             },
             { new: true }

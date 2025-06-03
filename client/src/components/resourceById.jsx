@@ -16,12 +16,14 @@ import {
     Share2,
     Download,
     ChevronLeft,
-    Eye
+    Eye,
+    Timer,
+    User
 } from "lucide-react";
-import Layout from "../../layout/auth/layout";
+import Layout from "../layout/auth/layout";
 import { Link, useLocation } from "react-router-dom";
 import { useEffect } from "react";
-import { EnrollInCourse, GetResourceById } from "../../api/index";
+import { AddToFavorites, EnrollInCourse, GetResourceById } from "../api/index";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import dayjs from "dayjs";
@@ -81,6 +83,13 @@ const ResourceDetailView = () => {
         if (isEnrolled) {
             setIsAddedToList(true);
         }
+
+        const userFavorites = data?.savedItems || [];
+        const isBookmarked = userFavorites.some(favorite => favorite === resourceId);
+
+        if (isBookmarked) {
+            setIsBookmarked(true);
+        }
     }, [resourceId]);
 
     const getProgressIcon = (resourceId) => {
@@ -138,6 +147,17 @@ const ResourceDetailView = () => {
         }
     }
 
+    const addBookmark = async (data) => {
+        const response = await AddToFavorites(data);
+        if (response.status === 200) {
+            toast.success("Bookmarked successfully!");
+            setIsBookmarked(true);
+        }
+        else {
+            toast.error("Failed, Try again.");
+        }
+    }
+
     return (
         <Layout>
             <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
@@ -147,10 +167,15 @@ const ResourceDetailView = () => {
                         src={resource.banner}
                         alt={resource.title}
                         className="w-full h-full object-cover"
+                        onError={(e) => {
+                            e.target.src = 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&h=250&fit=crop';
+                            e.target.alt = 'Image Not Available';
+                        }
+                        }
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
 
-                    <Link to='/user/resources' className="absolute top-4 left-4 flex justify-center items-center text-white px-4 py-2 rounded-lg shadow-lg  transition-colors">
+                    <Link to='/user/resources' className="absolute top-4 left-4 flex justify-center bg-bg items-center text-brand-navy px-4 py-2 rounded-lg shadow-lg  transition-colors">
                         <ChevronLeft className="w-5 h-5 inline-block mr-2" />
                         Go Back
                     </Link>
@@ -241,7 +266,7 @@ const ResourceDetailView = () => {
                                             <div className="flex space-x-2">
                                                 <button
                                                     onClick={() => handleProgressChange(index, 'completed')}
-                                                    className={`p-1 rounded-full transition-colors ${courseProgress[index] === 'completed'
+                                                    className={`p-1 cursor-pointer rounded-full transition-colors ${courseProgress[index] === 'completed'
                                                         ? 'bg-green-100 text-green-600'
                                                         : 'hover:bg-gray-100'
                                                         }`}
@@ -251,13 +276,13 @@ const ResourceDetailView = () => {
                                                 </button>
                                                 <button
                                                     onClick={() => handleProgressChange(index, 'in-progress')}
-                                                    className={`p-1 rounded-full transition-colors ${courseProgress[index] === 'in-progress'
+                                                    className={`p-1 cursor-pointer rounded-full transition-colors ${courseProgress[index] === 'in-progress'
                                                         ? 'bg-yellow-100 text-yellow-600'
                                                         : 'hover:bg-gray-100'
                                                         }`}
                                                     title="Mark as in progress"
                                                 >
-                                                    <Circle className="w-4 h-4" />
+                                                    <Timer className="w-4 h-4" />
                                                 </button>
                                             </div>
 
@@ -301,8 +326,8 @@ const ResourceDetailView = () => {
                             <div className="bg-white rounded-2xl p-6 shadow-lg">
                                 <h2 className="text-2xl font-bold text-gray-800 mb-6">Student Reviews</h2>
                                 <div className="space-y-4">
-                                    {resource.reviews.map((review) => (
-                                        <div key={review.id} className="border-b border-gray-200 pb-4 last:border-b-0">
+                                    {resource.reviews.map((review, index) => (
+                                        <div key={index} className="border-b border-gray-200 pb-4 last:border-b-0">
                                             <div className="flex items-center justify-between mb-2">
                                                 <span className="font-semibold text-gray-800">{review.user}</span>
                                                 <div className="flex">
@@ -327,11 +352,17 @@ const ResourceDetailView = () => {
                             <div className="bg-white rounded-2xl p-6 shadow-lg">
                                 <div className="space-y-4">
                                     <button
-                                        onClick={() => setIsBookmarked(!isBookmarked)}
+                                        onClick={() => addBookmark(
+                                            {
+                                                userId: data._id,
+                                                courseId: resourceId,
+                                            }
+                                        )}
                                         className={`w-full flex items-center justify-center space-x-2 py-3 px-4 rounded-xl font-semibold transition-all ${isBookmarked
-                                            ? 'bg-yellow-100 text-yellow-800 border-2 border-yellow-300'
-                                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                            ? 'bg-yellow-100 text-yellow-800 border-2 border-yellow-300 cursor-not-allowed '
+                                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200 cursor-pointer'
                                             }`}
+                                        disabled={!isAddedToList}
                                     >
                                         {isBookmarked ? <BookmarkCheck className="w-5 h-5" /> : <Bookmark className="w-5 h-5" />}
                                         <span>{isBookmarked ? 'Bookmarked' : 'Bookmark Course'}</span>
@@ -345,10 +376,11 @@ const ResourceDetailView = () => {
                                             userId: data._id
                                         })
                                         }
-                                        className={`w-full flex items-center justify-center space-x-2 py-3 px-4 rounded-xl font-semibold transition-all ${isAddedToList
-                                            ? 'bg-green-600 text-white'
-                                            : 'bg-brand-navy text-white hover:bg-dark-blue'
+                                        className={`w-full flex items-center  justify-center space-x-2 py-3 px-4 rounded-xl font-semibold transition-all ${isAddedToList
+                                            ? 'bg-green-600 text-white cursor-not-allowed'
+                                            : 'bg-brand-navy text-white hover:bg-dark-blue cursor-pointer'
                                             }`}
+                                        disabled={isAddedToList}
                                     >
                                         {isAddedToList ? <Check className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
                                         <span>{isAddedToList ? 'Enrolled' : 'Enroll Now'}</span>
@@ -374,9 +406,9 @@ const ResourceDetailView = () => {
                                 <div className="space-y-3">
                                     <div className="flex justify-between">
                                         <span className="text-gray-600">Instructor:</span>
-                                        <Link to={`/mentor/${resource.mentorId}`} className="">
+                                        <Link to={`/mentor/${resource.mentorId}`} className="flex items-center gap-2">
+                                            <User className="inline-block w-6 h-6 ml-1 text-brand-blue " />
                                             <span className="font-semibold">{resource.mentorname}</span>
-                                            <Eye className="inline-block w-6 h-6 ml-1 text-brand-blue " />
                                         </Link>
                                     </div>
 
