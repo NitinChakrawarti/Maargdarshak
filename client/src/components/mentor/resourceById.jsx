@@ -22,9 +22,9 @@ import Layout from "../../layout/auth/layout";
 import { Link, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { EnrollInCourse, GetResourceById } from "../../api/index";
-import dayjs from "dayjs";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
+import dayjs from "dayjs";
 
 const ResourceDetailView = () => {
 
