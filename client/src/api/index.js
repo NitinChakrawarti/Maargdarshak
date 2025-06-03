@@ -141,6 +141,17 @@ export const GetMentorDetails = async () => {
   }
 }
 
+export const GetMentorById = async (mentorId) => {
+  try {
+    const response = await instance.get(`/mentor/get-mentor/${mentorId}`, {
+      withCredentials: true,
+    });
+    return response;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
 
 export const AddResource = async (data) => {
   try {

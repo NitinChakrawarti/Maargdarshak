@@ -139,6 +139,20 @@ class mentorController {
         return ResponseHandler(statusCodeUtility.Success, "Mentor updated successfully", updateMentor, response);
     }
 
+    async getMentorById(request, response, next) {
+        const { id } = request.params;
+        if (!id) {
+            return next(new APIError(statusCodeUtility.BadRequest, "Mentor ID is required"));
+        }
+
+        const mentor = await Mentorservice.getMentorById(id);
+
+        if (!mentor) {
+            return next(new APIError(statusCodeUtility.NotFound, "Mentor not found"));
+        }
+
+        return ResponseHandler(statusCodeUtility.Success, "Mentor fetched successfully", mentor, response);
+    }
 
 }
 
