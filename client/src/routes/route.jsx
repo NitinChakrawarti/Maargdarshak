@@ -16,6 +16,7 @@ import Addresources from "../screens/mentor/addresources";
 import Explore from "../screens/user/explore";
 import ResourceDetailView from "../components/mentor/resourceById";
 import ResourcePage from "../screens/user/resourcePage";
+import MentorProfile from "../screens/user/mentorProfile";
 
 export const AllRoutes = () => {
   return (
@@ -90,6 +91,7 @@ export const AllRoutes = () => {
             </Protectedroute>
           }
         />
+        {/* ------------------------------ user dashboard routes ------------------------------ */}
         <Route path="/user">
           <Route
             path=""
@@ -127,8 +129,11 @@ export const AllRoutes = () => {
           </Route>
         </Route>
 
-
-
+        <Route path="/mentor/:mentorId"
+          element={
+            <MentorProfile />
+          }
+        />
         {/* ------------------------------ mentor dashboard routes ------------------------------ */}
         <Route path="/mentor">
           <Route

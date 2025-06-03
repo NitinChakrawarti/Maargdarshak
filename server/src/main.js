@@ -8,6 +8,7 @@ import express from "express";
 
 // ------------------ Importing main route from routes ------------------ //
 import mainRoutes from './routes/main.route.js'
+import { setupGraphQL } from './graphql/index.js';
 
 dotenv.config();
 const app = express();
@@ -34,6 +35,8 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+
+setupGraphQL(app);
 
 // ------------------ middleware for static files ------------------ //
 const __filename = fileURLToPath(import.meta.url);

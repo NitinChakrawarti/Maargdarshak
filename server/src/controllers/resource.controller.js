@@ -15,7 +15,7 @@ class Resources {
             resources,
             res
         );
-    } 
+    }
 
     async addResource(req, res) {
 
@@ -24,8 +24,8 @@ class Resources {
         }
 
         const newPath = FileRename(req.file);
-        const { title, description, domain, rating, reviews, resource, mentorId } = req.body;
-        const resourceData = await resourceService.addResource({ title, description, domain, rating, reviews, resource, mentorId, banner: newPath });
+        const { title, description, domain, rating, reviews, resource, mentorId , mentorname} = req.body;
+        const resourceData = await resourceService.addResource({ title, description, domain, rating, reviews, resource, mentorId, mentorname, banner: newPath });
 
         if (resourceData) {
             return ResponseHandler(
@@ -60,7 +60,7 @@ class Resources {
     async updateResource(req, res) {
         const { id } = req.params;
         const { title, description, domain, rating, reviews, resource, mentorId } = req.body;
-        const resourceData = await resourceService.updateResource(id, { title, description, domain, rating, reviews, resource, mentorId });
+        const resourceData = await resourceService.updateResource(id, { title, description, domain, rating, reviews, resource, mentorId, mentorname, studentsEnrolled, });
 
         if (resourceData) {
             return ResponseHandler(

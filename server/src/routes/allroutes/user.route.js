@@ -8,5 +8,6 @@ const router = express.Router();
 
 router.route('/register-user').post(asyncHandler(userController.createUser));
 router.route('/login-user').post(asyncHandler(userController.loginUser));    
+router.route('/add-course').post(asyncHandler(userController.addCourse));
 
 export default router;

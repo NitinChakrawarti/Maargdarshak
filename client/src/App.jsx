@@ -5,6 +5,8 @@ import { store, persistor } from './redux/store';
 import { VerifyToken } from "./api";
 import { useEffect } from "react";
 import { setAuth, setError } from './redux/features/authSlice';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -26,6 +28,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
+        <ToastContainer position="top-right" autoClose={2000} />
         <AllRoutes />
       </PersistGate>
     </Provider>

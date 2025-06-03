@@ -52,7 +52,21 @@ const userSchema = new mongoose.Schema(
         savedItems: {
             type: Array,
             default: []
-        }
+        },
+        courses: {
+            type: Array,
+            default: [
+                {
+                    courseName: "",
+                    description: "",
+                    courseId: {
+                        type: mongoose.Schema.Types.ObjectId,
+                        ref: 'Courses',
+                        unique: true
+                    }
+                }
+            ]
+        },
     },
     { timestamps: true }
 )
