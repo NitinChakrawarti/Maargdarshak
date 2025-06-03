@@ -39,9 +39,26 @@ const resourceSchema = new mongoose.Schema(
         mentorId:{
             type:mongoose.Schema.Types.ObjectId,
             ref:'Mentors'
-        }
+        },
+        mentorname:{
+            type:String,
+            required: [true, "Mentor name is required"],
+            trim: true,
+        },
+        studentsEnrolled: {
+            type: Number,
+            default: 0,
+        },
+    },{
+        timestamps: true,
     }
 );
 const Resource = mongoose.model('Resource', resourceSchema);
 
 export default Resource;
+
+
+
+
+
+// Mentor name, students enrolled, 

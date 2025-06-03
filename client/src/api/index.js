@@ -178,3 +178,15 @@ export const GetResourceById = async (resourceId) => {
     return error.response.data;
   }
 }
+
+
+export const EnrollInCourse = async (data) => {
+  try {
+    const response = await instance.post(`/user/add-course`, { ...data }, {
+      withCredentials: true,
+    });
+    return response;
+  } catch (error) {
+    return error.response.data;
+  }
+}

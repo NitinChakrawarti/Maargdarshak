@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Plus, X, Upload, Star, FileText, Globe, Image, ExternalLink } from 'lucide-react';
 import { AddResource } from '../../api';
+import { useSelector } from 'react-redux';
 
 
 const TextInputWithLabel = ({
@@ -13,6 +14,7 @@ const TextInputWithLabel = ({
     maxLength = 50,
     error = ''
 }) => {
+
     return (
         <div className="mb-4">
             <label className="block text-sm font-medium text-[#1a3a6c] mb-2">
@@ -26,8 +28,8 @@ const TextInputWithLabel = ({
                 maxLength={maxLength}
                 placeholder={placeholder}
                 className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0ea5e9]/50 transition-all ${error
-                        ? 'border-red-300 bg-red-50'
-                        : 'border-[#b5d5e5]/50 bg-white/70 focus:border-[#0ea5e9]'
+                    ? 'border-red-300 bg-red-50'
+                    : 'border-[#b5d5e5]/50 bg-white/70 focus:border-[#0ea5e9]'
                     }`}
             />
             {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
@@ -39,13 +41,17 @@ const TextInputWithLabel = ({
 
 
 const ResourceForm = ({ onSubmit, isLoading = false }) => {
+    const { data: mentor } = useSelector((state) => state.auth);
+
     const [formData, setFormData] = useState({
         title: '',
         description: '',
         domain: [],
         rating: 5,
         banner: '',
-        resource: []
+        resource: [],
+        mentorId: mentor._id || '',
+        mentorname: mentor.name || ''
     });
 
     const [newDomain, setNewDomain] = useState('');
@@ -56,6 +62,7 @@ const ResourceForm = ({ onSubmit, isLoading = false }) => {
         file: null, // For documents
     });
     const [errors, setErrors] = useState({});
+
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -143,22 +150,21 @@ const ResourceForm = ({ onSubmit, isLoading = false }) => {
             formDataToSend.append('rating', formData.rating);
             formDataToSend.append('domain', JSON.stringify(formData.domain));
             formDataToSend.append('resource', JSON.stringify(formData.resource));
-            formDataToSend.append('mentorId', localStorage.getItem('mentorId') || ''); // Assuming mentorId is stored in localStorage
+            formDataToSend.append('mentorId', mentor._id || '');
             if (formData.banner) {
-                console.log("Appending banner file:", formData.banner);
                 formDataToSend.append('banner', formData.banner);
             }
-
+            formDataToSend.append('mentorname', mentor.name || '');
             const response = await AddResource(formData);
             if (response.status === 200) {
                 onSubmit();
                 setFormData({
-                title: '',
-                description: '',
-                domain: [],
-                rating: 5,
-                banner: '',
-                resource: []
+                    title: '',
+                    description: '',
+                    domain: [],
+                    rating: 5,
+                    banner: '',
+                    resource: []
                 });
                 setNewDomain('');
                 setNewResource({ type: 'link', title: '', url: '' });

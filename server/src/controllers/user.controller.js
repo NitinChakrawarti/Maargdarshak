@@ -5,6 +5,7 @@ import statusCodeUtility from "../utils/statusCodeUtility.js";
 import ResponseHandler from "../utils/APIResponse.js";
 import Otp from "../utils/generateotp.js";
 import authService from "../services/auth.service.js";
+import User from "../models/user.model.js";
 
 class UserController {
 
@@ -84,6 +85,24 @@ class UserController {
                 token: "Token set in HTTP-only cookie",
                 userData: userDatanew
             },
+            response
+        );
+    }
+
+    // ----------------- Add Course -----------------
+
+    async addCourse(request, response) {
+        if (!request.body) {
+            return new APIError(statusCodeUtility.BadRequest, "No data Provided");
+        }
+
+        const { courseName, description, courseId , userId} = request.body;
+        const courseData = await userService.addCourse({ courseName, description, courseId, userId });
+
+        return ResponseHandler(
+            statusCodeUtility.Success,
+            "Course added successfully",
+            courseData,
             response
         );
     }

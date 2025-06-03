@@ -54,6 +54,25 @@ class UserService {
         }
         return user;
     }
+
+    // ----------------- 3. add course ----------------- //
+    async addCourse(data) {
+        const {courseName, description, courseId, userId} = data;
+        const response = await User.findByIdAndUpdate(
+            userId,
+            {
+                $push: {
+                    courses: {
+                        courseName,
+                        description,
+                        courseId
+                    }
+                }
+            },
+            { new: true }
+        );
+        return response;
+    }
 }
 
 export default new UserService();

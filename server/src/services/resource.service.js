@@ -13,7 +13,7 @@ class ResourceService {
             return new APIError(statusCodeUtility.BadRequest, "NO data Provided");
         }
 
-        const { title, description, domain, rating, reviews, resource, mentorId, banner } = resourceData;
+        const { title, description, domain, rating, reviews, resource, banner,mentorname,studentsEnrolled, mentorId} = resourceData;
         const new_resource = await Resource.create({
             title,
             description,
@@ -22,7 +22,9 @@ class ResourceService {
             reviews,
             resource,
             mentorId,
-            banner
+            banner,
+            mentorname,
+            studentsEnrolled: studentsEnrolled || 0
         });
         return new_resource;
     }
@@ -41,7 +43,9 @@ class ResourceService {
             rating,
             reviews,
             resource,
-            mentorId
+            mentorId,
+            mentorname: resourceData.mentorname,
+            studentsEnrolled: resourceData.studentsEnrolled || 0
         }, { new: true });
         return updatedResource;
     }
