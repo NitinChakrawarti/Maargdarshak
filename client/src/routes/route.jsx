@@ -14,7 +14,7 @@ import Mentorblog from "../screens/mentor/blog";
 import Learners from "../screens/mentor/learners";
 import Addresources from "../screens/mentor/addresources";
 import Explore from "../screens/user/explore";
-import ResourceDetailView from "../components/mentor/resourceById";
+import ResourceDetailView from "../components/resourceById";
 import ResourcePage from "../screens/user/resourcePage";
 import MentorProfile from "../screens/user/mentorProfile";
 

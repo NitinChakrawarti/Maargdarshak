@@ -1,6 +1,5 @@
 import Layout from '../../layout/auth/layout';
 import ResourceHeader from '../../components/mentor/resourceheader';
-import ResourcesGrid from '../../components/mentor/resourcegrid';
 
 const MentorResources = () => {
   return (
@@ -9,7 +8,9 @@ const MentorResources = () => {
         <div className='flex flex-col gap-2'>
           <ResourceHeader />
           <div className="bg-white rounded-lg shadow-sm p-6">
-            <ResourcesGrid />
+            {/* <ResourcesGrid /> */}
+
+            
           </div>
         </div>
       </div>

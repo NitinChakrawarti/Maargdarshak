@@ -96,13 +96,28 @@ class UserController {
             return new APIError(statusCodeUtility.BadRequest, "No data Provided");
         }
 
-        const { courseName, description, courseId , userId} = request.body;
+        const { courseName, description, courseId, userId } = request.body;
         const courseData = await userService.addCourse({ courseName, description, courseId, userId });
 
         return ResponseHandler(
             statusCodeUtility.Success,
             "Course added successfully",
             courseData,
+            response
+        );
+    }
+
+    async addFavorite(request, response) {
+        if (!request.body) {
+            return new APIError(statusCodeUtility.BadRequest, "No data Provided");
+        }
+        const { courseId, userId } = request.body;
+        const favoriteData = await userService.addfavorite({ courseId, userId });
+
+        return ResponseHandler(
+            statusCodeUtility.Success,
+            "Course added to favorites successfully",
+            favoriteData,
             response
         );
     }
