@@ -24,9 +24,11 @@ const MentorProfile = () => {
     const location = useLocation();
     const mentorId = location.pathname.split('/').pop();
     const { data } = useSelector((state) => state.auth);
+    const [loading, setLoading] = React.useState(false);
 
     const handleChat = async (mentorId) => {
         try {
+            setLoading(true);
             const response = await IntializeChat({ userId1: mentorId, userId2: data._id });
             if (response.status === 200) {
                 navigate("/chat");
@@ -35,6 +37,8 @@ const MentorProfile = () => {
             }
         } catch (error) {
             console.error("Chat initiation failed", error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -103,8 +107,8 @@ const MentorProfile = () => {
                                 className="bg-white text-brand-navy hover:bg-blue-50 px-8 py-3 rounded-full font-semibold shadow-lg transition-all duration-300 flex items-center gap-2 hover:scale-102 cursor-pointer"
                             >
                                 <MessageCircle className="w-5 h-5" />
-                                Chat Now
-                            </button>
+                                {loading ? 'Loading...' : 'Chat Now'}
+                             </button>
                         </div>
                     </div>
                 </div>
@@ -233,7 +237,9 @@ const MentorProfile = () => {
                             onClick={() => handleChat(mentorData._id)}
                             className="bg-gradient-to-r from-light-blue to-brand-navy text-white px-12 py-4 rounded-full font-semibold text-lg hover:from-brand-navy hover:to-light-blue transition-colors duration-700 cursor-pointer shadow-lg hover:shadow-xl transform hover:scale-101 hover:duration-1000"
                         >
-                            Start Your Mentorship Journey
+                          {
+                            loading ? 'Loading...' : 'Start Your Mentorship Journey'
+                          }
                         </button>
                         <p className="text-gray-600 text-sm mt-2">
                             Connect with {mentorData?.name} and get expert guidance in {mentorData?.domains.join(', ')}

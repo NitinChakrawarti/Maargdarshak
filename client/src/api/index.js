@@ -212,3 +212,15 @@ export const AddToFavorites = async (data) => {
     return error.response.data;
   }
 }
+
+export const FetchFavorites = async (data) => {
+
+  try {
+    const response = await instance.post(`/user/fetch-favorites`, { ids: data }, {
+      withCredentials: true,
+    });
+    return response;
+  } catch (error) {
+    return error.response.data;
+  }
+}

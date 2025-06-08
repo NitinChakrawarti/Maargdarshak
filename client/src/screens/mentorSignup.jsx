@@ -9,6 +9,7 @@ import FileUpload from "../components/parts/fileupload";
 import Enterotp from "../components/enterotp";
 import { setAuth } from "../redux/features/authSlice";
 import { useDispatch } from "react-redux";
+import { setMentor } from "../redux/features/mentorSlice";
 
 const ExtendedSignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -113,7 +114,13 @@ const ExtendedSignUp = () => {
       });
     }
     if (response.status === 200) {
-      dispatch(setAuth({ role: response.data.data.mentorData.role, data: response.data.data.mentorData }));
+      dispatch(setAuth({ role: response.data.data.mentorData.role, data: {
+         _id: response.data.data.mentorData._id,
+        email: response.data.data.mentorData.email,
+        name: response.data.data.mentorData.name,
+        isverified: response.data.data.mentorData.isverified,
+      } }));
+      dispatch(setMentor(response.data.data.mentorData));
       navigate("/user");
       console.log("Login Success");
     } else {

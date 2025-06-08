@@ -4,6 +4,9 @@ import { Bell, User, LogOut, Settings, ChevronDown, Menu } from "lucide-react";
 import { LogOutFunc } from "../api"; // Adjust the import path as necessary
 import { useDispatch, useSelector } from "react-redux";
 import { setAuth } from "../redux/features/authSlice";
+import { setUser } from "../redux/features/userSlice";
+import { setMentor } from "../redux/features/mentorSlice";
+
 
 const Header = ({ toggleSidebar }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -29,6 +32,8 @@ const Header = ({ toggleSidebar }) => {
     const logout = await LogOutFunc({ role: role });
     if (logout.status === 200) {
       dispatch(setAuth({ role: null, data: null }));
+      dispatch(setUser({ user: null, isverified: false, savedItems: [] }));
+      dispatch(setMentor({ mentor: null, isverified: false, savedItems: [] }));
       return navigate("/");
     }
     else {

@@ -17,6 +17,7 @@ import Explore from "../screens/user/explore";
 import ResourceDetailView from "../components/resourceById";
 import ResourcePage from "../screens/user/resourcePage";
 import MentorProfile from "../screens/user/mentorProfile";
+import BookMark from "../screens/user/bookMark";
 
 export const AllRoutes = () => {
   return (
@@ -91,6 +92,7 @@ export const AllRoutes = () => {
             </Protectedroute>
           }
         />
+
         {/* ------------------------------ user dashboard routes ------------------------------ */}
         <Route path="/user">
           <Route
@@ -127,6 +129,27 @@ export const AllRoutes = () => {
               }
             />
           </Route>
+
+          <Route
+            path="bookmarks">
+            <Route
+              index
+              element={
+                <Protectedroute>
+                  <BookMark />
+                </Protectedroute>
+              }
+            />
+            <Route
+              path=":resourceId"
+              element={
+                <Protectedroute>
+                  <ResourceDetailView />
+                </Protectedroute>
+              }
+            />
+          </Route>
+
         </Route>
 
         <Route path="/mentor/:mentorId"

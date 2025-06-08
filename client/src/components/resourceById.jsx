@@ -25,8 +25,10 @@ import { Link, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { AddToFavorites, EnrollInCourse, GetResourceById } from "../api/index";
 import { toast } from "react-toastify";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import dayjs from "dayjs";
+import { setUser } from "../redux/features/userSlice";
+
 
 const ResourceDetailView = () => {
 
@@ -41,6 +43,7 @@ const ResourceDetailView = () => {
         }));
     };
 
+
     const [resource, setResource] = useState({
         resource: [],
         domain: [],
@@ -51,7 +54,45 @@ const ResourceDetailView = () => {
 
     const location = useLocation();
     const resourceId = location.pathname.split('/').pop();
-    const { data } = useSelector((state) => state.auth);
+    const { user } = useSelector((state) => state.user);
+
+    const dispatch = useDispatch();
+    const addCourse = async (data) => {
+        const response = await EnrollInCourse(data);
+        if (response.status === 200) {
+            toast.success("Enrolled successfully!");
+            dispatch(setUser({
+                ...user,
+                courses: [...user.courses, {
+                    courseId: resourceId,
+                    courseName: resource.title,
+                    description: resource.description
+                }]
+            }));
+            setIsAddedToList(true);
+        } else {
+            toast.error("Failed, Try again.");
+        }
+    }
+
+    const addBookmark = async (data) => {
+        const response = await AddToFavorites(data);
+        if (response.status === 200) {
+            toast.success(response.data.message);
+            dispatch(setUser({
+                ...user,
+                savedItems: response.data.data.favorites
+            }));
+            if (response.data.data.removed) {
+                setIsBookmarked(false);
+            } else {
+                setIsBookmarked(true);
+            }
+        }
+        else {
+            toast.error("Failed, Try again.");
+        }
+    }
 
     const fetchResource = async (resourceId) => {
         const response = await GetResourceById(resourceId);
@@ -78,19 +119,19 @@ const ResourceDetailView = () => {
         if (resourceId) {
             fetchResource(resourceId);
         }
-        const usercourse = data?.courses || [];
+        const usercourse = user?.courses || [];
         const isEnrolled = usercourse.some(course => course.courseId === resourceId);
         if (isEnrolled) {
             setIsAddedToList(true);
         }
 
-        const userFavorites = data?.savedItems || [];
+        const userFavorites = user?.savedItems || [];
         const isBookmarked = userFavorites.some(favorite => favorite === resourceId);
 
         if (isBookmarked) {
             setIsBookmarked(true);
         }
-    }, [resourceId]);
+    }, [resourceId, user]);
 
     const getProgressIcon = (resourceId) => {
         const status = courseProgress[resourceId] || 'not-started';
@@ -137,26 +178,10 @@ const ResourceDetailView = () => {
         );
     };
 
-    const addCourse = async (data) => {
-        const response = await EnrollInCourse(data);
-        if (response.status === 200) {
-            toast.success("Enrolled successfully!");
-            setIsAddedToList(true);
-        } else {
-            toast.error("Failed, Try again.");
-        }
-    }
 
-    const addBookmark = async (data) => {
-        const response = await AddToFavorites(data);
-        if (response.status === 200) {
-            toast.success("Bookmarked successfully!");
-            setIsBookmarked(true);
-        }
-        else {
-            toast.error("Failed, Try again.");
-        }
-    }
+
+    const backurl = location?.pathname.split('/').slice(0, -1).join('/') || '/';
+
 
     return (
         <Layout>
@@ -175,7 +200,7 @@ const ResourceDetailView = () => {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
 
-                    <Link to='/user/resources' className="absolute top-4 left-4 flex justify-center bg-bg items-center text-brand-navy px-4 py-2 rounded-lg shadow-lg  transition-colors">
+                    <Link to={backurl} className="absolute top-4 left-4 flex justify-center bg-bg items-center text-brand-navy px-4 py-2 rounded-lg shadow-lg  transition-colors">
                         <ChevronLeft className="w-5 h-5 inline-block mr-2" />
                         Go Back
                     </Link>
@@ -354,18 +379,18 @@ const ResourceDetailView = () => {
                                     <button
                                         onClick={() => addBookmark(
                                             {
-                                                userId: data._id,
+                                                userId: user._id,
                                                 courseId: resourceId,
                                             }
                                         )}
-                                        className={`w-full flex items-center justify-center space-x-2 py-3 px-4 rounded-xl font-semibold transition-all ${isBookmarked
-                                            ? 'bg-yellow-100 text-yellow-800 border-2 border-yellow-300 cursor-not-allowed '
-                                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200 cursor-pointer'
+                                        title={isBookmarked ? "Remove Favourite" : "Add to Favourite"}
+                                        className={`w-full flex items-center justify-center space-x-2 py-3 px-4 rounded-xl  cursor-pointer font-semibold transition-all ${isBookmarked
+                                            ? 'bg-yellow-100 text-yellow-800 border-2 border-yellow-300  '
+                                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                                             }`}
-                                        disabled={!isAddedToList}
                                     >
                                         {isBookmarked ? <BookmarkCheck className="w-5 h-5" /> : <Bookmark className="w-5 h-5" />}
-                                        <span>{isBookmarked ? 'Bookmarked' : 'Bookmark Course'}</span>
+                                        <span>{isBookmarked ? 'Added to Favorites' : 'Add to Favorites'}</span>
                                     </button>
 
                                     <button
@@ -373,7 +398,7 @@ const ResourceDetailView = () => {
                                             courseId: resourceId,
                                             courseName: resource.title,
                                             description: resource.description,
-                                            userId: data._id
+                                            userId: user._id
                                         })
                                         }
                                         className={`w-full flex items-center  justify-center space-x-2 py-3 px-4 rounded-xl font-semibold transition-all ${isAddedToList
