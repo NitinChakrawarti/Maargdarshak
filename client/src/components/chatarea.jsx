@@ -7,6 +7,7 @@ const ChatArea = React.memo(({ selectedUser, isMobile, handleBackToList }) => {
     const [chatMessages, setChatMessages] = useState([]);
     const [newMessage, setNewMessage] = useState("");
     const [status, setStatus] = useState("Disconnected");
+    const inputRef = useRef(null);
 
     const ws = useRef(null);
     const messageEndRef = useRef(null);
@@ -222,6 +223,8 @@ const ChatArea = React.memo(({ selectedUser, isMobile, handleBackToList }) => {
                         onChange={(e) => setNewMessage(e.target.value)}
                         placeholder="Type your message..."
                         className="flex-1 px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-800 placeholder-slate-400"
+                        ref={inputRef}
+                        autoFocus
                     />
                     <button
                         type="submit"

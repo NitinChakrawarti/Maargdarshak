@@ -9,6 +9,7 @@ import { Login, Signup, VerifyOtp } from "../api";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setAuth } from "../redux/features/authSlice";
+import { setUser } from "../redux/features/userSlice";
 
 const SignUp = () => {
   const [isLogin, setIsLogin] = useState(false);
@@ -96,7 +97,13 @@ const SignUp = () => {
       });
     }
     if (response.status === 200) {
-      dispatch(setAuth({ role: response.data.data.userData.role, data: response.data.data.userData }));
+      dispatch(setAuth({ role: response.data.data.userData.role, data: {
+        _id: response.data.data.userData._id,
+        email: response.data.data.userData.email,
+        name: response.data.data.userData.name,
+        isverified: response.data.data.userData.isverified,
+      } }));
+      dispatch(setUser(response.data.data.userData));
       navigate("/user");
       console.log("Login Success");
     } else {

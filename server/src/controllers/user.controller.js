@@ -116,12 +116,34 @@ class UserController {
 
         return ResponseHandler(
             statusCodeUtility.Success,
-            "Course added to favorites successfully",
+            favoriteData.removed ? "Favorite removed successfully" : "Favorite added successfully",
             favoriteData,
             response
         );
     }
 
+    async fetchFavorites(request, response) {
+        try {
+            if (!request.body.ids) {
+                return new APIError(statusCodeUtility.BadRequest, "No saved items provided");
+            }
+            const { ids } = request.body;
+            
+            const favoritesData = await userService.fetchFavorites({ids});
+            if (!favoritesData || favoritesData.length === 0) {
+                return new APIError(statusCodeUtility.NotFound, "No favorites found for the provided IDs");
+            }
+            return ResponseHandler(
+                statusCodeUtility.Success,
+                "Fetched Bookmarks Successfully",
+                favoritesData,
+                response
+            );
+        }
+        catch (error) {
+            return new APIError(statusCodeUtility.InternalServerError, "Error fetching favorites", error);
+        }
+    }
 }
 
 export default new UserController();

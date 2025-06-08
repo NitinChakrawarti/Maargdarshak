@@ -2,6 +2,7 @@ import User from "../models/user.model.js";
 import APIError from "../utils/APIError.js";
 import bcrypt from 'bcryptjs';
 import statusCodeUtility from "../utils/statusCodeUtility.js";
+import Resource from "../models/resource.model.js";
 
 const salt = bcrypt.genSaltSync(10);
 
@@ -78,7 +79,16 @@ class UserService {
         const { courseId, userId } = data;
         const existingFavorite = await User.findOne({ _id: userId, savedItems: courseId });
         if (existingFavorite) {
-            throw new APIError(statusCodeUtility.Conflict, "Course already exists in favorites");
+            const response = await User.findByIdAndUpdate(
+                userId,
+                {
+                    $pull: {
+                        savedItems: courseId
+                    }
+                },
+                { new: true }
+            );
+            return { removed: true, favorites: response.savedItems, message: "Course removed from favorites successfully" };
         }
         const response = await User.findByIdAndUpdate(
             userId,
@@ -88,6 +98,23 @@ class UserService {
                 }
             },
             { new: true }
+        );
+        return { added: true, favorites: response.savedItems, message: "Course added to favorites successfully" };
+    }
+
+    async fetchFavorites(data) {
+        const { ids } = data;
+
+        if (!ids || !Array.isArray(ids) || ids.length === 0) {
+            throw new APIError(statusCodeUtility.BadRequest, "No favorite IDs provided");
+        }
+        const response = await Resource.find({ _id: { $in: ids } },
+            {
+                _id: 1,
+                title: 1,
+                description: 1,
+                domain: 1,
+            }
         );
         return response;
     }
