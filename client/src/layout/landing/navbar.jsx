@@ -52,7 +52,7 @@ const Navbar = () => {
               whileTap={{ scale: 0.98 }}
             >
               <Link to="/signup" onClick={() => window.scrollTo(0, 0)}>
-                <button className="px-6 py-2 bg-gradient-to-r from-brand-blue to-brand-navy text-white rounded-lg shadow-md hover:shadow-lg transition duration-300">
+                <button className="px-6 py-2 bg-gradient-to-r from-brand-blue to-brand-navy text-white rounded-lg shadow-md hover:shadow-lg transition duration-300 cursor-pointer">
                   Sign Up
                 </button>
               </Link>
@@ -110,7 +110,7 @@ const Navbar = () => {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.98 }}
-                  className="mt-4 md:mt-0 px-6 py-2 bg-gradient-to-r from-brand-blue to-brand-navy text-white rounded-lg shadow-md hover:shadow-lg font-semibold transition duration-300"
+                  className="mt-4 md:mt-0 px-6 py-2 bg-gradient-to-r from-brand-blue to-brand-navy text-white rounded-lg shadow-md hover:shadow-lg font-semibold transition duration-300 cursor-pointer"
                   onClick={() => setIsOpen(false)}
                 >
                   Sign Up
