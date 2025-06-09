@@ -11,10 +11,13 @@ export const VerifyOtp = async (data) => {
   }
 };
 
-export const VerifyToken = async () => {
+export const VerifyToken = async ({ token }) => {
   try {
     const response = await instance.post("/auth/verify-token", {}, {
       withCredentials: true,
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
     });
     return response;
   } catch (error) {
@@ -217,6 +220,21 @@ export const FetchFavorites = async (data) => {
 
   try {
     const response = await instance.post(`/user/fetch-favorites`, { ids: data }, {
+      withCredentials: true,
+    });
+    return response;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
+
+export const verifyClerkToken = async (token) => {
+  try {
+    const response = await axios.post(`${import.meta.env.VITE_CLERK_URL}`, { token }, {
+      headers: {
+        'Authorization': `Bearer ${process.env.CLERK_PUBLISHABLE_KEY}`,
+      },
       withCredentials: true,
     });
     return response;

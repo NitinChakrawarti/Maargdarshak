@@ -24,7 +24,8 @@ class UserService {
                 email,
                 password: hashedPassword,
                 name,
-                isverified: false
+                isverified: false,
+                authType:"manual"
             });
             return new_user;
         }
@@ -56,6 +57,25 @@ class UserService {
         return user;
     }
 
+    
+    // ----------------- 2.5. user login with third party ----------------- //
+    async loginWithThirdParty(data) {
+        const { clerkId,email, name, profile, role, isVerified ,authType} = data;
+        const newUser = await User.create({
+            clerkId,
+            email,
+            name,
+            profile,
+            role,
+            isVerified,
+            authType
+        });
+        if (!newUser) {
+            throw new APIError(statusCodeUtility.InternalServerError, "Failed to create user with third party authentication");
+        }
+        return newUser;
+    }
+
     // ----------------- 3. add course ----------------- //
     async addCourse(data) {
         const { courseName, description, courseId, userId } = data;
@@ -85,11 +105,13 @@ class UserService {
                     $pull: {
                         savedItems: courseId
                     }
+
                 },
                 { new: true }
             );
             return { removed: true, favorites: response.savedItems, message: "Course removed from favorites successfully" };
         }
+
         const response = await User.findByIdAndUpdate(
             userId,
             {

@@ -36,7 +36,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-setupGraphQL(app);
+
+// setupGraphQL(app);
 
 // ------------------ middleware for static files ------------------ //
 const __filename = fileURLToPath(import.meta.url);
