@@ -324,11 +324,11 @@ const Home = () => {
               className="bg-white shadow-lg rounded-lg overflow-hidden mb-10 flex flex-col md:flex-row"
               variants={fadeIn}
             >
-              <div className="md:w-1/3 bg-brand-navy p-6 flex items-center justify-center">
+              <div className="md:w-1/3  p-6 flex items-center justify-center">
                 <img
                   src={member.image}
                   alt={member.name}
-                  className="w-48 h-48 rounded-full border-4 border-brand-orange object-cover"
+                  className="w-48 h-48 rounded-full border-4  object-cover"
                 />
               </div>
               <div className="md:w-2/3 p-8">
@@ -361,6 +361,8 @@ const Home = () => {
           </button>
         </motion.div>
       </motion.section> */}
+
+      
       <FAQ />
 
     </Layoutcomponent>

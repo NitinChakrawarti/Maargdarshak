@@ -30,6 +30,7 @@
 
 
 import React from "react";
+import { Link } from "react-router-dom";
 
 
 const Beginjourney = () => {
@@ -45,11 +46,12 @@ const Beginjourney = () => {
           </p>
         </div>
         <div className="lg:mt-0 mt-8">
-          <button 
-            className="bg-brand-orange hover:bg-brand-orange/90 text-bg font-bold px-8 py-4 text-2xl rounded-full"
+          <Link 
+            to="/signup"
+            className="bg-brand-orange hover:bg-brand-orange/90 text-bg font-bold px-6 py-3 text-xl rounded-2xl"
           >
             Join Now
-          </button>
+          </Link>
         </div>
       </div>
     </div>

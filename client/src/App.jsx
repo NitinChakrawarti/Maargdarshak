@@ -25,6 +25,20 @@ const App = () => {
     verifyToken();
   }, [dispatch]);
 
+  // Scroll to top on route change
+  useEffect(() => {
+    const handleRouteChange = () => {
+      window.scrollTo(0, 0);
+    };
+    // Add event listeners for route changes
+    window.addEventListener('popstate', handleRouteChange);
+    // Clean up event listener
+    return () => {
+      window.removeEventListener('popstate', handleRouteChange);
+    };
+  }, []);
+
+
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>

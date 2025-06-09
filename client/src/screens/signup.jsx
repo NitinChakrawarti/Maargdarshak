@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setAuth } from "../redux/features/authSlice";
 import { setUser } from "../redux/features/userSlice";
+import { Mail, UserIcon } from "lucide-react";
 
 const SignUp = () => {
   const [isLogin, setIsLogin] = useState(false);
@@ -97,12 +98,14 @@ const SignUp = () => {
       });
     }
     if (response.status === 200) {
-      dispatch(setAuth({ role: response.data.data.userData.role, data: {
-        _id: response.data.data.userData._id,
-        email: response.data.data.userData.email,
-        name: response.data.data.userData.name,
-        isverified: response.data.data.userData.isverified,
-      } }));
+      dispatch(setAuth({
+        role: response.data.data.userData.role, data: {
+          _id: response.data.data.userData._id,
+          email: response.data.data.userData.email,
+          name: response.data.data.userData.name,
+          isverified: response.data.data.userData.isverified,
+        }
+      }));
       dispatch(setUser(response.data.data.userData));
       navigate("/user");
       console.log("Login Success");
@@ -114,133 +117,137 @@ const SignUp = () => {
 
   return (
     <Layoutcomponent>
-      <div className=" flex max-w-7xl md:mx-auto pt-24 md:pt-24 justify-evenly ">
-        <div className="lg:w-[50%] lg:block hidden">
-          <img src={signup} alt="" />
-        </div>
-        {step != 1 ? (
-          <section className=" flex flex-col bg-white gap-10 pb-10 px-0 lg:w-[40%] w-[90%] md:w-[70%] md:px-10 lg:px-12 justify-center">
-            <div className="md:max-w-md bg-white rounded-lg shadow-lg p-6">
-              <h2 className="text-center text-3xl font-semibold text-gray-800 mb-6">
-                {step === 2 ? "Login to Your Account" : "Create an Account"}
-              </h2>
-
-              {/* Form */}
-              <form
-                className="space-y-4"
-                onSubmit={step === 0 ? signupreq : loginreq}
-              >
-                {/* Name Field (Visible only for Sign-Up) */}
-                {step === 0 && (
-                  <InputField
-                    label="Full Name"
-                    name="name"
-                    type="text"
-                    placeholder="John Doe"
-                    value={formData.name}
-                    onChange={handleChange}
-                  />
-                )}
-
-                {/* Email Field */}
-                <InputField
-                  label="Email"
-                  name="email"
-                  type="email"
-                  placeholder="contact@easydevs.tech"
-                  value={formData.email}
-                  onChange={handleChange}
-                />
-
-                {/* Password Field */}
-                <div className="relative">
-                  <InputField
-                    label="Password"
-                    name="password"
-                    type={showPassword ? "text" : "password"}
-                    placeholder="********"
-                    value={formData.password}
-                    onChange={handleChange}
-                  />
-                  <button
-                    type="button"
-                    onClick={togglePasswordVisibility}
-                    className="absolute inset-y-0 top-8 right-4 flex items-center text-gray-600 hover:text-gray-800"
-                  >
-                    {showPassword ? <FaEyeSlash /> : <FaEye />}
-                  </button>
-                </div>
-                {/* Submit Button */}
-                {!isloading && <Button
-                  type="submit"
-                  label={
-                    step === 2 ? "Login" : "Sign Up"
-                  }
-                />}
-                {
-                  isloading &&
-                  <Button
-                    label={
-                      'Please Wait...'
-                    }
-                    diabled={true}
-                    className="bg-gray-400 text-white cursor-not-allowed"
-                  />
-                }
-              </form>
-
-              {/* Toggle Form Link */}
-              <div className="mt-6 text-center">
-                <p className="text-gray-600">
-                  {step === 2
-                    ? "Don't have an account?"
-                    : "Already have an account?"}{" "}
-                  <span
-                    onClick={toggleForm}
-                    className="text-primary font-semibold cursor-pointer hover:underline"
-                  >
-                    {step === 2 ? "Sign Up" : "Login"}
-                  </span>
-                </p>
-              </div>
-            </div>
-          </section>
-        ) : (
-          <div className="flex justify-center items-center lg:pt-0 py-32">
-            <div>
-              <h1 className="font-bold text-brand-navy text-3xl pb-4">
-                {" "}
-                Enter OTP & Continue{" "}
-              </h1>
-              <p className="text-soft-gray text-center">
-                Please verify otp to complete <br /> signup process
-              </p>
-              <Enterotp setUserOtp={setUserOtp} />
-              <div className="flex gap-8">
-                <button
-                  onClick={() => setStep(0)}
-                  className="w-full py-3 hover:text-dark-blue bg-bg text-primary rounded-lg shadow-md font-bold text-xl  transition duration-300"
-                >
-                  Back
-                </button>
-                {
-                  !isloading ? <button
-                    onClick={VerifyOtpOnClick}
-                    className="w-full py-3 hover:bg-light-blue bg-primary text-bg rounded-lg shadow-md font-bold text-xl  transition duration-300"
-                  >
-                    Verify
-                  </button>
-                    :
-                    <button
-                      onClick={VerifyOtpOnClick}
-                      className="w-full py-3 hover:bg-light-blue bg-primary text-bg rounded-lg shadow-md font-bold text-xl  transition duration-300"
-                    >
-                      Verifying
-                    </button>}
-              </div>
-            </div>
+      <div className="flex flex-col max-w-7xl md:mx-auto pt-24 md:pt-24 mb-6 items-center justify-center gap-10 lg:flex-row">
+        <div className="flex bg-white pb-6 rounded-4xl shadow-lg flex-col gap-10 items-center lg:w-[35%] w-[90%] md:w-[70%] justify-center">
+          <div className="pl-6 lg:pl-12 mb-4 bg-brand-navy rounded-t-4xl rounded-b-[100%] w-full rounded-bl-[20%] pb-6">
+            <h1 className="text-2xl lg:text-3xl font-bold text-bg pt-4">
+              {
+                step === 0 ? "Sign Up" : step === 1 ? "Verify OTP" : "Login"
+              }
+            </h1>
           </div>
-        )}
+          {step != 1 ? (
+              <div className="md:max-w-md z-20  px-8 w-full">
+                {/* Form */}
+                <form
+                  className="space-y-4"
+                  onSubmit={step === 0 ? signupreq : loginreq}
+                >
+                  {/* Name Field (Visible only for Sign-Up) */}
+                  {step === 0 && (
+                    <InputField
+                      label="Full Name"
+                      name="name"
+                      type="text"
+                      placeholder="John Doe"
+                      value={formData.name}
+                      onChange={handleChange}
+                      required={step === 0 ? true : false}
+                      icon={UserIcon}
+                    />
+                  )}
+
+                  {/* Email Field */}
+                  <InputField
+                    label="Email"
+                    name="email"
+                    type="email"
+                    placeholder="contact@easydevs.tech"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    icon={Mail}
+                  />
+
+                  {/* Password Field */}
+                  <div className="relative">
+                    <InputField
+                      label="Password"
+                      name="password"
+                      type={showPassword ? "text" : "password"}
+                      placeholder="********"
+                      value={formData.password}
+                      onChange={handleChange}
+                    />
+                    <button
+                      type="button"
+                      onClick={togglePasswordVisibility}
+                      className="absolute inset-y-0 top-8 right-4 flex items-center text-gray-600 hover:text-gray-800"
+                    >
+                      {showPassword ? <FaEyeSlash /> : <FaEye />}
+                    </button>
+                  </div>
+                  {/* Submit Button */}
+                  {!isloading && <Button
+                    type="submit"
+                    label={
+                      step === 2 ? "Login" : "Sign Up"
+                    }
+                  />}
+                  {
+                    isloading &&
+                    <Button
+                      label={
+                        'Please Wait...'
+                      }
+                      diabled={true}
+                      className="bg-gray-400 text-white cursor-not-allowed"
+                    />
+                  }
+                </form>
+
+                {/* Toggle Form Link */}
+                <div className="mt-6 text-center">
+                  <p className="text-gray-600">
+                    {step === 2
+                      ? "Don't have an account?"
+                      : "Already have an account?"}{" "}
+                    <span
+                      onClick={toggleForm}
+                      className="text-primary font-semibold cursor-pointer hover:underline"
+                    >
+                      {step === 2 ? "Sign Up" : "Login"}
+                    </span>
+                  </p>
+                </div>
+              </div>
+          ) : (
+            <div className="flex justify-center items-center lg:pt-0 py-4">
+              <div>
+                {/* <h1 className="font-bold text-brand-navy text-3xl pb-4">
+                  {" "}
+                  Enter OTP & Continue{" "}
+                </h1> */}
+                <p className="text-soft-gray text-center">
+                  Please verify otp to complete <br /> signup process
+                </p>
+                <Enterotp setUserOtp={setUserOtp} />
+                <div className="flex mt-8 gap-8">
+                  <button
+                    onClick={() => setStep(0)}
+                    className="w-full py-3 hover:text-dark-blue bg-bg text-primary rounded-lg shadow-md font-bold text-lg  transition duration-300"
+                  >
+                    Back
+                  </button>
+                  {
+                    !isloading ? <button
+                      onClick={VerifyOtpOnClick}
+                      className="w-full py-3 hover:bg-light-blue bg-primary text-bg rounded-lg shadow-md font-bold text-lg  transition duration-300"
+                    >
+                      Verify
+                    </button>
+                      :
+                      <button
+                        onClick={VerifyOtpOnClick}
+                        className="w-full py-3 hover:bg-light-blue bg-primary text-bg rounded-lg shadow-md font-bold text-lg  transition duration-300"
+                      >
+                        Verifying
+                      </button>}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </Layoutcomponent>
   );

@@ -11,6 +11,7 @@ import {
   FaPeopleArrows,
 } from "react-icons/fa";
 import Layoutcomponent from "../layout/landing/layoutcomponent";
+import { Link } from "react-router-dom";
 
 const About = () => {
   const features = [
@@ -142,15 +143,15 @@ const About = () => {
 
           {/* Call to Action */}
           <div className="mt-16 lg:mt-28 bg-brand-navy text-bg py-12 px-6 lg:px-20 rounded-2xl text-center shadow-lg">
-            <h3 className="text-2xl lg:text-4xl font-bold mb-6">
+            <h3 className="text-2xl lg:text-4xl font-bold mb-4">
               Ready to Take the Next Step in Your Career?
             </h3>
-            <p className="text-lg lg:text-xl text-bg/90 mb-8 max-w-4xl mx-auto">
+            <p className="text-lg lg:text-md text-bg/70 mb-8 max-w-3xl mx-auto">
               Join मार्गदर्शक today and unlock the full potential of your career with personalized guidance and powerful tools.
             </p>
-            <button className="bg-bg text-primary px-8 py-3 lg:py-4 rounded-xl text-lg font-semibold hover:bg-bg/90 transition-colors">
+            <Link to="/signup" className="bg-bg text-primary px-8 py-3 lg:py-4 rounded-xl text-lg font-semibold hover:bg-bg/90 transition-colors">
               Get Started Now
-            </button>
+            </Link>
           </div>
         </div>
       </section>
