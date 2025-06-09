@@ -11,6 +11,7 @@ const userSchema = new mongoose.Schema(
         },
         profile: {
             type: String,
+            default: ""
         },
         email: {
             type: String,
@@ -21,13 +22,18 @@ const userSchema = new mongoose.Schema(
             match: [/\S+@\S+\.\S+/, "Please provide a valid email address"],
         },
         mobile: {
-            type: Number,
+            type: String,
             default: ""
         },
         password: {
             type: String,
-            required: [true, "Password is required"],
-            minlength: [8, "Password must be at least 8 characters long"],
+            default: null, // Required conditionally
+        },
+        clerkId: {
+            type: String,
+            default: null, // Present for OAuth users only
+            unique: true,
+            sparse: true // Allows null values
         },
         isverified: {
             type: Boolean,
@@ -37,40 +43,44 @@ const userSchema = new mongoose.Schema(
             type: Object,
             default: {
                 code: "",
-                expire_at: Date
-            }
+                expire_at: null,
+            },
         },
         role: {
             type: String,
             enum: ["user", "mentor", "admin"],
             default: "user",
         },
+        authType: {
+            type: String,
+            enum: ["manual", "oauth"],
+            default: "manual"
+        },
         domains: {
-            type: Array,
+            type: [String],
             default: [],
         },
         savedItems: {
-            type: Array,
-            default: []
+            type: [mongoose.Schema.Types.ObjectId],
+            ref: "SomeModel", // Replace with actual model name if needed
+            default: [],
         },
         courses: {
-            type: Array,
-            default: [
+            type: [
                 {
-                    courseName: "",
-                    description: "",
+                    courseName: String,
+                    description: String,
                     courseId: {
                         type: mongoose.Schema.Types.ObjectId,
-                        ref: 'Courses',
-                        unique: true
-                    }
-                }
-            ]
+                        ref: "Courses",
+                        unique: true,
+                    },
+                },
+            ],
+            default: [],
         },
     },
     { timestamps: true }
-)
+);
 
-const User = mongoose.model('User', userSchema);
-
-export default User;
+export default mongoose.model("User", userSchema);

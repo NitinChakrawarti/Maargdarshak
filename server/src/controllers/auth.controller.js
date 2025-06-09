@@ -7,6 +7,8 @@ import authService from "../services/auth.service.js";
 import User from "../models/user.model.js";
 import Mentor from "../models/mentor.model.js";
 import chatdetails from "../utils/chatdetails.js";
+import userService from "../services/user.service.js";
+import thirdPartyUser from "../utils/thirdPartyUser.js";
 
 class authController {
 
@@ -34,7 +36,36 @@ class authController {
     }
 
     async verifyToken(request, response) {
-        const token = request.cookies.userToken || request.cookies.mentorToken;
+        let token = request.cookies.userToken || request.cookies.mentorToken;
+        if (request.auth?.userId) {
+            const userDetails = await thirdPartyUser(request.auth.userId);
+            const userInDb = await User.findOne({
+                email: userDetails.email,
+            });
+            if (!userInDb) {
+                const userData = await userService.loginWithThirdParty({
+                    clerkId: userDetails.id,
+                    email: userDetails.email,
+                    name: userDetails.name,
+                    profile: userDetails.profileImage,
+                    role: userDetails.role,
+                    isVerified: userDetails.isVerified,
+                    authType: userDetails.authType,
+                });
+                return ResponseHandler(
+                    statusCodeUtility.Success,
+                    "User logged in successfully",
+                    userData,
+                    response,
+                );
+            }
+            return ResponseHandler(
+                statusCodeUtility.Success,
+                "User already exists",
+                userInDb,
+                response,
+            );
+        }
         if (!token) {
             return ResponseHandler(
                 statusCodeUtility.BadRequest,

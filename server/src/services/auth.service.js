@@ -26,6 +26,7 @@ class authService {
             return null; // Token is invalid or expired
         }
     }
+
 }
 
 export default new authService();
