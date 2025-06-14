@@ -95,13 +95,13 @@ const MentorChat = () => {
 
     return (
         <Layout>
-            <div className="flex h-[calc(100vh-64px)] bg-gray-50">
+            <div className="flex md:h-[calc(100vh)] h-[calc(100vh-64px)] bg-gray-50">
                 {/* Users List Sidebar */}
                 <div
                     className={`${showSidebar ? 'w-full md:w-80' : 'w-0'} 
                     transition-all duration-300 border-r bg-white shadow-md overflow-hidden`}
                 >
-                    <div className="p-4 border-b">
+                    <div className="py-5.5 px-4 border-b">
                         <div className="relative">
                             <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                 <Search className="w-5 h-5 text-gray-400" />
@@ -162,7 +162,7 @@ const MentorChat = () => {
                 </div>
 
                 {/* Chat Area */}
-                <div className={`${(!showSidebar || !isMobile) ? 'flex' : 'hidden'} md:flex flex-1 flex-col bg-white overflow-hidden`}>
+                <div className={`${(!showSidebar || !isMobile) ? 'flex' : 'hidden'}  md:flex flex-1 flex-col bg-white overflow-hidden`}>
                     {selectedUser ? (
                         <ChatArea
                             selectedUser={selectedUser}

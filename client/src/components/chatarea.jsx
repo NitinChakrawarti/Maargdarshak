@@ -140,7 +140,7 @@ const ChatArea = React.memo(({ selectedUser, isMobile, handleBackToList }) => {
     return (
         <div className="flex flex-col h-full bg-slate-50 rounded-lg overflow-hidden">
             {/* Header */}
-            <div className="p-4 border-b bg-white shadow-sm flex justify-between items-center">
+            <div className="p-5.5 border-b bg-white shadow-sm flex justify-between items-center">
                 <div className="flex items-center">
                     {isMobile && (
                         <button onClick={handleBackToList} className="mr-2 p-2 hover:bg-slate-100 rounded-full">
@@ -168,7 +168,7 @@ const ChatArea = React.memo(({ selectedUser, isMobile, handleBackToList }) => {
                     </div>
                 </div>
                 {!isMobile && (
-                    <button onClick={handleBackToList} className="p-2 hover:bg-slate-100 rounded-full">
+                    <button onClick={handleBackToList} className="p-2 cursor-pointer hover:bg-slate-100 rounded-full">
                         <X className="h-5 w-5" />
                     </button>
                 )}
@@ -229,9 +229,9 @@ const ChatArea = React.memo(({ selectedUser, isMobile, handleBackToList }) => {
                     <button
                         type="submit"
                         disabled={!newMessage.trim()}
-                        className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-full font-medium flex items-center gap-1"
+                        className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-full font-medium flex cursor-pointer items-center gap-1"
                     >
-                        <Send className="h-4 w-4" /> Send
+                        <Send className="h-4 w-4" />
                     </button>
                 </form>
             </div>

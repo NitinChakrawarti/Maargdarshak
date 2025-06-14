@@ -41,9 +41,8 @@ const Header = ({ toggleSidebar }) => {
     }
   };
 
-
   return (
-    <header className="bg-white shadow-sm h-16 flex items-center justify-between px-4 md:px-6 sticky top-0 z-30">
+    <header className="bg-white shadow-sm h-16 md:hidden flex items-center justify-between px-4 md:px-6 sticky top-0 z-30">
       <div className="flex items-center">
         {/* Mobile menu button */}
         <button

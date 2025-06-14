@@ -43,7 +43,7 @@ const AppContent = () => {
       }
     };
     verifyToken();
-  }, [dispatch, getToken]);
+  }, []);
 
   // Scroll to top on route change
   useEffect(() => {
