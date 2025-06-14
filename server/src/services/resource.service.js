@@ -13,14 +13,14 @@ class ResourceService {
             return new APIError(statusCodeUtility.BadRequest, "NO data Provided");
         }
 
-        const { title, description, domain, rating, reviews, resource, banner,mentorname,studentsEnrolled, mentorId} = resourceData;
+        const { title, description, domain, rating, reviews, modules, banner, mentorname, studentsEnrolled, mentorId } = resourceData;
         const new_resource = await Resource.create({
             title,
             description,
             domain,
             rating,
             reviews,
-            resource,
+            modules,
             mentorId,
             banner,
             mentorname,
@@ -35,14 +35,14 @@ class ResourceService {
     }
 
     async updateResource(id, resourceData) {
-        const { title, description, domain, rating, reviews, resource, mentorId } = resourceData;
+        const { title, description, domain, rating, reviews, modules, mentorId } = resourceData;
         const updatedResource = await Resource.findByIdAndUpdate(id, {
             title,
             description,
             domain,
             rating,
             reviews,
-            resource,
+            modules,
             mentorId,
             mentorname: resourceData.mentorname,
             studentsEnrolled: resourceData.studentsEnrolled || 0

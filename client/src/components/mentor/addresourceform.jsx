@@ -38,43 +38,97 @@ const TextInputWithLabel = ({
     );
 };
 
-
-
-const ResourceForm = ({ onSubmit, isLoading = false }) => {
+const ResourceForm = ({ onSubmit }) => {
     const { data: mentor } = useSelector((state) => state.auth);
-
-    const [formData, setFormData] = useState({
+    const [newDomain, setNewDomain] = useState('');
+    const [errors, setErrors] = useState({});
+    const [loading, setLoading] = useState(false);
+    const [resource, setResource] = useState({
         title: '',
         description: '',
         domain: [],
         rating: 5,
         banner: '',
-        resource: [],
-        mentorId: mentor._id || '',
-        mentorname: mentor.name || ''
+        modules: [],
+        mentorId: mentor._id,
+        mentorname: mentor.name
     });
 
-    const [newDomain, setNewDomain] = useState('');
-    const [newResource, setNewResource] = useState({
-        type: "link",
-        title: "",
-        url: "",
-        file: null, // For documents
-    });
-    const [errors, setErrors] = useState({});
+    const [modules, setModules] = useState([
+        {
+            name: '',
+            lessons: [
+                {
+                    title: '',
+                    type: 'link',
+                    url: '',
+                    file: null,
+                },
+            ],
+        },
+    ]);
 
+    const addModule = () => {
+        setModules((prev) => [
+            ...prev,
+            { name: '', lessons: [{ title: '', type: 'link', url: '', file: null }] },
+        ]);
+    };
+
+    const removeModule = (index) => {
+        setModules((prev) => prev.filter((_, i) => i !== index));
+    };
+
+    const updateModuleName = (moduleIndex, name) => {
+        setModules((prev) => {
+            const updated = [...prev];
+            updated[moduleIndex].name = name;
+            return updated;
+        });
+    };
+
+    const addLesson = (moduleIndex) => {
+        setModules((prev) => {
+            const updated = [...prev];
+            updated[moduleIndex].lessons.push({
+                title: '',
+                type: 'link',
+                url: '',
+                file: null,
+            });
+            return updated;
+        });
+    };
+
+    const removeLesson = (moduleIndex, lessonIndex) => {
+        setModules((prev) => {
+            const updated = [...prev];
+            updated[moduleIndex].lessons = updated[moduleIndex].lessons.filter(
+                (_, i) => i !== lessonIndex
+            );
+            return updated;
+        });
+    };
+
+    const updateLesson = (moduleIndex, lessonIndex, field, value) => {
+        setModules((prev) => {
+            const updated = [...prev];
+            updated[moduleIndex].lessons[lessonIndex][field] = value;
+            return updated;
+        });
+    };
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         if (name === 'banner') {
             // Handle file input separately
-            setFormData(prev => ({
+            setResource(prev => ({
                 ...prev,
                 banner: e.target.files ? e.target.files[0] : ''
             }));
             return;
         }
-        setFormData(prev => ({
+        setResource(prev => ({
             ...prev,
             [name]: value
         }));
@@ -85,8 +139,8 @@ const ResourceForm = ({ onSubmit, isLoading = false }) => {
     };
 
     const addDomain = () => {
-        if (newDomain.trim() && !formData.domain.includes(newDomain.trim())) {
-            setFormData(prev => ({
+        if (newDomain.trim() && !resource.domain.includes(newDomain.trim())) {
+            setResource(prev => ({
                 ...prev,
                 domain: [...prev.domain, newDomain.trim()]
             }));
@@ -95,44 +149,27 @@ const ResourceForm = ({ onSubmit, isLoading = false }) => {
     };
 
     const removeDomain = (index) => {
-        setFormData(prev => ({
+        setResource(prev => ({
             ...prev,
             domain: prev.domain.filter((_, i) => i !== index)
-        }));
-    };
-
-    const addResource = () => {
-        if (newResource.title.trim() && newResource.url.trim()) {
-            setFormData(prev => ({
-                ...prev,
-                resource: [...prev.resource, { ...newResource }]
-            }));
-            setNewResource({ type: 'link', title: '', url: '' });
-        }
-    };
-
-    const removeResource = (index) => {
-        setFormData(prev => ({
-            ...prev,
-            resource: prev.resource.filter((_, i) => i !== index)
         }));
     };
 
     const validateForm = () => {
         const newErrors = {};
 
-        if (!formData.title.trim()) {
+        if (!resource.title.trim()) {
             newErrors.title = 'Title is required';
-        } else if (formData.title.length < 4) {
+        } else if (resource.title.length < 4) {
             newErrors.title = 'Title must be at least 4 characters long';
-        } else if (formData.title.length > 50) {
+        } else if (resource.title.length > 50) {
             newErrors.title = 'Title must be less than 50 characters';
         }
-        if (!formData.description.trim()) {
+        if (!resource.description.trim()) {
             newErrors.description = 'Description is required';
-        } else if (formData.description.length < 4) {
+        } else if (resource.description.length < 4) {
             newErrors.description = 'Description must be at least 4 characters long';
-        } else if (formData.description.length > 100) {
+        } else if (resource.description.length > 100) {
             newErrors.description = 'Description must be less than 100 characters';
         }
         setErrors(newErrors);
@@ -140,36 +177,54 @@ const ResourceForm = ({ onSubmit, isLoading = false }) => {
     };
 
     const handleSubmit = async (e) => {
-        console.log("Submitting form with data:");
-
         e.preventDefault();
+        setResource(prev => ({
+            ...prev,
+            modules: modules
+        }))
+        setLoading(true)
         if (validateForm()) {
-            const formDataToSend = new FormData();
-            formDataToSend.append('title', formData.title);
-            formDataToSend.append('description', formData.description);
-            formDataToSend.append('rating', formData.rating);
-            formDataToSend.append('domain', JSON.stringify(formData.domain));
-            formDataToSend.append('resource', JSON.stringify(formData.resource));
-            formDataToSend.append('mentorId', mentor._id || '');
-            if (formData.banner) {
-                formDataToSend.append('banner', formData.banner);
+
+            const formData = new FormData();
+            formData.append('title', resource.title);
+            formData.append('description', resource.description);
+            formData.append('rating', resource.rating);
+            formData.append('domain', JSON.stringify(resource.domain));
+            formData.append('modules', JSON.stringify(modules))
+            if (resource.banner) {
+                formData.append('banner', resource.banner);
             }
-            formDataToSend.append('mentorname', mentor.name || '');
+            formData.append('mentorId', mentor._id || '');
+            formData.append('mentorname', mentor.name);
             const response = await AddResource(formData);
             if (response.status === 200) {
                 onSubmit();
-                setFormData({
+                setLoading(false)
+                setResource({
                     title: '',
                     description: '',
                     domain: [],
                     rating: 5,
                     banner: '',
-                    resource: []
+                    modules: []
                 });
                 setNewDomain('');
-                setNewResource({ type: 'link', title: '', url: '' });
+                setModules([
+                    {
+                        name: '',
+                        lessons: [
+                            {
+                                title: '',
+                                type: 'link',
+                                url: '',
+                                file: null,
+                            },
+                        ],
+                    },
+                ])
                 setErrors({});
             } else {
+                setLoading(false);
                 console.error(response.data);
             }
         }
@@ -204,32 +259,12 @@ const ResourceForm = ({ onSubmit, isLoading = false }) => {
                                     type="text"
                                     label="Title"
                                     name="title"
-                                    value={formData.title}
+                                    value={resource.title}
                                     onChange={handleInputChange}
                                     placeholder="Enter resource title"
                                     maxLength={50}
                                     error={errors.title}
                                 />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-[#1a3a6c] mb-2">
-                                    Rating
-                                </label>
-                                <div className="flex items-center gap-2">
-                                    <input
-                                        type="range"
-                                        min="1"
-                                        max="5"
-                                        step="0.5"
-                                        value={formData.rating}
-                                        onChange={(e) => setFormData(prev => ({ ...prev, rating: parseFloat(e.target.value) }))}
-                                        className="flex-1 h-2 bg-[#b5d5e5]/50 rounded-lg appearance-none cursor-pointer"
-                                    />
-                                    <div className="flex items-center gap-1 min-w-[80px]">
-                                        <Star className="text-[#f7a35c] fill-current" size={16} />
-                                        <span className="text-[#1a3a6c] font-medium">{formData.rating}</span>
-                                    </div>
-                                </div>
                             </div>
                         </div>
 
@@ -239,7 +274,7 @@ const ResourceForm = ({ onSubmit, isLoading = false }) => {
                             </label>
                             <textarea
                                 name="description"
-                                value={formData.description}
+                                value={resource.description}
                                 onChange={handleInputChange}
                                 rows={4}
                                 className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0ea5e9]/50 transition-all resize-none ${errors.description
@@ -249,7 +284,7 @@ const ResourceForm = ({ onSubmit, isLoading = false }) => {
                                 placeholder="Describe your resource..."
                             />
                             {errors.description && <p className="text-red-500 text-xs mt-1">{errors.description}</p>}
-                            <p className="text-xs text-[#6b7280] mt-1">{formData.description.length}/100 characters</p>
+                            <p className="text-xs text-[#6b7280] mt-1">{resource.description.length}/100 characters</p>
 
                         </div>
 
@@ -282,7 +317,7 @@ const ResourceForm = ({ onSubmit, isLoading = false }) => {
                             </div>
 
                             <div className="flex flex-wrap gap-2">
-                                {formData.domain.map((domain, index) => (
+                                {resource.domain.map((domain, index) => (
                                     <span
                                         key={index}
                                         className="inline-flex items-center gap-2 px-3 py-1 bg-[#b5d5e5]/30 text-[#1a3a6c] rounded-full text-sm font-medium"
@@ -322,101 +357,124 @@ const ResourceForm = ({ onSubmit, isLoading = false }) => {
                     <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-[#b5d5e5]/30 shadow-lg">
                         <h2 className="text-xl font-semibold text-[#1a3a6c] mb-4 flex items-center gap-2">
                             <ExternalLink className="text-[#2c67a6]" size={20} />
-                            Resources
+                            Modules & Resources
                         </h2>
 
-                        <div className="grid md:grid-cols-4 gap-4 mb-4">
-                            <select
-                                value={newResource.type}
-                                onChange={(e) => setNewResource(prev => ({ ...prev, type: e.target.value }))}
-                                className="px-4 py-2 border-2 border-[#b5d5e5]/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0ea5e9]/50 focus:border-[#0ea5e9] bg-white/70"
-                            >
-                                <option value="link">Video Link</option>
-                                <option value="document">Document Link</option>
-                                <option value="course">Course Link</option>
-                            </select>
+                        {modules.map((module, moduleIndex) => (
+                            <div key={moduleIndex} className="mb-6 border p-4 rounded-xl border-[#b5d5e5]/40 bg-white/50">
+                                <div className="mb-4 flex items-center justify-between">
+                                    <input
+                                        type="text"
+                                        placeholder="Module Name"
+                                        value={module.name}
+                                        onChange={(e) =>
+                                            updateModuleName(moduleIndex, e.target.value)
+                                        }
+                                        className="w-full px-4 py-2 border border-[#b5d5e5]/50 rounded-xl bg-white/70 focus:outline-none focus:ring-2 focus:ring-[#0ea5e9]/50"
+                                    />
+                                </div>
 
-                            <input
-                                type="text"
-                                value={newResource.title}
-                                onChange={(e) => setNewResource(prev => ({ ...prev, title: e.target.value }))}
-                                className="px-4 py-2 border-2 border-[#b5d5e5]/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0ea5e9]/50 focus:border-[#0ea5e9] bg-white/70"
-                                placeholder="Resource title"
-                            />
+                                {module.lessons.map((lesson, lessonIndex) => (
+                                    <div
+                                        key={lessonIndex}
+                                        className="grid md:grid-cols-4 gap-4 items-center mb-3"
+                                    >
+                                        <select
+                                            value={lesson.type}
+                                            onChange={(e) =>
+                                                updateLesson(moduleIndex, lessonIndex, 'type', e.target.value)
+                                            }
+                                            className="px-4 py-2 border-2 border-[#b5d5e5]/50 rounded-xl bg-white/70 focus:outline-none focus:ring-2 focus:ring-[#0ea5e9]/50"
+                                        >
+                                            <option value="link">Video Link</option>
+                                            <option value="document">Document Link</option>
+                                            <option value="course">Course Link</option>
+                                        </select>
 
-                            {newResource.type === "document" ? (
-                                <input
-                                    type="file"
-                                    accept=".pdf,.doc,.docx"
-                                    onChange={(e) =>
-                                        setNewResource((prev) => ({
-                                            ...prev,
-                                            file: e.target.files?.[0] || null,
-                                        }))
-                                    }
-                                    className="px-4 py-2 border-2 border-[#b5d5e5]/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0ea5e9]/50 focus:border-[#0ea5e9] bg-white/70"
-                                />
-                            ) : (
-                                <input
-                                    type="url"
-                                    value={newResource.url}
-                                    onChange={(e) =>
-                                        setNewResource((prev) => ({ ...prev, url: e.target.value }))
-                                    }
-                                    className="px-4 py-2 border-2 border-[#b5d5e5]/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0ea5e9]/50 focus:border-[#0ea5e9] bg-white/70"
-                                    placeholder="Resource URL"
-                                />
-                            )}
+                                        <input
+                                            type="text"
+                                            placeholder="Lesson Title"
+                                            value={lesson.title}
+                                            onChange={(e) =>
+                                                updateLesson(moduleIndex, lessonIndex, 'title', e.target.value)
+                                            }
+                                            className="px-4 py-2 border-2 border-[#b5d5e5]/50 rounded-xl bg-white/70 focus:outline-none focus:ring-2 focus:ring-[#0ea5e9]/50"
+                                        />
 
+                                        {lesson.type === "document" ? (
+                                            <input
+                                                type="file"
+                                                accept=".pdf,.doc,.docx"
+                                                onChange={(e) =>
+                                                    updateLesson(moduleIndex, lessonIndex, 'file', e.target.files?.[0] || null)
+                                                }
+                                                className="px-4 py-2 border-2 border-[#b5d5e5]/50 rounded-xl bg-white/70 focus:outline-none focus:ring-2 focus:ring-[#0ea5e9]/50"
+                                            />
+                                        ) : (
+                                            <input
+                                                type="url"
+                                                placeholder="Resource URL"
+                                                value={lesson.url}
+                                                onChange={(e) =>
+                                                    updateLesson(moduleIndex, lessonIndex, 'url', e.target.value)
+                                                }
+                                                className="px-4 py-2 border-2 border-[#b5d5e5]/50 rounded-xl bg-white/70 focus:outline-none focus:ring-2 focus:ring-[#0ea5e9]/50"
+                                            />
+                                        )}
 
-                            <button
-                                type="button"
-                                onClick={addResource}
-                                className="  md:px-0 px-4 w-1/6 flex justify-center items-center py-2 bg-gradient-to-r from-[#7ba779] to-[#7ba779]/80 text-white rounded-xl hover:from-[#7ba779]/90 hover:to-[#7ba779]/70 transition-all hover:scale-105"
-                            >
-                                <Plus size={20} />
-                            </button>
-                        </div>
-
-                        <div className="space-y-2">
-                            {formData.resource.map((resource, index) => (
-                                <div
-                                    key={index}
-                                    className="flex items-center justify-between p-3 bg-[#b5d5e5]/20 rounded-xl border border-[#b5d5e5]/30"
-                                >
-                                    <div className="flex items-center gap-3">
-                                        <span className="px-2 py-1 bg-[#2c67a6] text-white text-xs rounded-full">
-                                            {resource.type}
-                                        </span>
-                                        <span className="font-medium text-[#1a3a6c]">{resource.title}</span>
-                                        <span className="text-[#6b7280] text-sm truncate max-w-xs">{resource.url}</span>
+                                        <button
+                                            type="button"
+                                            onClick={() => removeLesson(moduleIndex, lessonIndex)}
+                                            className="text-[#6b7280] hover:text-red-500 transition-colors p-2"
+                                        >
+                                            <X size={18} />
+                                        </button>
                                     </div>
+                                ))}
+
+                                <div className="flex gap-4 mt-2">
                                     <button
                                         type="button"
-                                        onClick={() => removeResource(index)}
-                                        className="text-[#6b7280] hover:text-red-500 transition-colors p-1"
+                                        onClick={() => addLesson(moduleIndex)}
+                                        className="bg-[#7ba779] text-white px-4 py-2 rounded-xl hover:opacity-90 transition"
                                     >
-                                        <X size={16} />
+                                        + Add Lesson
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => removeModule(moduleIndex)}
+                                        className="text-red-500 border border-red-400 px-4 py-2 rounded-xl hover:bg-red-50"
+                                    >
+                                        Remove Module
                                     </button>
                                 </div>
-                            ))}
-                        </div>
+                            </div>
+                        ))}
+
+                        <button
+                            type="button"
+                            onClick={addModule}
+                            className="mt-4 bg-gradient-to-r from-[#7ba779] to-[#7ba779]/80 text-white px-6 py-3 rounded-xl hover:scale-105 transition"
+                        >
+                            + Add Module
+                        </button>
                     </div>
+
 
                     {/* Submit Button */}
                     <div className="flex justify-end gap-4">
                         <button
                             type="button"
-                            className="px-6 py-3 border-2 border-[#6b7280] text-[#6b7280] rounded-xl hover:bg-[#6b7280] hover:text-white transition-all"
+                            className="px-6 py-3 cursor-pointer border-2 border-[#6b7280] text-[#6b7280] rounded-xl hover:bg-[#6b7280] hover:text-white transition-all"
                         >
                             Cancel
                         </button>
                         <button
                             type="submit"
-                            disabled={isLoading}
-                            className="px-8 py-3 bg-gradient-to-r from-[#1e293b] via-[#1a3a6c] to-[#1e3a8a] text-white rounded-xl hover:shadow-xl transition-all hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                            disabled={loading}
+                            className="px-8 py-3 cursor-pointer  bg-gradient-to-r from-[#1e293b] via-[#1a3a6c] to-[#1e3a8a] text-white rounded-xl hover:shadow-xl transition-all hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                         >
-                            {isLoading ? (
+                            {loading ? (
                                 <>
                                     <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                                     Creating...

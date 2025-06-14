@@ -158,17 +158,19 @@ export const GetMentorById = async (mentorId) => {
 
 export const AddResource = async (data) => {
   try {
-    const response = await instance.post(`/resource/add-resource`, { ...data }, {
+    const response = await instance.post(`/resource/add-resource`, data, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
       withCredentials: true,
     });
+
     return response;
   } catch (error) {
-    return error.response.data;
+    return error.response?.data || { error: "Unknown error" };
   }
-}
+};
+
 
 
 export const GetResources = async () => {
