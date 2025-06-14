@@ -31,8 +31,10 @@ class Resources {
             newPath = req.body.banner;
         }
 
-        const { title, description, domain, rating, reviews, resource, mentorId, mentorname } = req.body;
-        const resourceData = await resourceService.addResource({ title, description, domain, rating, reviews, resource, mentorId, mentorname, banner: newPath });
+        const { title, description, domain, rating, reviews, modules, mentorId, mentorname } = req.body;
+        const parsedmodules = JSON.parse(modules);
+        const parsedDomain = JSON.parse(domain);
+        const resourceData = await resourceService.addResource({ title, description, domain: parsedDomain, rating, reviews, modules: parsedmodules, mentorId, mentorname, banner: newPath });
 
         if (resourceData) {
             return ResponseHandler(
@@ -66,8 +68,11 @@ class Resources {
 
     async updateResource(req, res) {
         const { id } = req.params;
-        const { title, description, domain, rating, reviews, resource, mentorId } = req.body;
-        const resourceData = await resourceService.updateResource(id, { title, description, domain, rating, reviews, resource, mentorId, mentorname, studentsEnrolled, });
+        const { title, description, domain, rating, reviews, modules, mentorId } = req.body;
+        const parsedmodules = JSON.parse(modules);
+        const parsedDomain = JSON.parse(domain);
+        const resourceData = await resourceService.updateResource(id, { title, description, domain: parsedDomain, rating, reviews, modules: parsedmodules, mentorId, mentorname, studentsEnrolled, });
+        console.log(parsedDomain, parsedmodules);
 
         if (resourceData) {
             return ResponseHandler(

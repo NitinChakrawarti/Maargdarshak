@@ -32,7 +32,7 @@ const resourceSchema = new mongoose.Schema(
             type:String,
             default:""
         },
-        resource : {
+        modules: {
             type : Array,
             default: []
         },
