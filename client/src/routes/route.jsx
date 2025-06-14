@@ -18,6 +18,8 @@ import ResourceDetailView from "../components/resourceById";
 import ResourcePage from "../screens/user/resourcePage";
 import MentorProfile from "../screens/user/mentorProfile";
 import BookMark from "../screens/user/bookMark";
+import UserProfile from "../screens/user/userProfile";
+import MentorProfilePage from "../screens/mentor/mentorProfile";
 
 export const AllRoutes = () => {
   return (
@@ -218,6 +220,22 @@ export const AllRoutes = () => {
             }
           />
         </Route>
+        <Route
+          path="/user/profile"
+          element={
+            <Protectedroute>
+              <UserProfile />
+            </Protectedroute>
+          }
+        />
+        <Route
+          path="/mentor/profile"
+          element={
+            <Protectedroute>
+              <MentorProfilePage />
+            </Protectedroute>
+          }
+        />
       </Routes>
     </Router >
   );

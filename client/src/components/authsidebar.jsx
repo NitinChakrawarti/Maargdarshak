@@ -17,10 +17,15 @@ import { setMentor } from "../redux/features/mentorSlice";
 const Sidebar = ({ isOpen, setIsSidebarOpen, onCollapse }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [isCollapsed, setIsCollapsed] = useState(false);
   const sidebarRef = useRef(null);
   const dispatch = useDispatch();
   const { role, data } = useSelector((state) => state.auth);
+
+  const [isCollapsed, setIsCollapsed] = useState(() => {
+    const savedState = localStorage.getItem("sidebar-collapsed");
+    return savedState === "true";
+  });
+
 
   // Update parent component when collapse state changes
   useEffect(() => {
@@ -57,9 +62,13 @@ const Sidebar = ({ isOpen, setIsSidebarOpen, onCollapse }) => {
     }
   };
 
+
   const toggleCollapse = () => {
-    setIsCollapsed(!isCollapsed);
+    const newState = !isCollapsed;
+    setIsCollapsed(newState);
+    localStorage.setItem("sidebar-collapsed", newState.toString());
   };
+
 
   return (
     <>
@@ -141,7 +150,7 @@ const Sidebar = ({ isOpen, setIsSidebarOpen, onCollapse }) => {
 
             <button
               onClick={handleLogout}
-              className="group flex items-center justify-start w-full text-left text-[15px] font-medium px-3 py-3 text-white/80 hover:text-white hover:bg-red-500/20 backdrop-blur-sm rounded-xl transition-all duration-300 mt-4 hover:transform hover:scale-105"
+              className="group flex items-center cursor-pointer justify-start w-full text-left text-[15px] font-medium px-3 py-3 text-white/80 hover:text-white hover:bg-red-500/20 backdrop-blur-sm rounded-xl transition-all duration-300 mt-4 hover:transform hover:scale-105"
               title={isCollapsed ? "Logout" : ""}
             >
               <div className="flex items-center justify-center w-6 text-red-300 group-hover:text-white transition-all duration-300">
@@ -151,18 +160,45 @@ const Sidebar = ({ isOpen, setIsSidebarOpen, onCollapse }) => {
             </button>
           </div>
 
-          {/* Collapse button */}
-          <div className="px-3 pt-4 mb-4 w-full flex justify-end border-t border-[#b5d5e5]/20">
-            <button
-              onClick={toggleCollapse}
-              className="group flex items-center w-fit text-left text-[15px] font-medium px-3 py-3 text-white/80 hover:text-white hover:bg-[#b5d5e5]/20 backdrop-blur-sm rounded-xl transition-all duration-300 hover:transform hover:scale-110"
-              title={isCollapsed ? "Expand" : "Collapse"}
-            >
-              <div className="text-[#b5d5e5] group-hover:text-white transition-all duration-300">
-                {isCollapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
-              </div>
-            </button>
+          {/* Collapse and Profile Button Wrapper */}
+          <div className="flex w-full flex-col items-start px-2 py-4 gap-3">
+            {/* Profile Button */}
+            <div className="w-full border-b border-[#b5d5e5]/20 pb-2">
+              <Link
+                to={`/${role}/profile`}
+                className="group flex cursor-pointer items-center w-fit text-left text-[15px] font-medium px-3 py-2 text-white/80 hover:text-white hover:bg-[#b5d5e5]/20 backdrop-blur-sm rounded-xl transition-all duration-300 hover:scale-105"
+                title={isCollapsed ? "Profile" : ""}
+              >
+                <div className="flex items-center justify-center text-[#b5d5e5] group-hover:text-white transition-all duration-300">
+                  {data?.profile ? (
+                    <img
+                      src={data.profile}
+                      alt="profile"
+                      className="w-6 h-6 rounded-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-6 h-6 rounded-full bg-gradient-to-r from-[#0ea5e9] to-[#2c67a6] flex items-center justify-center text-white text-xs font-bold">
+                      {data?.name?.charAt(0) || "U"}
+                    </div>
+                  )}
+                </div>
+                {!isCollapsed && <span className="ml-3 font-medium">Profile</span>}
+              </Link>
+            </div>
+            <div className="w-full flex justify-end items-center gap-2">
+              {/* Collapse Button */}
+              <button
+                onClick={toggleCollapse}
+                className="group cursor-pointer flex items-center w-fit text-left text-[15px] font-medium px-3 py-2 text-white/80 hover:text-white hover:bg-[#b5d5e5]/20 backdrop-blur-sm rounded-xl transition-all duration-300 hover:scale-105"
+                title={isCollapsed ? "Expand" : "Collapse"}
+              >
+                <div className="text-[#b5d5e5] group-hover:text-white transition-all duration-300">
+                  {isCollapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
+                </div>
+              </button>
+            </div>
           </div>
+
         </div>
       </div>
     </>

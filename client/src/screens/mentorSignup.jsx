@@ -11,6 +11,7 @@ import { setAuth } from "../redux/features/authSlice";
 import { useDispatch } from "react-redux";
 import { setMentor } from "../redux/features/mentorSlice";
 import MentorPng from '../assets/mentor.png'
+import { FaEyeSlash } from "react-icons/fa";
 
 const ExtendedSignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
