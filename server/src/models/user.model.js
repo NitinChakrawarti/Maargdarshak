@@ -62,7 +62,7 @@ const userSchema = new mongoose.Schema(
         },
         savedItems: {
             type: [mongoose.Schema.Types.ObjectId],
-            ref: "SomeModel", // Replace with actual model name if needed
+            ref: "Resources",
             default: [],
         },
         courses: {
@@ -72,7 +72,7 @@ const userSchema = new mongoose.Schema(
                     description: String,
                     courseId: {
                         type: mongoose.Schema.Types.ObjectId,
-                        ref: "Courses",
+                        ref: "Resources",
                         unique: true,
                     },
                 },

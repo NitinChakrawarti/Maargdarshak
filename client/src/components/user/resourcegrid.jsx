@@ -1,18 +1,23 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, React } from "react";
 import { Star, ExternalLink, Eye, Tag, ArrowRight, Pen, DeleteIcon, Delete, Trash2 } from "lucide-react";
 import { GetResources } from "../../api";
 import { Link } from "react-router-dom";
 import SkeletonCard from "../skeleton/resourcegrid";
+import Pagination from "../pagination";
 
 const ResourcesGrid = () => {
     const [resources, setResources] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
 
     const handleFetchResources = async () => {
         try {
-            const response = await GetResources();
+            const response = await GetResources({ page: currentPage, limit: 9 });
             if (response.status === 200) {
-                const data = response.data.data;
+                const data = response.data.data.resources;
+                setTotalPages(response.data.data.pagination.totalPages);
+                // setCurrentPage(response.data.data.pagination.currentPage);
                 if (Array.isArray(data)) {
                     setResources(data);
                 } else {
@@ -31,7 +36,7 @@ const ResourcesGrid = () => {
     };
     useEffect(() => {
         handleFetchResources();
-    }, []);
+    }, [currentPage]);
 
     const renderStars = (rating) => {
         const fullStars = Math.floor(rating);
@@ -138,6 +143,11 @@ const ResourcesGrid = () => {
                             ))}
                         </div>
                     )}
+                <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={setCurrentPage}
+                />
             </div>
         </div>
     );

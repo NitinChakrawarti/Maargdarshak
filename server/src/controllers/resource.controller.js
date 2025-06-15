@@ -2,17 +2,29 @@ import resourceService from "../services/resource.service.js";
 import APIError from "../utils/APIError.js";
 import ResponseHandler from "../utils/APIResponse.js";
 import FileRename from "../utils/filerename.js";
+import { paginate } from "../utils/pagination.js";
 import statusCodeUtility from "../utils/statusCodeUtility.js";
 
 
 class Resources {
 
     async getResources(req, res) {
-        const resources = await resourceService.getResources();
+        const { page = 1, limit = 10 } = req.query;
+        const totalItems = await resourceService.countDocuments();
+        const { skip, totalPages } = paginate(totalItems, page, limit);
+        const resources = await resourceService.getResources({ skip, limit });
         return ResponseHandler(
             statusCodeUtility.Success,
             "Resources fetched successfully",
-            resources,
+            {
+                resources,
+                pagination: {
+                    totalItems,
+                    currentPage: parseInt(page),
+                    totalPages: totalPages,
+                    limit: parseInt(limit)
+                }
+            },
             res
         );
     }

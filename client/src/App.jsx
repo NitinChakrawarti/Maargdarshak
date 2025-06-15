@@ -3,7 +3,7 @@ import { Provider, useDispatch } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from './redux/store';
 import { VerifyToken } from "./api";
-import { useEffect, Suspense } from "react";
+import { useEffect, Suspense, useState } from "react";
 import { setAuth, setError } from './redux/features/authSlice';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -21,7 +21,39 @@ const LoadingFallback = () => (
 const AppContent = () => {
   const dispatch = useDispatch();
   const { getToken } = useAuth();
-  
+
+  const [routeChange, setRouteChange] = useState(false);
+  const [currentPath, setCurrentPath] = useState(window.location.pathname);
+
+  const handleRouteChange = () => {
+    if (window.location.pathname !== currentPath) {
+      setCurrentPath(window.location.pathname);
+      setRouteChange(true);
+      setTimeout(() => {
+        setRouteChange(false);
+      }, 1000); // Reset after 1 second
+    }
+  };
+
+  // Listen for route changes
+  useEffect(() => {
+    window.addEventListener('popstate', handleRouteChange);
+
+    // For programmatic navigation (using history.push)
+    const originalPushState = window.history.pushState;
+    window.history.pushState = function () {
+      originalPushState.apply(this, arguments);
+      handleRouteChange();
+    };
+
+    return () => {
+      window.removeEventListener('popstate', handleRouteChange);
+      window.history.pushState = originalPushState;
+    };
+  }, [currentPath]);
+
+
+
   useEffect(() => {
     const verifyToken = async () => {
       try {
@@ -43,7 +75,7 @@ const AppContent = () => {
       }
     };
     verifyToken();
-  }, []);
+  }, [routeChange]);
 
   // Scroll to top on route change
   useEffect(() => {

@@ -173,9 +173,10 @@ export const AddResource = async (data) => {
 
 
 
-export const GetResources = async () => {
+export const GetResources = async ({ page, limit }) => {
   try {
     const response = await instance.get(`/resource/get-resources`, {
+      params: { page, limit },
       withCredentials: true,
     });
     return response;

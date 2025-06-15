@@ -5,7 +5,6 @@ import ProfileComponent from '../../components/user/userProfile'
 
 const UserProfile = () => {
     const { user } = useSelector((state) => state.user)
-    console.log("user profile", user);
 
     return (
         <Layout>
