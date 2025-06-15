@@ -3,8 +3,8 @@ import Resource from "../models/resource.model.js";
 
 class ResourceService {
 
-    async getResources() {
-        const resources = await Resource.find();
+    async getResources({ skip = 0, limit = 10 }) {
+        const resources = await Resource.find().skip(skip).limit(limit).sort({ createdAt: -1 });
         return resources;
     }
 
@@ -55,6 +55,10 @@ class ResourceService {
         return deletedResource;
     }
 
+    async countDocuments() {
+        const count = await Resource.countDocuments();
+        return count;
+    }
 }
 
 export default new ResourceService();

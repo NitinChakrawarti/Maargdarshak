@@ -106,6 +106,7 @@ const CourseSidebar = ({
                     <button
                         onClick={() =>
                             user._id ? addCourse({
+                                courseName: resource.title,
                                 userId: user._id,
                                 courseId: resourceId,
                             })
