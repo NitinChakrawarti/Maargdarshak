@@ -11,6 +11,7 @@ import userService from "../services/user.service.js";
 import thirdPartyUser from "../utils/thirdPartyUser.js";
 
 class authController {
+
     
     async verifyOtp(request, response) {
         if (!request.body) {

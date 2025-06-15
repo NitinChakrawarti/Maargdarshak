@@ -15,6 +15,10 @@ const navele = [
     button: "Our Mentors",
     link: "/mentors",
   },
+  {
+    button: "Resources",
+    link: "/resource",
+  }
 ];
 
 const Navbar = () => {

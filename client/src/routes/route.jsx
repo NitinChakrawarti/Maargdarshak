@@ -14,12 +14,13 @@ import Mentorblog from "../screens/mentor/blog";
 import Learners from "../screens/mentor/learners";
 import Addresources from "../screens/mentor/addresources";
 import Explore from "../screens/user/explore";
-import ResourceDetailView from "../components/resourceById";
 import ResourcePage from "../screens/user/resourcePage";
 import MentorProfile from "../screens/user/mentorProfile";
 import BookMark from "../screens/user/bookMark";
 import UserProfile from "../screens/user/userProfile";
 import MentorProfilePage from "../screens/mentor/mentorProfile";
+import ResourceDetail from "../screens/user/resourceDetail";
+import Resources from "../screens/resources";
 
 export const AllRoutes = () => {
   return (
@@ -52,6 +53,26 @@ export const AllRoutes = () => {
             </Publicroute>
           }
         />
+        <Route
+          path="resource"
+          >
+          <Route
+            path=""
+            element={
+              <Publicroute>
+                <Resources />
+              </Publicroute>
+            }
+          />
+          <Route
+            path=":resourceId"
+            element={
+              <Publicroute>
+                <ResourceDetail />
+              </Publicroute>
+            }
+          />
+        </Route>
 
         <Route
           path="/signup"
@@ -61,6 +82,9 @@ export const AllRoutes = () => {
             </Publicroute>
           }
         />
+
+
+
 
         {/* ------------------------------ mentor signup ------------------------------- */}
         <Route
@@ -126,7 +150,7 @@ export const AllRoutes = () => {
               path=":resourceId"
               element={
                 <Protectedroute>
-                  <ResourceDetailView />
+                  <ResourceDetail />
                 </Protectedroute>
               }
             />
@@ -146,7 +170,7 @@ export const AllRoutes = () => {
               path=":resourceId"
               element={
                 <Protectedroute>
-                  <ResourceDetailView />
+                  <ResourceDetail />
                 </Protectedroute>
               }
             />
@@ -198,7 +222,7 @@ export const AllRoutes = () => {
               path=":resourceId"
               element={
                 <Protectedroute>
-                  <ResourceDetailView />
+                  <ResourceDetail />
                 </Protectedroute>
               }
             />

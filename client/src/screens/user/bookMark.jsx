@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux'
 import Layout from '../../layout/auth/layout'
 import { useEffect, useState } from 'react';
 import { FetchFavorites } from '../../api';
-import BookmarkGrid from '../../components/favouritegrid';
+import BookmarkGrid from '../../components/user/favouritegrid';
 
 const BookMark = () => {
     const { user } = useSelector((state) => state.user);
