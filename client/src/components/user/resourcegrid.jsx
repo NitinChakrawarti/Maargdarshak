@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Star, ExternalLink, Eye, Tag, ArrowRight, Pen, DeleteIcon, Delete, Trash2 } from "lucide-react";
-import { GetResources } from "../api";
+import { GetResources } from "../../api";
 import { Link } from "react-router-dom";
-import SkeletonCard from "./skeleton/resourcegrid";
+import SkeletonCard from "../skeleton/resourcegrid";
 
 const ResourcesGrid = () => {
     const [resources, setResources] = useState([]);
