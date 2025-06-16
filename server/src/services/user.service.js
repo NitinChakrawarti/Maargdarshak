@@ -183,7 +183,6 @@ class UserService {
     }
 
     async updateCourseProgress({ userId, courseId, Progressdata }) {
-        console.log("Updating progress for user:", userId, "course:", courseId, "data:", Progressdata);
 
         const progress = await Progress.findOneAndUpdate(
             { userId, courseId },
