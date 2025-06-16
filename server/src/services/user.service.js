@@ -80,25 +80,52 @@ class UserService {
     // ----------------- 3. add course ----------------- //
     async addCourse(data) {
         const { courseName, description, courseId, userId } = data;
-        const response = await User.findByIdAndUpdate(
-            userId,
-            {
-                $push: {
-                    courses: {
-                        courseName,
-                        description,
-                        courseId
+        // const response = await User.findByIdAndUpdate(
+        //     userId,
+        //     {
+        //         $push: {
+        //             courses: {
+        //                 courseName,
+        //                 description,
+        //                 courseId
+        //             }
+        //         }
+        //     },
+        //     { new: true }
+        // );
+        // const progressInitate = await Progress.create({
+        //     userId: userId,
+        //     courseId: courseId,
+        //     Progress: []
+        // });
+        const response = await Promise.all([
+            User.findByIdAndUpdate(
+                userId,
+                {
+                    $push: {
+                        courses: {
+                            courseName,
+                            description,
+                            courseId
+                        }
                     }
-                }
-            },
-            { new: true }
-        );
-        const progressInitate = await Progress.create({
-            userId: userId,
-            courseId: courseId,
-            Progress: []
-        });
-        return response;
+                },
+                { new: true }
+            ),
+            Progress.create({
+                userId: userId,
+                courseId: courseId,
+                Progress: {}
+            }),
+            Resource.findByIdAndUpdate(
+                courseId,
+                {
+                    $inc: { studentsEnrolled: 1 }
+                },
+                { new: true }
+            )
+        ]);
+        return response[0];
     }
 
     async addfavorite(data) {
@@ -145,6 +172,32 @@ class UserService {
             }
         ).skip(skip).limit(limit);
         return response;
+    }
+
+    async getCourseProgress(resourceId) {
+        const progress = await Progress.findOne({ courseId: resourceId });
+        if (!progress) {
+            throw new APIError(statusCodeUtility.NotFound, "Course progress not found");
+        }
+        return progress;
+    }
+
+    async updateCourseProgress({ userId, courseId, Progressdata }) {
+        console.log("Updating progress for user:", userId, "course:", courseId, "data:", Progressdata);
+
+        const progress = await Progress.findOneAndUpdate(
+            { userId, courseId },
+            {
+                $set: {
+                    [`Progress.${Object.keys(Progressdata)[0]}`]: Object.values(Progressdata)[0]
+                }
+            },
+            { new: true }
+        );
+        if (!progress) {
+            throw new APIError(statusCodeUtility.NotFound, "Course progress not found");
+        }
+        return progress;
     }
 }
 

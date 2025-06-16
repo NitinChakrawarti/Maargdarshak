@@ -12,18 +12,21 @@ const progressSchema = new mongoose.Schema({
         ref: 'Course',
         required: true
     },
-    Progress: [
-        {
-            moduleNo: {
-                type: Number,
-            },
-            lessons: [
-                {
-                    type: Number,
-                }
-            ]
-        }
-    ]
+    Progress: {
+        type: Map,
+    }
+    // Progress: [
+    //     {
+    //         moduleNo: {
+    //             type: Number,
+    //         },
+    //         lessons: [
+    //             {
+    //                 type: Number,
+    //             }
+    //         ]
+    //     }
+    // ]
 });
 
 const Progress = mongoose.model('Progress', progressSchema);
