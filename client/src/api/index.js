@@ -207,6 +207,17 @@ export const getCourseProgress = async (resourceId) => {
   }
 }
 
+export const UpdateCourseProgress = async (data) => {
+  try {
+    const response = await instance.post(`/user/update-progress`, { ...data }, {
+      withCredentials: true,
+    });
+    return response;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
 
 export const EnrollInCourse = async (data) => {
   try {

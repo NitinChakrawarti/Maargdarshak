@@ -12,5 +12,6 @@ router.route('/add-course').post(asyncHandler(userController.addCourse));
 router.route('/add-favorite').post(asyncHandler(userController.addFavorite));
 router.route('/fetch-favorites').post(asyncHandler(userController.fetchFavorites));
 router.route('/get-progress/:resourceId').get(asyncHandler(userController.getCourseProgress));
+router.route('/update-progress').post(asyncHandler(userController.updateCourseProgress));
 
 export default router;

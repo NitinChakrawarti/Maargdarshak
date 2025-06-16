@@ -98,7 +98,13 @@ class UserController {
         }
 
         const { courseName, description, courseId, userId } = request.body;
-        const courseData = await userService.addCourse({ courseName, description, courseId, userId });
+        const courseDataresponse = await userService.addCourse({ courseName, description, courseId, userId });
+        const courseData = {
+            courseId: courseDataresponse.courseId,
+            courseName: courseDataresponse.courseName,
+            description: courseDataresponse.description
+        };
+
 
         return ResponseHandler(
             statusCodeUtility.Success,
@@ -169,6 +175,28 @@ class UserController {
         return ResponseHandler(
             statusCodeUtility.Success,
             "Fetched Course Progress Successfully",
+            progressData,
+            response
+        );
+    }
+
+    async updateCourseProgress(request, response) {
+        if (!request.body) {
+            return new APIError(statusCodeUtility.BadRequest, "No data Provided");
+        }
+
+        const { userId, courseId, Progress } = request.body;
+        console.log(request.body);
+
+        if (!userId || !courseId || !Progress) {
+            return new APIError(statusCodeUtility.BadRequest, "Missing required fields");
+        }
+
+        const progressData = await userService.updateCourseProgress({ userId, courseId, Progressdata: Progress });
+
+        return ResponseHandler(
+            statusCodeUtility.Success,
+            "Course progress updated successfully",
             progressData,
             response
         );

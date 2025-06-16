@@ -85,7 +85,7 @@ const CourseSidebar = ({
                     {/* Bookmark */}
                     <button
                         onClick={() =>
-                            user._id ? addBookmark({
+                            user?._id ? addBookmark({
                                 userId: user._id,
                                 courseId: resourceId,
                             })
@@ -105,7 +105,7 @@ const CourseSidebar = ({
                     {/* Enroll */}
                     <button
                         onClick={() =>
-                            user._id ? addCourse({
+                            user?._id ? addCourse({
                                 courseName: resource.title,
                                 userId: user._id,
                                 courseId: resourceId,

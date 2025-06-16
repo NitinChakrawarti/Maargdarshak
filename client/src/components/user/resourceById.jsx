@@ -7,12 +7,15 @@ import {
 import Layout from "../../layout/auth/layout";
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
-import { getCourseProgress, GetResourceById } from "../../api/index";
+import { getCourseProgress, GetResourceById, UpdateCourseProgress } from "../../api/index";
 import { useSelector } from "react-redux";
 import CourseModule from "./courseModel";
 import CourseSidebar from "./resourceSidebar";
 import CourseBanner from "./courseBanner";
 import Layoutcomponent from "../../layout/landing/layoutcomponent";
+import { useCallback } from "react";
+import { debounce } from "lodash";
+import { toast } from "react-toastify";
 
 
 const ResourceDetailView = () => {
@@ -20,14 +23,19 @@ const ResourceDetailView = () => {
     const [courseProgress, setCourseProgress] = useState({});
     const [isBookmarked, setIsBookmarked] = useState(false);
     const [isAddedToList, setIsAddedToList] = useState(false);
+    const location = useLocation();
+    const resourceId = location.pathname.split('/').pop();
+    const { user } = useSelector((state) => state.user);
 
-    const handleProgressChange = (resourceId, status) => {
+
+
+    const handleProgressChange = (lessonId, status) => {
         setCourseProgress(prev => ({
             ...prev,
-            [resourceId]: status
+            [lessonId]: status
         }));
+        handleProgressChangeImmediate(lessonId, status);
     };
-
 
     const [resource, setResource] = useState({
         modules: [],
@@ -36,10 +44,6 @@ const ResourceDetailView = () => {
         studentsEnrolled: 0,
         rating: 0
     });
-
-    const location = useLocation();
-    const resourceId = location.pathname.split('/').pop();
-    const { user } = useSelector((state) => state.user);
 
     const fetchResource = async (resourceId) => {
         const response = await GetResourceById(resourceId);
@@ -65,11 +69,31 @@ const ResourceDetailView = () => {
     const fetchCourseProgress = async (resourceId) => {
         const response = await getCourseProgress(resourceId);
         if (response.status === 200) {
-            setCourseProgress(response.data);
+            setCourseProgress(response.data.data.Progress);
         } else {
             toast.error("Failed to fetch course progress");
         }
     };
+
+    const handleProgressChangeImmediate = useCallback(
+        debounce(async (lessonId, status) => {
+            const data = {
+                userId: user._id,
+                courseId: resourceId,
+                Progress: {
+                    ...courseProgress,
+                    [lessonId]: status
+                }
+            };
+            const response = await UpdateCourseProgress(data);
+            if (response.status === 200) {
+                toast.success("Course progress updated successfully");
+            } else {
+                toast.error("Failed to update course progress");
+            }
+        }, 1000),
+        [user._id]
+    );
 
 
     useEffect(() => {
