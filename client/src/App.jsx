@@ -9,6 +9,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAuth } from "@clerk/clerk-react";
 import { setUser } from "./redux/features/userSlice";
+import InstallPrompt from "./components/insatallationprompt";
 
 // Loading fallback component
 const LoadingFallback = () => (
@@ -105,6 +106,7 @@ const App = () => {
       <PersistGate loading={<LoadingFallback />} persistor={persistor}>
         <ToastContainer position="top-right" autoClose={2000} />
         <AppContent />
+        <InstallPrompt />
       </PersistGate>
     </Provider>
   );

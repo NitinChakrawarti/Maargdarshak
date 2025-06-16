@@ -18,6 +18,7 @@ const allowedOrigins = [
     process.env.FRONT_URL_,
     'http://localhost:5173',
     'http://localhost:5174',
+    'http://localhost:4173',
     'http://192.168.222.90:5173'
 ];
 

@@ -13,6 +13,7 @@ import { LogOutFunc } from "../api";
 import { setAuth } from "../redux/features/authSlice";
 import { setUser } from "../redux/features/userSlice";
 import { setMentor } from "../redux/features/mentorSlice";
+import { useClerk, useUser } from "@clerk/clerk-react";
 
 const Sidebar = ({ isOpen, setIsSidebarOpen, onCollapse }) => {
   const navigate = useNavigate();
@@ -48,20 +49,20 @@ const Sidebar = ({ isOpen, setIsSidebarOpen, onCollapse }) => {
     };
   }, [setIsSidebarOpen]);
 
+  const { signOut } = useClerk();
+  const { user } = useUser();
   const handleLogout = async () => {
+    await signOut();
     const logout = await LogOutFunc({ role: role });
     if (logout.status === 200) {
-
       dispatch(setAuth({ role: null, data: null }));
       dispatch(setUser({ user: null, isverified: false, savedItems: [] }));
-      dispatch(setMentor({ mentor: null, isverified: false, savedItems: [] }));
       return navigate("/");
     }
     else {
       console.error("Logout failed:", logout.message);
     }
   };
-
 
   const toggleCollapse = () => {
     const newState = !isCollapsed;

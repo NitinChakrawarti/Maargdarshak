@@ -220,10 +220,11 @@ export const AddToFavorites = async (data) => {
 }
 
 export const FetchFavorites = async (data) => {
-
+  const { ids, page = 1, limit = 9 } = data;
   try {
-    const response = await instance.post(`/user/fetch-favorites`, { ids: data }, {
+    const response = await instance.post(`/user/fetch-favorites`, { ids }, {
       withCredentials: true,
+      params: { page, limit },
     });
     return response;
   } catch (error) {
