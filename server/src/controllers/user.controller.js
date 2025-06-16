@@ -200,6 +200,25 @@ class UserController {
             response
         );
     }
+
+    async generateCertificate(request, response) {
+        const { userId, courseId } = request.body;
+        if (!userId || !courseId) {
+            return new APIError(statusCodeUtility.BadRequest, "Missing required fields");
+        }
+
+        const certificateData = await userService.generateCertificate({ userId, courseId });
+        if (!certificateData) {
+            return new APIError(statusCodeUtility.NotFound, "No certificate found for the provided user and course");
+        }
+
+        return ResponseHandler(
+            statusCodeUtility.Success,
+            "Certificate generated successfully",
+            certificateData,
+            response
+        );
+    }
 }
 
 export default new UserController();
