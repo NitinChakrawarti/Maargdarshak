@@ -7,9 +7,10 @@ const router = express.Router();
 
 
 router.route('/register-user').post(asyncHandler(userController.createUser));
-router.route('/login-user').post(asyncHandler(userController.loginUser));    
+router.route('/login-user').post(asyncHandler(userController.loginUser));
 router.route('/add-course').post(asyncHandler(userController.addCourse));
 router.route('/add-favorite').post(asyncHandler(userController.addFavorite));
 router.route('/fetch-favorites').post(asyncHandler(userController.fetchFavorites));
+router.route('/get-progress/:resourceId').get(asyncHandler(userController.getCourseProgress));
 
 export default router;

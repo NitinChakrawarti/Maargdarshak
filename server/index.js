@@ -1,7 +1,8 @@
 import { app } from './src/main.js';
 import { connectDb } from './src/database/db.js'
+import { envProvider } from './src/constants.js';
 
-const PORT = process.env.PORT || 3000;
+const PORT = envProvider.PORT || 3000;
 
 connectDb().then(() => {
     app.listen(PORT, () => {

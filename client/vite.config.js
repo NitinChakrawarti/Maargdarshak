@@ -7,6 +7,9 @@ export default defineConfig({
   plugins: [react(), tailwindcss(),
   VitePWA({
     registerType: 'autoUpdate',
+    devOptions: {
+      enabled: true, 
+    },
     includeAssets: ['favicon.svg', 'robots.txt', 'apple-touch-icon.png'],
     manifest: {
       name: 'मार्गदर्शक',

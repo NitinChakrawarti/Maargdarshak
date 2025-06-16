@@ -1,3 +1,4 @@
+import { envProvider } from "../constants.js";
 import Mentor from "../models/mentor.model.js";
 import User from "../models/user.model.js";
 import nodemailer from 'nodemailer'
@@ -12,8 +13,8 @@ class Otp {
         const transporter = nodemailer.createTransport({
             service: "gmail",
             auth: {
-                user: process.env.EMAIL, // Use env variables instead of hardcoding
-                pass: process.env.PASSWORD,
+                user: envProvider.EMAIL, // Use env variables instead of hardcoding
+                pass: envProvider.PASSWORD,
             },
         });
 

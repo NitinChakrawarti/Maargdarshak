@@ -61,7 +61,7 @@ const CourseModule = ({
                                 {/* Action Button */}
                                 <button
                                     onClick={() => window.open(lesson.url, '_blank')}
-                                    className="p-2 text-blue-600 cursor-pointer hover:bg-blue-50 rounded-lg transition-colors"
+                                    className="p-2 cursor-pointer text-blue-600 cursor-pointer hover:bg-blue-50 rounded-lg transition-colors"
                                 >
                                     <ExternalLink className="w-5 h-5" />
                                 </button>
@@ -97,14 +97,14 @@ const CourseModule = ({
                                     >
                                         <button
                                             onClick={() => handleProgressChange(lessonId, 'completed')}
-                                            className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+                                            className="p-2 cursor-pointer text-green-600 hover:bg-green-50 rounded-lg transition-colors"
                                             title="Mark as Completed"
                                         >
                                             <Check className="w-5 h-5" />
                                         </button>
                                         <button
                                             onClick={() => handleProgressChange(lessonId, 'in-progress')}
-                                            className="p-2 text-yellow-600 hover:bg-yellow-50 rounded-lg transition-colors"
+                                            className="p-2 cursor-pointer text-yellow-600 hover:bg-yellow-50 rounded-lg transition-colors"
                                             title="Mark as In Progress"
                                         >
                                             <Circle className="w-5 h-5" />
