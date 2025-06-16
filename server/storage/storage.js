@@ -2,12 +2,13 @@ import { v2 as Cloudinary } from 'cloudinary'
 import { CloudinaryStorage } from 'multer-storage-cloudinary'
 import dotenv from 'dotenv'
 import multer from 'multer';
+import { envProvider } from '../src/constants.js';
 
 dotenv.config();
 Cloudinary.config({
-    cloud_name: process.env.CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_KEY,
-    api_secret: process.env.CLOUDINARY_SECRET
+    cloud_name: envProvider.CLOUD_NAME,
+    api_key: envProvider.CLOUDINARY_KEY,
+    api_secret: envProvider.CLOUDINARY_SECRET
 })
 const storage = new CloudinaryStorage({
     cloudinary: Cloudinary,

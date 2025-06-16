@@ -3,6 +3,7 @@ import APIError from "../utils/APIError.js";
 import bcrypt from 'bcryptjs';
 import statusCodeUtility from "../utils/statusCodeUtility.js";
 import Resource from "../models/resource.model.js";
+import Progress from "../models/progress.model.js";
 
 const salt = bcrypt.genSaltSync(10);
 
@@ -92,6 +93,11 @@ class UserService {
             },
             { new: true }
         );
+        const progressInitate = await Progress.create({
+            userId: userId,
+            courseId: courseId,
+            Progress: []
+        });
         return response;
     }
 

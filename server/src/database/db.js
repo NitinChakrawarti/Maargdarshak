@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { envProvider } from "../constants.js";
 
 //------- To monitor the status of the mongoDB connection--------//
 mongoose.connection.on('connecting', () => {
@@ -20,7 +21,7 @@ let dbinstance;
 export const connectDb = async () => {
     if (!dbinstance) {
         try {
-            const db = await mongoose.connect(process.env.MONGO_URI, {
+            const db = await mongoose.connect(envProvider.MONGO_URI, {
                 dbName: "margdarshak",
             })
             dbinstance = db

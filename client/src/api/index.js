@@ -196,6 +196,17 @@ export const GetResourceById = async (resourceId) => {
   }
 }
 
+export const getCourseProgress = async (resourceId) => {
+  try {
+    const response = await instance.get(`/user/get-progress/${resourceId}`, {
+      withCredentials: true,
+    });
+    return response;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
 
 export const EnrollInCourse = async (data) => {
   try {

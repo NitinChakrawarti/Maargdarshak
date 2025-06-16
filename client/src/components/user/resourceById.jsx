@@ -5,13 +5,10 @@ import {
 
 } from "lucide-react";
 import Layout from "../../layout/auth/layout";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
-import { AddToFavorites, EnrollInCourse, GetResourceById } from "../../api/index";
-import { toast } from "react-toastify";
-import { useDispatch, useSelector } from "react-redux";
-import dayjs from "dayjs";
-import { setUser } from "../../redux/features/userSlice";
+import { getCourseProgress, GetResourceById } from "../../api/index";
+import { useSelector } from "react-redux";
 import CourseModule from "./courseModel";
 import CourseSidebar from "./resourceSidebar";
 import CourseBanner from "./courseBanner";
@@ -65,6 +62,16 @@ const ResourceDetailView = () => {
         }
     };
 
+    const fetchCourseProgress = async (resourceId) => {
+        const response = await getCourseProgress(resourceId);
+        if (response.status === 200) {
+            setCourseProgress(response.data);
+        } else {
+            toast.error("Failed to fetch course progress");
+        }
+    };
+
+
     useEffect(() => {
         if (resourceId) {
             fetchResource(resourceId);
@@ -72,6 +79,7 @@ const ResourceDetailView = () => {
         const usercourse = user?.courses || [];
         const isEnrolled = usercourse.some(course => course.courseId === resourceId);
         if (isEnrolled) {
+            fetchCourseProgress(resourceId);
             setIsAddedToList(true);
         }
 

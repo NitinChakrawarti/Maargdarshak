@@ -129,10 +129,10 @@ class UserController {
                 return new APIError(statusCodeUtility.BadRequest, "No saved items provided");
             }
             const { ids } = request.body;
-            const {page = 1, limit = 9} = request.query; 
-            const { skip, totalPages , totalItems, currentPage } = paginate(ids.length, page, limit);
+            const { page = 1, limit = 9 } = request.query;
+            const { skip, totalPages, totalItems, currentPage } = paginate(ids.length, page, limit);
 
-            const favoritesData = await userService.fetchFavorites({ids, skip, limit});
+            const favoritesData = await userService.fetchFavorites({ ids, skip, limit });
             if (!favoritesData || favoritesData.length === 0) {
                 return new APIError(statusCodeUtility.NotFound, "No favorites found for the provided IDs");
             }
@@ -153,6 +153,25 @@ class UserController {
         catch (error) {
             return new APIError(statusCodeUtility.InternalServerError, "Error fetching favorites", error);
         }
+    }
+
+    async getCourseProgress(request, response) {
+        const { resourceId } = request.params;
+        if (!resourceId) {
+            return new APIError(statusCodeUtility.BadRequest, "No resource ID provided");
+        }
+
+        const progressData = await userService.getCourseProgress(resourceId);
+        if (!progressData) {
+            return new APIError(statusCodeUtility.NotFound, "No progress found for the provided resource ID");
+        }
+
+        return ResponseHandler(
+            statusCodeUtility.Success,
+            "Fetched Course Progress Successfully",
+            progressData,
+            response
+        );
     }
 }
 
