@@ -9,7 +9,7 @@ export const envProvider = {
     EMAIL: process.env.EMAIL,
     PASSWORD: process.env.PASSWORD,
     NODE_ENV: process.env.NODE_ENV,
-    FRONT_URL: process.env.FRONT_URL,
+    FRONT_URL: process.env.FRONT_URL_,
     // Cloudinary Variables
     CLOUD_NAME: process.env.CLOUD_NAME,
     CLOUDINARY_SECRET: process.env.CLOUDINARY_SECRET,
@@ -20,10 +20,12 @@ export const envProvider = {
     CLERK_FRONTEND_API: process.env.CLERK_FRONTEND_API
 }
 
+
 const allowedOrigins = [
+    envProvider.FRONT_URL,
     "http://localhost:5173",
     "http://localhost:3000",
-    envProvider.FRONT_URL,
+
 ];
 
 export const corsOptions = {
