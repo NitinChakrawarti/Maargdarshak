@@ -6,6 +6,7 @@ import ResponseHandler from "../utils/APIResponse.js";
 import Otp from "../utils/generateotp.js";
 import authService from "../services/auth.service.js";
 import User from "../models/user.model.js";
+import { paginate } from "../utils/pagination.js";
 
 class UserController {
 
@@ -128,15 +129,24 @@ class UserController {
                 return new APIError(statusCodeUtility.BadRequest, "No saved items provided");
             }
             const { ids } = request.body;
-            
-            const favoritesData = await userService.fetchFavorites({ids});
+            const {page = 1, limit = 9} = request.query; 
+            const { skip, totalPages , totalItems, currentPage } = paginate(ids.length, page, limit);
+
+            const favoritesData = await userService.fetchFavorites({ids, skip, limit});
             if (!favoritesData || favoritesData.length === 0) {
                 return new APIError(statusCodeUtility.NotFound, "No favorites found for the provided IDs");
             }
             return ResponseHandler(
                 statusCodeUtility.Success,
                 "Fetched Bookmarks Successfully",
-                favoritesData,
+                {
+                    favorites: favoritesData,
+                    pagination: {
+                        totalItems,
+                        totalPages,
+                        currentPage
+                    }
+                },
                 response
             );
         }

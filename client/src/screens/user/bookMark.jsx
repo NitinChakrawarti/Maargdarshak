@@ -3,23 +3,31 @@ import Layout from '../../layout/auth/layout'
 import { useEffect, useState } from 'react';
 import { FetchFavorites } from '../../api';
 import BookmarkGrid from '../../components/user/favouritegrid';
+import Pagination from '../../components/pagination';
 
 const BookMark = () => {
     const { user } = useSelector((state) => state.user);
     const [bookmarks, setBookmarks] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const [loading, setLoading] = useState(true);
+
 
     const fetchFavorites = async () => {
-        const response = await FetchFavorites(user.savedItems);
+        const response = await FetchFavorites({ ids: user.savedItems, page: currentPage, limit: 1 });
         if (response.status === 200) {
-            setBookmarks(response.data.data);
+            setLoading(false);
+            setBookmarks(response.data.data.favorites);
+            setTotalPages(response.data.data?.pagination.totalPages);
         } else {
             console.error("Error fetching bookmarks:", response.data);
         }
+        setLoading(false);
     }
 
     useEffect(() => {
         fetchFavorites();
-    }, [user.savedItems]);
+    }, [user.savedItems, currentPage]);
 
     const handleRemove = (id) => {
         // setBookmarks((prev) => prev.filter((b) => b._id !== id));
@@ -38,8 +46,27 @@ const BookMark = () => {
                     </div>
                 </div>
                 <div className='px-2 '>
-                    <BookmarkGrid bookmarks={bookmarks} onRemove={handleRemove} />
+                    {
+                        bookmarks.length === 0 && !loading ? (
+                            <div className="flex justify-center items-center h-64">
+                                <p className="text-white">No Bookmarks Found</p>
+                            </div>
+                        ) : loading ? (
+                            <div className="flex justify-center items-center h-64">
+                                <p className="text-white">Loading...</p>
+                            </div>
+                        ) : (
+                            <BookmarkGrid
+                                bookmarks={bookmarks}
+                                onRemove={handleRemove}
+                            />
+                        )}
                 </div>
+                <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={setCurrentPage}
+                />
             </div>
         </Layout>
     )

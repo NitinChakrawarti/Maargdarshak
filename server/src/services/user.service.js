@@ -25,7 +25,7 @@ class UserService {
                 password: hashedPassword,
                 name,
                 isverified: false,
-                authType:"manual"
+                authType: "manual"
             });
             return new_user;
         }
@@ -57,10 +57,10 @@ class UserService {
         return user;
     }
 
-    
+
     // ----------------- 2.5. user login with third party ----------------- //
     async loginWithThirdParty(data) {
-        const { clerkId,email, name, profile, role, isVerified ,authType} = data;
+        const { clerkId, email, name, profile, role, isVerified, authType } = data;
         const newUser = await User.create({
             clerkId,
             email,
@@ -125,7 +125,7 @@ class UserService {
     }
 
     async fetchFavorites(data) {
-        const { ids } = data;
+        const { ids, skip, limit } = data;
 
         if (!ids || !Array.isArray(ids) || ids.length === 0) {
             throw new APIError(statusCodeUtility.BadRequest, "No favorite IDs provided");
@@ -137,7 +137,7 @@ class UserService {
                 description: 1,
                 domain: 1,
             }
-        );
+        ).skip(skip).limit(limit);
         return response;
     }
 }
