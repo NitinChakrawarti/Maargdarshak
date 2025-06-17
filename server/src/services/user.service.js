@@ -198,6 +198,39 @@ class UserService {
         }
         return progress;
     }
+
+
+    async checkEligibilityForCertificate({ userId, courseId }) {
+
+        const progress = await Progress.findOne({ userId, courseId });
+        const course = await Resource.findById(courseId);
+        if (!progress || !course) {
+            throw new APIError(statusCodeUtility.NotFound, "Course progress not found");
+        }
+
+        const courseProgress = progress.Progress;
+        const resource = course.toObject();
+        const completedLessons = courseProgress.size; // Use Map.size to get completed lessons count
+        const totalLessons = resource.modules.reduce((count, module) => count + (module.lessons?.length || 0), 0);
+
+        const calculateProgress = () => {
+            return totalLessons > 0 ? Math.round((completedLessons / totalLessons) * 100) : 0;
+        };
+
+        if (completedLessons === totalLessons) {
+            return {
+                eligible: true,
+                progress: calculateProgress(),
+                message: "You are eligible for the certificate."
+            };
+        } else {
+            return {
+                eligible: false,
+                progress: calculateProgress(),
+                message: "You are not eligible for the certificate yet."
+            };
+        }
+    }
 }
 
 export default new UserService();

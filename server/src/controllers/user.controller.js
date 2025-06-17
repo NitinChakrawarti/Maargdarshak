@@ -201,6 +201,26 @@ class UserController {
         );
     }
 
+
+    async checkEligibilityForCertificate(request, response) {
+       const { userId, courseId } = request.query;
+        if (!userId || !courseId) {
+            return new APIError(statusCodeUtility.BadRequest, "Missing required fields");
+        }
+
+        const isEligible = await userService.checkEligibilityForCertificate({ userId, courseId });
+        if (!isEligible) {
+            return new APIError(statusCodeUtility.Forbidden, "User is not eligible for a certificate for this course");
+        }
+
+        return ResponseHandler(
+            statusCodeUtility.Success,
+            "User is eligible for a certificate",
+            { eligible: true },
+            response
+        );
+    }
+
     async generateCertificate(request, response) {
         const { userId, courseId } = request.body;
         if (!userId || !courseId) {

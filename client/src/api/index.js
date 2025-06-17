@@ -268,3 +268,17 @@ export const verifyClerkToken = async (token) => {
     return error.response.data;
   }
 }
+
+
+export const CheckEligibilityForCertificate = async (data) => {
+  
+  try {
+    const response = await instance.get(`/user/eligible-for-certificate`, {
+      params: { ...data },
+      withCredentials: true,
+    });
+    return response;
+  } catch (error) {
+    return error.response.data;
+  }
+}
