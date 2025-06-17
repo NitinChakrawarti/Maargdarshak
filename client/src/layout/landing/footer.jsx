@@ -47,12 +47,13 @@ const Footer = () => {
               { label: "Home", to: "/" },
               { label: "About", to: "/about" },
               { label: "Mentors", to: "/ourmentors" },
+              { label: "Resources", to: "/resource" },
             ].map(({ label, to }, i) => (
               <li key={i}>
                 <Link
                   to={to}
                   onClick={() => window.scrollTo(0, 0)}
-                  className="text-brand-sky hover:text-white transition"
+                  className="text-brand-sky text-left hover:text-white transition"
                 >
                   {label}
                 </Link>
@@ -65,9 +66,9 @@ const Footer = () => {
         <div>
           <h3 className="text-xl font-semibold text-white">Contact Us</h3>
           <ul className="mt-4 space-y-1 text-brand-sky">
-            <li>Email: support@margdarshak.com</li>
-            <li>Phone: +1 234 567 890</li>
-            <li>Address: RGPV University, Bhopal, M.P.</li>
+            <li>Email: bip.cubrish@gmail.com</li>
+            <li>Phone: +91 8305978738</li>
+            <li>Address: Bhopal, M.P.</li>
           </ul>
         </div>
       </div>

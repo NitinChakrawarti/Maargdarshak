@@ -193,6 +193,7 @@ class UserService {
             },
             { new: true }
         );
+        
         if (!progress) {
             throw new APIError(statusCodeUtility.NotFound, "Course progress not found");
         }
