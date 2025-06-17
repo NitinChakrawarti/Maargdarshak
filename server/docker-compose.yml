@@ -1,0 +1,7 @@
+services:
+  backend:
+    image: cubrish04/main-server
+    ports:
+      - "${PORT}:${PORT}"
+    env_file:
+      - .env

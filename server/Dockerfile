@@ -1,23 +1,23 @@
-# Use Node.js base image
+# Use official Node.js image
 FROM node:18
 
-# Create app directory
+# Set working directory
 WORKDIR /app
 
-# Copy package files
+# Copy dependencies
 COPY package*.json ./
 
 # Install dependencies
 RUN npm install
 
-# Copy the rest of the code
+# Copy environment variables (optional)
+# COPY .env* ./
+
+# Copy rest of the code
 COPY . .
 
-# Set environment variable (optional)
-# ENV NODE_ENV=production
-
-# Expose the port your app runs on
-EXPOSE 5000
+# Expose the port
+EXPOSE 4000
 
 # Start the server
 CMD ["node", "index.js"]
