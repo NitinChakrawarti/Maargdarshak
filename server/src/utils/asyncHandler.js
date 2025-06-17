@@ -9,3 +9,5 @@ const asyncHandler = (fun) => async (request, response, next) => {
 }
 
 export default asyncHandler
+
+

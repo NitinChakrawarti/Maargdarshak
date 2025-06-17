@@ -34,6 +34,7 @@ class Mentorservice {
         return new_mentor;
     }
 
+
     async loginMentor(email, password) {
         const mentor = await Mentor.findOne({ email });
         if (!mentor) {
@@ -55,8 +56,13 @@ class Mentorservice {
         return mentor;
     }
 
+
+
     async getMentors() {
         const mentors = await Mentor.find({ status: "active" });
+        if (!mentors) {
+            throw new APIError(statusCodeUtility.NotFound, "No mentors found");
+        }
         return mentors;
     }
 
@@ -64,6 +70,9 @@ class Mentorservice {
         const mentor = await Mentor.findByIdAndUpdate(id
             , data
             , { new: true });
+        if (!mentor) {
+            throw new APIError(statusCodeUtility.NotFound, "Mentor not found");
+        }
         return mentor;
     }
 

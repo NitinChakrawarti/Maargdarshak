@@ -56,15 +56,6 @@ class Resources {
                 res
             );
         }
-
-        else {
-            return ResponseHandler(
-                statusCodeUtility.BadRequest,
-                "Resource not created",
-                resourceData,
-                res
-            );
-        }
     }
 
     async getResource(req, res) {
@@ -94,15 +85,6 @@ class Resources {
                 res
             );
         }
-
-        else {
-            return ResponseHandler(
-                statusCodeUtility.BadRequest,
-                "Resource not updated",
-                resourceData,
-                res
-            );
-        }
     }
 
     async deleteResource(req, res) {
@@ -113,15 +95,6 @@ class Resources {
             return ResponseHandler(
                 statusCodeUtility.Success,
                 "Resource deleted successfully",
-                resourceData,
-                res
-            );
-        }
-
-        else {
-            return ResponseHandler(
-                statusCodeUtility.BadRequest,
-                "Resource not deleted",
                 resourceData,
                 res
             );

@@ -31,9 +31,7 @@ const userSchema = new mongoose.Schema(
         },
         clerkId: {
             type: String,
-            default: null, // Present for OAuth users only
             unique: true,
-            sparse: true // Allows null values
         },
         isverified: {
             type: Boolean,
@@ -73,7 +71,6 @@ const userSchema = new mongoose.Schema(
                     courseId: {
                         type: mongoose.Schema.Types.ObjectId,
                         ref: "Resources",
-                        unique: true,
                     },
                 },
             ],

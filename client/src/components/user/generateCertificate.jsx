@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { CheckEligibilityForCertificate } from '../../api';
+import { CheckEligibilityForCertificate, GenerateCertificateApi } from '../../api';
 import { toast } from 'react-toastify';
 
 const GenerateCertificate = ({ resourceId, user, courseProgress, resource }) => {
@@ -22,8 +22,20 @@ const GenerateCertificate = ({ resourceId, user, courseProgress, resource }) => 
         checkEligibility();
     }, []);
 
+
     const handleDownloadCertificate = async () => {
-        toast.info("Certificate generation is not implemented yet.");
+        try {
+            const response = await GenerateCertificateApi({
+                userId: user._id,
+                courseId: resourceId
+            });
+
+            const blob = new Blob([response.data], { type: 'application/pdf' });
+            const url = window.URL.createObjectURL(blob);
+            window.open(url, '_blank'); // open in new tab
+        } catch (error) {
+            console.error("Error previewing certificate:", error);
+        }
     };
 
 

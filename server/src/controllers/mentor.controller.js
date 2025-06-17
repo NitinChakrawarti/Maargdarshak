@@ -57,14 +57,6 @@ class mentorController {
                 response,
             );
 
-        } else {
-            return ResponseHandler(
-                statusCodeUtility.BadRequest,
-                "Error in Signup",
-                registerMentor,
-                response
-            );
-
         }
     }
 
@@ -131,11 +123,6 @@ class mentorController {
         }
 
         const updateMentor = await Mentorservice.updateMentor(id, updatedData);
-
-        if (!updateMentor) {
-            return next(new APIError(statusCodeUtility.NotFound, "Mentor not found"));
-        }
-
         return ResponseHandler(statusCodeUtility.Success, "Mentor updated successfully", updateMentor, response);
     }
 
@@ -146,11 +133,6 @@ class mentorController {
         }
 
         const mentor = await Mentorservice.getMentorById(id);
-
-        if (!mentor) {
-            return next(new APIError(statusCodeUtility.NotFound, "Mentor not found"));
-        }
-
         return ResponseHandler(statusCodeUtility.Success, "Mentor fetched successfully", mentor, response);
     }
 

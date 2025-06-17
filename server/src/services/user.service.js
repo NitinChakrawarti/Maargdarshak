@@ -4,6 +4,9 @@ import bcrypt from 'bcryptjs';
 import statusCodeUtility from "../utils/statusCodeUtility.js";
 import Resource from "../models/resource.model.js";
 import Progress from "../models/progress.model.js";
+import Certificate from "../models/certificate.model.js";
+import { generateCertificate } from "../utils/generatecertificate.js";
+
 
 const salt = bcrypt.genSaltSync(10);
 
@@ -28,6 +31,9 @@ class UserService {
                 isverified: false,
                 authType: "manual"
             });
+            if (!new_user) {
+                throw new APIError(statusCodeUtility.InternalServerError, "Failed to create user");
+            }
             return new_user;
         }
 
@@ -80,24 +86,8 @@ class UserService {
     // ----------------- 3. add course ----------------- //
     async addCourse(data) {
         const { courseName, description, courseId, userId } = data;
-        // const response = await User.findByIdAndUpdate(
-        //     userId,
-        //     {
-        //         $push: {
-        //             courses: {
-        //                 courseName,
-        //                 description,
-        //                 courseId
-        //             }
-        //         }
-        //     },
-        //     { new: true }
-        // );
-        // const progressInitate = await Progress.create({
-        //     userId: userId,
-        //     courseId: courseId,
-        //     Progress: []
-        // });
+        const session = await User.startSession();
+        session.startTransaction();
         const response = await Promise.all([
             User.findByIdAndUpdate(
                 userId,
@@ -125,6 +115,13 @@ class UserService {
                 { new: true }
             )
         ]);
+        if (!response[0] || !response[1] || !response[2]) {
+            await session.abortTransaction();
+            session.endSession();
+            throw new APIError(statusCodeUtility.InternalServerError, "Failed to add course");
+        }
+        await session.commitTransaction();
+        session.endSession();
         return response[0];
     }
 
@@ -142,6 +139,9 @@ class UserService {
                 },
                 { new: true }
             );
+            if (!response) {
+                throw new APIError(statusCodeUtility.NotFound, "User not found or course not in favorites");
+            }
             return { removed: true, favorites: response.savedItems, message: "Course removed from favorites successfully" };
         }
 
@@ -154,6 +154,9 @@ class UserService {
             },
             { new: true }
         );
+        if (!response) {
+            throw new APIError(statusCodeUtility.NotFound, "User not found");
+        }
         return { added: true, favorites: response.savedItems, message: "Course added to favorites successfully" };
     }
 
@@ -171,6 +174,9 @@ class UserService {
                 domain: 1,
             }
         ).skip(skip).limit(limit);
+        if (!response || response.length === 0) {
+            throw new APIError(statusCodeUtility.NotFound, "No favorite courses found");
+        }
         return response;
     }
 
@@ -193,7 +199,7 @@ class UserService {
             },
             { new: true }
         );
-        
+
         if (!progress) {
             throw new APIError(statusCodeUtility.NotFound, "Course progress not found");
         }
@@ -211,7 +217,7 @@ class UserService {
 
         const courseProgress = progress.Progress;
         const resource = course.toObject();
-        const completedLessons = courseProgress.size; // Use Map.size to get completed lessons count
+        const completedLessons = courseProgress.size;
         const totalLessons = resource.modules.reduce((count, module) => count + (module.lessons?.length || 0), 0);
 
         const calculateProgress = () => {
@@ -225,13 +231,52 @@ class UserService {
                 message: "You are eligible for the certificate."
             };
         } else {
-            return {
-                eligible: false,
-                progress: calculateProgress(),
-                message: "You are not eligible for the certificate yet."
-            };
+            throw new APIError(statusCodeUtility.BadRequest, "You are not eligible for the certificate yet.");
         }
     }
+
+
+    async generateCertificate({ userId, courseId }) {
+        const [user, resource] = await Promise.all([
+            User.findById(userId).select("name email"),
+            Resource.findById(courseId).select("title mentorname")
+        ]);
+
+        if (!user || !resource) {
+            throw new APIError(statusCodeUtility.NotFound, "User or Course not found");
+        }
+
+        let existingCertificate = await Certificate.findOne({ userId, courseId });
+
+        if (!existingCertificate) {
+            existingCertificate = await Certificate.create({
+                userId: userId,
+                courseName: resource.title,
+                learnerName: user.name,
+                instructorName: resource.mentorname,
+                courseId: courseId
+            });
+
+            if (!existingCertificate) {
+                throw new APIError(statusCodeUtility.InternalServerError, "Error creating certificate record");
+            }
+        }
+
+        return await generateCertificate({
+            name: user.name,
+            moduleName: resource.title,
+            certificateId: existingCertificate._id.toString(),
+            adminName: resource.mentorname,
+            date: existingCertificate.createdAt.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            })
+        });
+    }
+
+
+
 }
 
 export default new UserService();

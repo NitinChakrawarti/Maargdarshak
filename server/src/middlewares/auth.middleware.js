@@ -68,6 +68,7 @@ class UserToken {
             );
         }
     }
+    
 }
 
 export default new UserToken();
