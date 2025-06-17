@@ -166,9 +166,12 @@ const Mentor = () => {
               Join us today and start your journey with the best mentors in the industry. Together, we’ll help you achieve your goals and unlock your potential.
             </p>
             <div className="flex flex-col md:flex-row justify-center gap-4">
-              <button className="bg-gradient-to-l from-brand-navy to-brand-blue text-bg px-6 py-3 rounded-lg text-lg font-semibold hover:bg-primary/90 transition-colors">
+              <Link
+                to="/signup"
+                className="bg-gradient-to-l from-brand-navy to-brand-blue text-bg px-6 py-3 rounded-lg text-lg font-semibold hover:bg-primary/90 transition-colors"
+              >
                 Connect with Mentors
-              </button>
+              </Link>
               <Link
                 to="/mentor-signup"
                 className="bg-brand-blue text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-brand-blue/90 transition-colors"

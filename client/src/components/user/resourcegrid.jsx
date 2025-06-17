@@ -125,8 +125,8 @@ const ResourcesGrid = () => {
                                                 {resource.reviews?.length || 0} reviews
                                             </span>
                                             <span className="text-brand-navy font-medium">
-                                                {resource.resource?.length || 0} resource
-                                                {resource.resource?.length !== 1 ? "s" : ""}
+                                                {resource.modules?.length || 0} module
+                                                {resource.modules?.length !== 1 ? "s" : ""}
                                             </span>
                                         </div>
                                         <div>
