@@ -9,6 +9,7 @@ import express from "express";
 // ------------------ Importing main route from routes ------------------ //
 import mainRoutes from './routes/main.route.js'
 import { corsOptions } from './constants.js';
+import Errorhandler from './utils/APIErrorHandler.js';
 
 
 dotenv.config();
@@ -59,5 +60,7 @@ app.get('/mentors', (req, res) => {
 //---------middleware (Routes)---------------//
 app.use('/', mainRoutes)
 // app.use('/md/api/v1/user', mainRoutes)
+
+app.use(Errorhandler);
 
 export { app }

@@ -35,14 +35,6 @@ class UserController {
                 response,
             );
         }
-        else {
-            return ResponseHandler(
-                statusCodeUtility.Success,
-                "User created successfully",
-                userData,
-                response
-            );
-        }
     }
 
     // ----------------- User Login -----------------
@@ -130,35 +122,28 @@ class UserController {
     }
 
     async fetchFavorites(request, response) {
-        try {
-            if (!request.body.ids) {
-                return new APIError(statusCodeUtility.BadRequest, "No saved items provided");
-            }
-            const { ids } = request.body;
-            const { page = 1, limit = 9 } = request.query;
-            const { skip, totalPages, totalItems, currentPage } = paginate(ids.length, page, limit);
+        if (!request.body.ids) {
+            return new APIError(statusCodeUtility.BadRequest, "No saved items provided");
+        }
+        const { ids } = request.body;
+        const { page = 1, limit = 9 } = request.query;
+        const { skip, totalPages, totalItems, currentPage } = paginate(ids.length, page, limit);
 
-            const favoritesData = await userService.fetchFavorites({ ids, skip, limit });
-            if (!favoritesData || favoritesData.length === 0) {
-                return new APIError(statusCodeUtility.NotFound, "No favorites found for the provided IDs");
-            }
-            return ResponseHandler(
-                statusCodeUtility.Success,
-                "Fetched Bookmarks Successfully",
-                {
-                    favorites: favoritesData,
-                    pagination: {
-                        totalItems,
-                        totalPages,
-                        currentPage
-                    }
-                },
-                response
-            );
-        }
-        catch (error) {
-            return new APIError(statusCodeUtility.InternalServerError, "Error fetching favorites", error);
-        }
+        const favoritesData = await userService.fetchFavorites({ ids, skip, limit });
+        return ResponseHandler(
+            statusCodeUtility.Success,
+            "Fetched Bookmarks Successfully",
+            {
+                favorites: favoritesData,
+                pagination: {
+                    totalItems,
+                    totalPages,
+                    currentPage
+                }
+            },
+            response
+        );
+
     }
 
     async getCourseProgress(request, response) {
@@ -168,9 +153,6 @@ class UserController {
         }
 
         const progressData = await userService.getCourseProgress(resourceId);
-        if (!progressData) {
-            return new APIError(statusCodeUtility.NotFound, "No progress found for the provided resource ID");
-        }
 
         return ResponseHandler(
             statusCodeUtility.Success,
@@ -203,42 +185,43 @@ class UserController {
 
 
     async checkEligibilityForCertificate(request, response) {
-       const { userId, courseId } = request.query;
+        const { userId, courseId } = request.query;
         if (!userId || !courseId) {
             return new APIError(statusCodeUtility.BadRequest, "Missing required fields");
         }
-
         const isEligible = await userService.checkEligibilityForCertificate({ userId, courseId });
-        if (!isEligible) {
-            return new APIError(statusCodeUtility.Forbidden, "User is not eligible for a certificate for this course");
-        }
 
         return ResponseHandler(
             statusCodeUtility.Success,
             "User is eligible for a certificate",
-            { eligible: true },
+            { eligible: isEligible.eligible },
             response
         );
     }
+    async generateCertificate(request, response, next) {
+        try {
+            const { userId, courseId } = request.body;
+            if (!userId || !courseId) {
+                throw new APIError(statusCodeUtility.BadRequest, "Missing required fields");
+            }
 
-    async generateCertificate(request, response) {
-        const { userId, courseId } = request.body;
-        if (!userId || !courseId) {
-            return new APIError(statusCodeUtility.BadRequest, "Missing required fields");
+            const isEligible = await userService.checkEligibilityForCertificate({ userId, courseId });
+            if (!isEligible.eligible) {
+                throw new APIError(statusCodeUtility.BadRequest, "User is not eligible for a certificate");
+            }
+
+            const pdfBuffer = await userService.generateCertificate({ userId, courseId });
+
+            response.set({
+                "Content-Type": "application/pdf",
+                "Content-Disposition": `inline; filename="certificate.pdf"`, // ⬅ change "attachment" to "inline"
+            });
+          return  response.send(pdfBuffer);
+        } catch (err) {
+            next(err); // assuming you're using centralized error handling
         }
-
-        const certificateData = await userService.generateCertificate({ userId, courseId });
-        if (!certificateData) {
-            return new APIError(statusCodeUtility.NotFound, "No certificate found for the provided user and course");
-        }
-
-        return ResponseHandler(
-            statusCodeUtility.Success,
-            "Certificate generated successfully",
-            certificateData,
-            response
-        );
     }
+
 }
 
 export default new UserController();

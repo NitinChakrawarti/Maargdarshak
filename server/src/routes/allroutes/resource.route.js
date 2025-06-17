@@ -1,6 +1,6 @@
 import express from 'express';
 import asyncHandler from '../../utils/asyncHandler.js';
-import upload from '../../../storage/storage.js';
+import upload from '../../config/storage.config.js'
 import resourceController from '../../controllers/resource.controller.js';
 
 

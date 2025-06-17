@@ -197,7 +197,7 @@ export const GetResourceById = async (resourceId) => {
 }
 
 export const getCourseProgress = async (resourceId) => {
-  
+
   try {
     const response = await instance.get(`/user/get-progress/${resourceId}`, {
       withCredentials: true,
@@ -272,7 +272,7 @@ export const verifyClerkToken = async (token) => {
 
 
 export const CheckEligibilityForCertificate = async (data) => {
-  
+
   try {
     const response = await instance.get(`/user/eligible-for-certificate`, {
       params: { ...data },
@@ -283,3 +283,31 @@ export const CheckEligibilityForCertificate = async (data) => {
     return error.response.data;
   }
 }
+
+
+// export const GenerateCertificateApi = async (data) => {
+//   try {
+//     const response = await instance.post(`/user/generate-certificate`, { ...data }, {
+//       withCredentials: true,
+//     });
+//     return response;
+//   } catch (error) {
+//   }
+// }
+
+export const GenerateCertificateApi = async (data) => {
+  try {
+    const response = await instance.post(
+      `/user/generate-certificate`,
+      { ...data },
+      {
+        withCredentials: true,
+        responseType: 'blob', // 🔑 Required to handle PDF
+      }
+    );
+    return response;
+  } catch (error) {
+    console.error("Certificate Generation Error:", error);
+    throw error;
+  }
+};

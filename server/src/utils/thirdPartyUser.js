@@ -11,7 +11,7 @@ const thirdPartyUser = async (userId) => {
             email: user.emailAddresses[0]?.emailAddress || null,
             name: `${user.firstName || ''} ${user.lastName || ''}` || null,
             profileImage: user.imageUrl || null,
-            isVerified: user.externalAccounts?.some(account => account.verification) || false,
+            isVerified: true,
             mobile: user.phoneNumbers[0]?.phoneNumber || null,
             role: 'user',
             authType: 'oauth',

@@ -12,7 +12,6 @@ import thirdPartyUser from "../utils/thirdPartyUser.js";
 
 class authController {
 
-    
     async verifyOtp(request, response) {
         if (!request.body) {
             return new APIError(statusCodeUtility.BadRequest, "No data Provided");
@@ -23,13 +22,6 @@ class authController {
             return ResponseHandler(
                 statusCodeUtility.Success,
                 "Otp Verified",
-                verifyotp,
-                response,
-            );
-        } else {
-            return ResponseHandler(
-                statusCodeUtility.BadRequest,
-                "Error in verifying otp",
                 verifyotp,
                 response,
             );
@@ -68,21 +60,17 @@ class authController {
             );
         }
         if (!token) {
-            return ResponseHandler(
-                statusCodeUtility.BadRequest,
+            throw new APIError(
+                statusCodeUtility.Unauthorized,
                 "No token provided",
-                null,
-                response,
             );
         }
         const verifyToken = await authService.tokenverify(token);
         const user = await User.findById(verifyToken.id) || await Mentor.findById(verifyToken.id);
         if (!user) {
-            return ResponseHandler(
+            throw new APIError(
                 statusCodeUtility.BadRequest,
                 "User not found",
-                null,
-                response,
             );
         }
         const userData = {
@@ -97,6 +85,8 @@ class authController {
             response,
         );
     }
+
+
 
     async chatDetails(request, response) {
         if (!request.body) {
@@ -113,11 +103,9 @@ class authController {
                 response,
             );
         } else {
-            return ResponseHandler(
-                statusCodeUtility.BadRequest,
-                "Error in fetching user details",
-                userDetails,
-                response,
+            throw new APIError(
+                statusCodeUtility.InternalServerError,
+                "Failed to fetch user details",
             );
         }
     }
@@ -153,11 +141,9 @@ class authController {
                 response,
             );
         }
-        return ResponseHandler(
+        throw new APIError(
             statusCodeUtility.BadRequest,
-            "No role provided",
-            null,
-            response,
+            "Role not provided",
         );
     }
 }

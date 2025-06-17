@@ -2,7 +2,7 @@ import { v2 as Cloudinary } from 'cloudinary'
 import { CloudinaryStorage } from 'multer-storage-cloudinary'
 import dotenv from 'dotenv'
 import multer from 'multer';
-import { envProvider } from '../src/constants.js';
+import { envProvider } from '../constants.js';
 
 dotenv.config();
 Cloudinary.config({
