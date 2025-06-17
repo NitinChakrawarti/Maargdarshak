@@ -20,7 +20,7 @@ const GenerateCertificate = ({ resourceId, user, courseProgress, resource }) => 
             setEligible(response.data.data.eligible);
         };
         checkEligibility();
-    }, []);
+    }, [courseProgress]);
 
 
     const handleDownloadCertificate = async () => {
