@@ -56,7 +56,7 @@ const Layout = ({ children }) => {
           !isPWAMobile &&
           <Header toggleSidebar={toggleSidebar} />
         }
-        <main className="flex-1 overflow-auto">
+        <main className="flex-1 mb-20 overflow-auto">
           {children}
         </main>
         {isPWAMobile && <BottomNav />}

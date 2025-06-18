@@ -1,51 +1,4 @@
 
-// import { useSelector, useDispatch } from "react-redux";
-// import { Link, useLocation, useNavigate } from "react-router-dom";
-// import { MentorSidebar, UserSidebar } from "../data/authsidebar";
-
-
-// const BottomNav = () => {
-//     const location = useLocation();
-//     const { role } = useSelector((state) => state.auth);
-//     const { user } = useSelector((state) => state.user);
-
-//     const navItems = role === "mentor" ? MentorSidebar : role === "user" ? UserSidebar : [];
-
-//     return (
-//         <div className="fixed bottom-0 left-0 right-0 z-50 bg-gradient-to-br from-[#1e293b] via-[#1a3a6c] to-[#1e3a8a] text-white border-t border-[#b5d5e5]/20 shadow-inner backdrop-blur-md flex justify-around items-center py-2 px-3">
-//             {navItems.map((item) => (
-//                 <Link
-//                     key={item.component}
-//                     to={item.component}
-//                     className={`flex flex-col items-center text-xs px-2 py-1 rounded-xl transition-all duration-300
-//             ${item.component === location.pathname
-//                             ? "bg-gradient-to-r from-[#0ea5e9] to-[#2c67a6] text-white shadow-md scale-105"
-//                             : "text-white/80 hover:text-white hover:bg-[#b5d5e5]/10"
-//                         }`}
-//                 >
-//                     <div className="w-6 h-6 flex items-center justify-center">
-//                         {item.label === "Profile" ? (
-//                             <img
-//                                 src={user?.profile}
-//                                 alt="profile"
-//                                 className="w-6 h-6 rounded-full object-cover"
-//                             />
-//                         ) : (
-//                             item.icon
-//                         )}
-//                     </div>
-//                     <span className="mt-1">{item.label}</span>
-//                 </Link>
-//             ))}
-//         </div>
-//     );
-// };
-
-// export default BottomNav;
-
-
-
-
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { MentorSidebar, UserSidebar } from "../data/authsidebar";
@@ -58,14 +11,14 @@ const BottomNav = () => {
     const navItems = role === "mentor" ? MentorSidebar : role === "user" ? UserSidebar : [];
 
     return (
-        <div className="fixed bottom-0 left-0 right-0 z-50">
+        <div className="fixed  bottom-0 left-0 right-0 z-50">
             {/* Background with glassmorphism effect */}
-            <div className="bg-gradient-to-r from-brand-navy via-light-blue to-brand-blue backdrop-blur-xl border-t border-white/10 shadow-2xl">
+            <div className=" shadow-2xl  bg-bg/90 backdrop-blur-2xl">
                 {/* Animated background glow */}
-                <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 via-purple-500/20 to-pink-500/20 animate-pulse"></div>
+                <div className="absolute inset-0 bg-bg/90 backdrop-blur-2xl  animate-pulse"></div>
                 
                 {/* Navigation container */}
-                <div className="relative flex justify-around items-center py-3 px-4">
+                <div className="relative flex justify-around items-center pt-2 pb-1 px-4">
                     {navItems.map((item, index) => {
                         const isActive = item.component === location.pathname;
                         
@@ -86,8 +39,8 @@ const BottomNav = () => {
                                 {/* Navigation item */}
                                 <div className={`relative flex flex-col items-center px-3 py-2 rounded-2xl transition-all duration-500 transform hover:scale-110 hover:-translate-y-1
                                     ${isActive 
-                                        ? "bg-gradient-to-r from-cyan-500/90 to-blue-600/90 text-white shadow-lg shadow-cyan-500/30 scale-105" 
-                                        : "text-white/70 hover:text-white hover:bg-white/10 hover:shadow-lg hover:shadow-purple-500/20"
+                                        ? "bg-gradient-to-r  text-brand-navy shadow-lg shadow-cyan-500/30 scale-105" 
+                                        : "text-brand-navy hover:text-white hover:bg-brand-navy/50 hover:shadow-lg hover:shadow-purple-500/20"
                                     }`}
                                 >
                                     {/* Icon container with bounce animation */}
@@ -111,7 +64,7 @@ const BottomNav = () => {
                                             </div>
                                         ) : (
                                             <div className={`transition-all duration-300 ${
-                                                isActive ? "text-white" : "text-white/70 group-hover:text-white"
+                                                isActive ? "text-brand-navy" : "text-brand-navy group-hover:text-brand-blue"
                                             }`}>
                                                 {item.icon}
                                             </div>
@@ -121,21 +74,16 @@ const BottomNav = () => {
                                     {/* Label with fade animation */}
                                     <span className={`text-xs font-medium transition-all duration-300 ${
                                         isActive 
-                                            ? "text-white opacity-100" 
-                                            : "text-white/60 group-hover:text-white/90 group-hover:opacity-100"
+                                            ? "text-brand-navy opacity-100" 
+                                            : "text-brand-navy group-hover:text-brand-blue group-hover:opacity-100"
                                     }`}>
                                         {item.label}
                                     </span>
-                                    
-                                    {/* Active state dot indicator */}
-                                    {isActive && (
-                                        <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-white rounded-full animate-pulse"></div>
-                                    )}
                                 </div>
                                 
                                 {/* Hover effect ripple */}
                                 <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                    <div className="absolute inset-0 bg-gradient-to-r from-purple-400/20 to-pink-400/20 rounded-2xl animate-pulse"></div>
+                                    <div className="absolute inset-0 bg-gradient-to-r from-brand-navy/20 rounded-2xl animate-pulse"></div>
                                 </div>
                             </Link>
                         );
