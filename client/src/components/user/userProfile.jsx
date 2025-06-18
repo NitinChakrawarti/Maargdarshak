@@ -4,13 +4,15 @@ import { Link } from 'react-router-dom';
 import { useClerk } from '@clerk/clerk-react';
 import { setAuth } from '../../redux/features/authSlice';
 import { setUser } from '../../redux/features/userSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { LogOutFunc } from '../../api';
 
 
 const ProfileComponent = ({ user }) => {
     const [showCourses, setShowCourses] = useState(false);
     const [userData, setUserData] = useState(user || {});
     const dispatch = useDispatch();
+    const { role } = useSelector((state) => state.auth);
     const formatDate = (dateString) => {
         return new Date(dateString).toLocaleDateString('en-US', {
             year: 'numeric',

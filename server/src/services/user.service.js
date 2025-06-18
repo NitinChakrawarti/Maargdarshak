@@ -274,6 +274,14 @@ class UserService {
             })
         });
     }
+
+    async verifyCertificate(certificateId) {
+        const certificate = await Certificate.findById(certificateId);
+        if (!certificate) {
+            return false; // Certificate not found
+        }
+        return certificate; // Certificate is valid
+    }
 }
 
 export default new UserService();

@@ -284,17 +284,6 @@ export const CheckEligibilityForCertificate = async (data) => {
   }
 }
 
-
-// export const GenerateCertificateApi = async (data) => {
-//   try {
-//     const response = await instance.post(`/user/generate-certificate`, { ...data }, {
-//       withCredentials: true,
-//     });
-//     return response;
-//   } catch (error) {
-//   }
-// }
-
 export const GenerateCertificateApi = async (data) => {
   try {
     const response = await instance.post(
@@ -311,3 +300,20 @@ export const GenerateCertificateApi = async (data) => {
     throw error;
   }
 };
+
+
+export const VerifyCertificateApi = async (data) => {
+  try {
+    const response = await instance.post(`/user/verify-certificate`, {}, {
+      withCredentials: true,
+      params: { certificateId: data.certificateId },
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return response;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+

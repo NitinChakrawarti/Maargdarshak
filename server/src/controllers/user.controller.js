@@ -215,10 +215,31 @@ class UserController {
                 "Content-Type": "application/pdf",
                 "Content-Disposition": `inline; filename="certificate.pdf"`, // ⬅ change "attachment" to "inline"
             });
-          return  response.send(pdfBuffer);
+            return response.send(pdfBuffer);
         } catch (err) {
             next(err); // assuming you're using centralized error handling
         }
+    }
+
+    async verifyCertificate(request, response) {
+        const { certificateId } = request.query;
+
+        if (!certificateId) {
+            return new APIError(statusCodeUtility.BadRequest, "No certificate ID provided");
+        }
+
+        const isValid = await userService.verifyCertificate(certificateId);
+
+        if (!isValid) {
+            return new APIError(statusCodeUtility.NotFound, "Certificate not found or invalid");
+        }
+
+        return ResponseHandler(
+            statusCodeUtility.Success,
+            "Certificate is valid",
+            isValid,
+            response
+        );
     }
 
 }
