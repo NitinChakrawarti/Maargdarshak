@@ -61,7 +61,7 @@ const ProfileComponent = ({ user }) => {
                     <div className="bg-gradient-to-r relative to-brand-blue from-brand-navy px-6 sm:px-8 py-8">
                         <button
                             onClick={handleLogout}
-                            className="absolute bottom-4 text-bg right-4 transition-colors">
+                            className="absolute bottom-4 cursor-pointer  text-bg right-4 transition-colors">
                             <LogOut size={20} />
                         </button>
                         <div className="flex flex-col sm:flex-row items-center gap-6">
