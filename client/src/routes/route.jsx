@@ -21,6 +21,7 @@ import UserProfile from "../screens/user/userProfile";
 import MentorProfilePage from "../screens/mentor/mentorProfile";
 import ResourceDetail from "../screens/user/resourceDetail";
 import Resources from "../screens/resources";
+import VerifyCertificate from "../screens/verifyCertificate";
 
 export const AllRoutes = () => {
   return (
@@ -55,7 +56,7 @@ export const AllRoutes = () => {
         />
         <Route
           path="resource"
-          >
+        >
           <Route
             path=""
             element={
@@ -83,8 +84,12 @@ export const AllRoutes = () => {
           }
         />
 
-
-
+        <Route
+          path="/verify-certificate"
+          element={
+              <VerifyCertificate />
+          }
+        />
 
         {/* ------------------------------ mentor signup ------------------------------- */}
         <Route

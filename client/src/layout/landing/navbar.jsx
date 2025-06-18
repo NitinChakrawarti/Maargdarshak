@@ -18,6 +18,10 @@ const navele = [
   {
     button: "Resources",
     link: "/resource",
+  },
+  {
+    button: "Verify Certificate",
+    link: "/verify-certificate",
   }
 ];
 
