@@ -4,6 +4,7 @@
 @layer base {
   body {
     background-color: var(--color-bg);
+    transition: opacity 0.4s ease-in-out;
   }
 }
 
