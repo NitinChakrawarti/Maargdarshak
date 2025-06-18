@@ -43,7 +43,6 @@ const ResourceDetailView = () => {
                 [lessonId]: status
             }
         };
-        console.log("Progress Data:", data);
         
         handleProgressChangeImmediate(data);
     };

@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
-import { User, Mail, Phone, Calendar, Shield, BookOpen, Bookmark, Edit3, Check, X, Edit, ChevronDown, ChevronUp } from 'lucide-react';
+import { User, Mail, Phone, Calendar, Shield, BookOpen, Bookmark, Edit3, Check, X, Edit, ChevronDown, ChevronUp, LogOut } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useClerk } from '@clerk/clerk-react';
+import { setAuth } from '../../redux/features/authSlice';
+import { setUser } from '../../redux/features/userSlice';
+import { useDispatch } from 'react-redux';
+
 
 const ProfileComponent = ({ user }) => {
     const [showCourses, setShowCourses] = useState(false);
     const [userData, setUserData] = useState(user || {});
-
+    const dispatch = useDispatch();
     const formatDate = (dateString) => {
         return new Date(dateString).toLocaleDateString('en-US', {
             year: 'numeric',
@@ -13,6 +18,21 @@ const ProfileComponent = ({ user }) => {
             day: 'numeric'
         });
     };
+
+    const { signOut } = useClerk();
+    const handleLogout = async () => {
+        await signOut();
+        const logout = await LogOutFunc({ role: role });
+        if (logout.status === 200) {
+            dispatch(setAuth({ role: null, data: null }));
+            dispatch(setUser({ user: null, isverified: false, savedItems: [] }));
+            return navigate("/");
+        }
+        else {
+            console.error("Logout failed:", logout.message);
+        }
+    };
+
 
     const handleEdit = () => {
         setIsEditing(true);
@@ -38,7 +58,12 @@ const ProfileComponent = ({ user }) => {
                 {/* Main Profile Card */}
                 <div className="bg-white rounded-2xl shadow-xl overflow-hidden mb-6">
                     {/* Header Section */}
-                    <div className="bg-gradient-to-r to-brand-blue from-brand-navy px-6 sm:px-8 py-8">
+                    <div className="bg-gradient-to-r relative to-brand-blue from-brand-navy px-6 sm:px-8 py-8">
+                        <button
+                            onClick={handleLogout}
+                            className="absolute bottom-4 text-bg right-4 transition-colors">
+                            <LogOut size={20} />
+                        </button>
                         <div className="flex flex-col sm:flex-row items-center gap-6">
                             {/* Avatar */}
                             <div className="relative">

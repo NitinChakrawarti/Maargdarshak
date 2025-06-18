@@ -31,7 +31,12 @@ const BookMark = () => {
 
     const handleRemove = (id) => {
         // setBookmarks((prev) => prev.filter((b) => b._id !== id));
+    
     };
+
+    console.log("Bookmarks:", bookmarks);
+    
+
 
     return (
         <Layout>
@@ -49,11 +54,11 @@ const BookMark = () => {
                     {
                         bookmarks.length === 0 && !loading ? (
                             <div className="flex justify-center items-center h-64">
-                                <p className="text-white">No Bookmarks Found</p>
+                                <p className="text-navy-blue">No Bookmarks Found</p>
                             </div>
                         ) : loading ? (
                             <div className="flex justify-center items-center h-64">
-                                <p className="text-white">Loading...</p>
+                                <p className="text-navy-blue">Loading...</p>
                             </div>
                         ) : (
                             <BookmarkGrid
@@ -62,11 +67,15 @@ const BookMark = () => {
                             />
                         )}
                 </div>
-                <Pagination
-                    currentPage={currentPage}
-                    totalPages={totalPages}
-                    onPageChange={setCurrentPage}
-                />
+                {
+                    totalPages >= 1 && (
+                            <Pagination
+                                currentPage={currentPage}
+                                totalPages={totalPages}
+                                onPageChange={setCurrentPage}
+                            />
+                    )
+                }
             </div>
         </Layout>
     )

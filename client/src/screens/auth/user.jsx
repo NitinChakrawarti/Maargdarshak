@@ -6,6 +6,7 @@ import { LogOutFunc, VerifyToken } from "../../api";
 import { setUser } from "../../redux/features/userSlice";
 import { setAuth } from "../../redux/features/authSlice";
 import { useClerk, useUser } from "@clerk/clerk-react";
+import ProfileComponent from "../../components/user/userProfile";
 
 const User = () => {
   const navigate = useNavigate();
@@ -30,12 +31,7 @@ const User = () => {
   return (
     <>
       <Layout>
-        <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          onClick={handleLogout}
-        >
-          Logout
-        </button>
+        <ProfileComponent user={user}  />
       </Layout>
     </>
   );
