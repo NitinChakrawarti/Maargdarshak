@@ -3,6 +3,7 @@ import Sidebar from "../../components/authsidebar";
 import Header from "../../components/header";
 import BottomNav from "../../components/bottomNav";
 import { usePWAMobile } from "../../hooks/usePWA";
+import PageWrapper from "../../components/pagewrapper";
 
 const Layout = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -56,9 +57,11 @@ const Layout = ({ children }) => {
           !isPWAMobile &&
           <Header toggleSidebar={toggleSidebar} />
         }
-        <main className="flex-1 mb-20 overflow-auto">
-          {children}
-        </main>
+        <PageWrapper>
+          <main className="flex-1 mb-20 overflow-auto">
+            {children}
+          </main>
+        </PageWrapper>
         {isPWAMobile && <BottomNav />}
       </div>
     </div>
