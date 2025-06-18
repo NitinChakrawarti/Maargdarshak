@@ -1,5 +1,5 @@
 import { Bookmark, BookmarkCheck, Check, Plus, Share2, User } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import dayjs from "dayjs";
 import { useDispatch, useSelector } from "react-redux";
 import { AddToFavorites, EnrollInCourse } from "../../api";
@@ -21,7 +21,6 @@ const CourseSidebar = ({
         (count, module) => count + (module.lessons?.length || 0),
         0
     );
-
     const completed = Object.values(courseProgress).filter((s) => s === "completed").length;
     const inProgress = Object.values(courseProgress).filter((s) => s === "in-progress").length;
 
@@ -77,6 +76,13 @@ const CourseSidebar = ({
         }
     };
 
+    const copyToClipboard = () => {
+        const courseId = resourceId;
+        const courseLink = `${window.location.origin}/resource/${courseId}`;
+        navigator.clipboard.writeText(courseLink);
+        toast.success("Course link copied to clipboard!");
+    }
+
     return (
         <div className="space-y-6">
             {/* Action Buttons */}
@@ -125,10 +131,7 @@ const CourseSidebar = ({
 
                     {/* Share */}
                     <button
-                        onClick={() => {
-                            navigator.clipboard.writeText(window.location.href);
-                            toast.success("Course link copied to clipboard!");
-                        }}
+                        onClick={copyToClipboard}
                         className="w-full cursor-pointer flex items-center justify-center space-x-2 py-3 px-4 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 font-semibold transition-all"
                     >
                         <Share2 className="w-5 h-5" />
