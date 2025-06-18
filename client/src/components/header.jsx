@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { setAuth } from "../redux/features/authSlice";
 import { setUser } from "../redux/features/userSlice";
 import { setMentor } from "../redux/features/mentorSlice";
+import { useClerk } from "@clerk/clerk-react";
+import { usePWAMobile } from "../hooks/usePWA";
 
 
 const Header = ({ toggleSidebar }) => {
@@ -13,6 +15,7 @@ const Header = ({ toggleSidebar }) => {
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const isPWA = usePWAMobile();
   const { role, data } = useSelector((state) => state.auth);
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -28,12 +31,14 @@ const Header = ({ toggleSidebar }) => {
     };
   }, []);
 
+
+  const { signOut } = useClerk();
   const handleLogout = async () => {
+    await signOut();
     const logout = await LogOutFunc({ role: role });
     if (logout.status === 200) {
       dispatch(setAuth({ role: null, data: null }));
       dispatch(setUser({ user: null, isverified: false, savedItems: [] }));
-      dispatch(setMentor({ mentor: null, isverified: false, savedItems: [] }));
       return navigate("/");
     }
     else {
@@ -41,24 +46,28 @@ const Header = ({ toggleSidebar }) => {
     }
   };
 
+
   return (
     <header className="bg-white shadow-sm h-16 md:hidden flex items-center justify-between px-4 md:px-6 sticky top-0 z-30">
-      <div className="flex items-center">
-        {/* Mobile menu button */}
-        <button
-          onClick={toggleSidebar}
-          className="md:hidden mr-4 p-2 text-gray-600 hover:text-brand-blue rounded-md hover:bg-gray-100 transition-colors"
-        >
-          <Menu size={24} />
-        </button>
-        <h1 className="text-xl font-bold text-brand-blue"></h1>
-      </div>
+      {
+        !isPWA && 
+        <div className="flex items-center">
+          {/* Mobile menu button */}
+          <button
+            onClick={toggleSidebar}
+            className="md:hidden mr-4 p-2 text-gray-600 hover:text-brand-blue rounded-md hover:bg-gray-100 transition-colors"
+          >
+            <Menu size={24} />
+          </button>
+          <h1 className="text-xl font-bold text-brand-blue"></h1>
+        </div>
+      }
 
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center w-full justify-end space-x-4">
         {/* Notification Bell */}
         <button className="relative p-2 text-gray-600 hover:text-brand-blue rounded-full hover:bg-gray-100 transition-colors">
-          <Bell size={20} />
-          <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+          {/* <Bell size={20} /> */}
+          {/* <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span> */}
         </button>
 
         {/* Profile Dropdown */}
