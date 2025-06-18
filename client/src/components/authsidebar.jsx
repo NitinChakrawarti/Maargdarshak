@@ -127,15 +127,15 @@ const Sidebar = ({ isOpen, setIsSidebarOpen, onCollapse }) => {
               <Link
                 key={item.component}
                 to={item.component}
-                className={`group flex items-center justify-start w-full text-left text-[15px] font-medium px-3 py-3 rounded-xl transition-all duration-300 ${item.component === location.pathname
+                className={`group flex items-center justify-start w-full text-left text-[15px] font-medium px-3 py-3 rounded-xl transition-all duration-300 ${location.pathname.startsWith(item.component)
                   ? "bg-gradient-to-r from-[#0ea5e9] to-[#2c67a6] text-white shadow-lg transform scale-105"
                   : "text-white/80 hover:text-white hover:bg-[#b5d5e5]/10 backdrop-blur-sm hover:transform hover:scale-105"
                   }`}
                 title={isCollapsed ? item.label : ""}
               >
-                <div className={`flex items-center justify-center w-6 transition-all duration-300 ${item.component === location.pathname ? "text-white" : "text-[#b5d5e5] group-hover:text-white"
+                <div className={`flex items-center justify-center w-6 transition-all duration-300 ${location.pathname.startsWith(item.component) ? "text-white" : "text-[#b5d5e5] group-hover:text-white"
                   }`}>
-                  {item.label === "Profile" ? (
+                  {item.label === "Profile" && user?.profile != "" ? (
                     <img
                       src={user?.profile}
                       alt="profile"
@@ -155,7 +155,7 @@ const Sidebar = ({ isOpen, setIsSidebarOpen, onCollapse }) => {
                 )}
               </Link>
             ))}
-           
+
           </div>
 
           {/* Collapse and Profile Button Wrapper */}

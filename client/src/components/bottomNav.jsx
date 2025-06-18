@@ -20,7 +20,7 @@ const BottomNav = () => {
                 {/* Navigation container */}
                 <div className="relative flex justify-around items-center pt-2 pb-1 px-4">
                     {navItems.map((item, index) => {
-                        const isActive = item.component === location.pathname;
+                        const isActive = location.pathname.startsWith(item.component);
 
                         return (
                             <Link
@@ -41,7 +41,7 @@ const BottomNav = () => {
                                     {/* Icon container with bounce animation */}
                                     <div className={`w-7 h-7 flex items-center justify-center  transition-all duration-300 ${isActive ? "animate-bounce" : "group-hover:animate-pulse"
                                         }`}>
-                                        {item.label === "Profile" ? (
+                                        {item.label === "Profile" && user?.profile != "" ? (
                                             <div className="relative">
                                                 <img
                                                     src={user?.profile}

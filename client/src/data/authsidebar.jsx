@@ -4,6 +4,7 @@ import {
     FileText,
     Users,
     MessageCircle,
+    User,
 } from "lucide-react";
 
 
@@ -11,7 +12,7 @@ export const MentorSidebar = [
     { label: "Home", component: "/mentor/home", icon: <Home size={20} /> },
     { label: "Resources", component: "/mentor/resources", icon: <BookOpen size={20} /> },
     { label: "Blogs", component: "/mentor/blog", icon: <FileText size={20} /> },
-    { label: "Learners", component: "/mentor/learners", icon: <Users size={20} /> },
+    { label: "Learners", component: "/mentor/learners", icon: <User size={20} /> },
     { label: "Chat", component: "/chat", icon: <MessageCircle size={20} /> },
 ];
 
