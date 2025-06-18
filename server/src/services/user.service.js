@@ -189,17 +189,19 @@ class UserService {
     }
 
     async updateCourseProgress({ userId, courseId, Progressdata }) {
-
+        console.log("Updating progress for user:", userId, "course:", courseId, "data:", Progressdata);
+        
         const progress = await Progress.findOneAndUpdate(
             { userId, courseId },
             {
                 $set: {
-                    [`Progress.${Object.keys(Progressdata)[0]}`]: Object.values(Progressdata)[0]
+                    Progress: Progressdata
                 }
             },
             { new: true }
         );
 
+        console.log("Updated Progress:", progress);
         if (!progress) {
             throw new APIError(statusCodeUtility.NotFound, "Course progress not found");
         }
