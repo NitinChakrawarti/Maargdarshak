@@ -10,6 +10,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useAuth } from "@clerk/clerk-react";
 import { setUser } from "./redux/features/userSlice";
 import InstallPrompt from "./components/insatallationprompt";
+import { AnimatePresence } from "framer-motion";
+
 
 // Loading fallback component
 const LoadingFallback = () => (
