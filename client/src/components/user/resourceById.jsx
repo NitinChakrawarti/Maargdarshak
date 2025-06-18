@@ -35,7 +35,17 @@ const ResourceDetailView = () => {
             ...prev,
             [lessonId]: status
         }));
-        handleProgressChangeImmediate(lessonId, status);
+        const data = {
+            userId: user._id,
+            courseId: resourceId,
+            Progress: {
+                ...courseProgress,
+                [lessonId]: status
+            }
+        };
+        console.log("Progress Data:", data);
+        
+        handleProgressChangeImmediate(data);
     };
 
     const [resource, setResource] = useState({
@@ -69,7 +79,7 @@ const ResourceDetailView = () => {
 
     const fetchCourseProgress = async (resourceId) => {
         const response = await getCourseProgress(resourceId);
-        
+
         if (response.status === 200) {
             setCourseProgress(response.data.data.Progress);
         } else {
@@ -78,15 +88,9 @@ const ResourceDetailView = () => {
     };
 
     const handleProgressChangeImmediate = useCallback(
-        debounce(async (lessonId, status) => {
-            const data = {
-                userId: user._id,
-                courseId: resourceId,
-                Progress: {
-                    ...courseProgress,
-                    [lessonId]: status
-                }
-            };
+        debounce(async (data) => {
+            console.log(data);
+            
             const response = await UpdateCourseProgress(data);
             if (response.status === 200) {
                 toast.success("Course progress updated successfully");
@@ -105,7 +109,7 @@ const ResourceDetailView = () => {
         const usercourse = user?.courses || [];
         const isEnrolled = usercourse.some(course => course.courseId === resourceId);
         if (isEnrolled) {
-            
+
             fetchCourseProgress(resourceId);
             setIsAddedToList(true);
         }

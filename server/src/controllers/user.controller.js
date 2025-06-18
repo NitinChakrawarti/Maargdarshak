@@ -168,7 +168,6 @@ class UserController {
         }
 
         const { userId, courseId, Progress } = request.body;
-
         if (!userId || !courseId || !Progress) {
             return new APIError(statusCodeUtility.BadRequest, "Missing required fields");
         }
