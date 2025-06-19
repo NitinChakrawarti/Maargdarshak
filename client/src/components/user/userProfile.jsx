@@ -11,6 +11,7 @@ import { LogOutFunc } from '../../api';
 const ProfileComponent = ({ user }) => {
     const [showCourses, setShowCourses] = useState(false);
     const [userData, setUserData] = useState(user || {});
+    const [loggingOut, setLoggingOut] = useState(false);
     const dispatch = useDispatch();
     const { role } = useSelector((state) => state.auth);
     const formatDate = (dateString) => {
@@ -23,14 +24,17 @@ const ProfileComponent = ({ user }) => {
 
     const { signOut } = useClerk();
     const handleLogout = async () => {
+        setLoggingOut(true);
         await signOut();
         const logout = await LogOutFunc({ role: role });
         if (logout.status === 200) {
             dispatch(setAuth({ role: null, data: null }));
             dispatch(setUser({ user: null, isverified: false, savedItems: [] }));
+            setLoggingOut(false);
             return navigate("/");
         }
         else {
+            setLoggingOut(false);
             console.error("Logout failed:", logout.message);
         }
     };
@@ -61,11 +65,18 @@ const ProfileComponent = ({ user }) => {
                 <div className="bg-white rounded-2xl shadow-xl overflow-hidden mb-6">
                     {/* Header Section */}
                     <div className="bg-gradient-to-r relative to-brand-blue from-brand-navy px-6 sm:px-8 py-8">
-                        <button
-                            onClick={handleLogout}
-                            className="absolute bottom-4 cursor-pointer  text-bg right-4 transition-colors">
-                            <LogOut size={20} />
-                        </button>
+                        {
+
+                            loggingOut ?
+                                <div className="absolute bottom-4 right-4 flex items-center justify-center">
+                                    <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div>
+                                </div>
+                                :
+                                <button
+                                    onClick={handleLogout}
+                                    className="absolute bottom-4 cursor-pointer  text-bg right-4 transition-colors">
+                                    <LogOut size={20} />
+                                </button>}
                         <div className="flex flex-col sm:flex-row items-center gap-6">
                             {/* Avatar */}
                             <div className="relative">
