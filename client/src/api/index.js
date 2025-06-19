@@ -305,7 +305,7 @@ export const GenerateCertificateApi = async (data) => {
 
 export const VerifyCertificateApi = async (data) => {
   try {
-    const response = await instance.post(`/user/verify-certificate`, {}, {
+    const response = await instance.get(`/user/verify-certificate`, {
       withCredentials: true,
       params: { certificateId: data.certificateId },
       headers: {

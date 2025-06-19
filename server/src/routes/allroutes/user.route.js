@@ -14,7 +14,7 @@ router.route('/get-progress').get(asyncHandler(userController.getCourseProgress)
 router.route('/update-progress').post(asyncHandler(userController.updateCourseProgress));
 router.route('/eligible-for-certificate').get(asyncHandler(userController.checkEligibilityForCertificate));
 router.route('/generate-certificate').post(asyncHandler(userController.generateCertificate));
-router.route('/verify-certificate').post(asyncHandler(userController.verifyCertificate));
+router.route('/verify-certificate').get(asyncHandler(userController.verifyCertificate));
 
 
 export default router;
