@@ -30,9 +30,9 @@ const User = () => {
 
   return (
     <>
-      <Layout>
-        <ProfileComponent user={user}  />
-      </Layout>
+
+      <ProfileComponent user={user} />
+
     </>
   );
 };

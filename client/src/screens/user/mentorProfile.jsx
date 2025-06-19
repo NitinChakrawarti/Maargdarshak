@@ -249,15 +249,14 @@ const MentorProfile = () => {
 
     return (
         data?._id ?
-            <Layout>
-                {mentorData ? mentorContent : <div className="text-center text-gray-500">Loading mentor data...</div>}
-            </Layout>
+
+            (mentorData ? mentorContent : <div className="text-center text-gray-500">Loading mentor data...</div>)
+
             :
-            <Layoutcomponent>
-                <div className='pt-20 pb-8' >
-                    {mentorData ? mentorContent : <div className="text-center text-gray-500">Loading mentor data...</div>}
-                </div>
-            </Layoutcomponent>
+            <div className='pt-20 pb-8' >
+                {mentorData ? mentorContent : <div className="text-center text-gray-500">Loading mentor data...</div>}
+            </div>
+
     );
 };
 

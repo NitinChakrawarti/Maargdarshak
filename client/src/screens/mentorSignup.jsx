@@ -136,7 +136,7 @@ const ExtendedSignUp = () => {
   };
 
   return (
-    <Layoutcomponent>
+  
       <div className="flex max-w-7xl mx-auto pt-16 md:pt-20 justify-center gap-36 items-center ">
         <section className={`flex flex-col bg-white shadow-xl gap-6 pb-10 mb-6 rounded-4xl w-full md:w-3/4 ${step === 0 ? "lg:w-2/3" : "lg:w-1/2"}`}>
           <div className="pl-6 lg:pl-12 mb-4 bg-brand-navy rounded-t-4xl rounded-b-[100%]  rounded-bl-[20%] pb-6">
@@ -356,7 +356,7 @@ const ExtendedSignUp = () => {
           )}
         </section>
       </div>
-    </Layoutcomponent>
+    
   );
 };
 

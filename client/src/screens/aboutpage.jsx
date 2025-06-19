@@ -75,7 +75,7 @@ const About = () => {
   ];
 
   return (
-    <Layoutcomponent>
+  
       <section className="bg-bg py-16 px-2 lg:px-20">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
@@ -166,7 +166,7 @@ const About = () => {
           </div>
         </div>
       </section>
-    </Layoutcomponent>
+    
   );
 };
 

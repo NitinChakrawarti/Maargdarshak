@@ -12,7 +12,6 @@ import { useSelector } from "react-redux";
 import CourseModule from "./courseModel";
 import CourseSidebar from "./resourceSidebar";
 import CourseBanner from "./courseBanner";
-import Layoutcomponent from "../../layout/landing/layoutcomponent";
 import { useCallback } from "react";
 import { debounce } from "lodash";
 import { toast } from "react-toastify";
@@ -43,7 +42,7 @@ const ResourceDetailView = () => {
                 [lessonId]: status
             }
         };
-        
+
         handleProgressChangeImmediate(data);
     };
 
@@ -89,7 +88,7 @@ const ResourceDetailView = () => {
     const handleProgressChangeImmediate = useCallback(
         debounce(async (data) => {
             console.log(data);
-            
+
             const response = await UpdateCourseProgress(data);
             if (response.status === 200) {
                 toast.success("Course progress updated successfully");
@@ -300,16 +299,7 @@ const ResourceDetailView = () => {
         </div>
     )
     return (
-
-        user?.role === "user" ?
-            <Layout>
-                {detailContent}
-            </Layout>
-            :
-            <Layoutcomponent>
-                {detailContent}
-            </Layoutcomponent>
-
+    detailContent
     );
 };
 

@@ -146,7 +146,7 @@ const CourseSidebar = ({
                 <div className="space-y-3 text-sm">
                     <div className="flex justify-between">
                         <span className="text-gray-600">Instructor:</span>
-                        <Link to={`/mentor/${resource.mentorId}`} className="flex items-center gap-2">
+                        <Link to={`/user/mentor/${resource.mentorId}`} className="flex items-center gap-2">
                             <User className="w-5 h-5 text-brand-blue" />
                             <span className="font-semibold">{resource.mentorname}</span>
                         </Link>

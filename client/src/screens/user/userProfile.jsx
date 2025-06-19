@@ -7,9 +7,9 @@ const UserProfile = () => {
     const { user } = useSelector((state) => state.user)
 
     return (
-        <Layout>
-            <ProfileComponent user={user} />
-        </Layout>
+
+        <ProfileComponent user={user} />
+
     )
 }
 

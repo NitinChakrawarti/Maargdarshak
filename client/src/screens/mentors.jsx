@@ -56,7 +56,7 @@ const mentors = [
 
 const Mentor = () => {
   return (
-    <Layoutcomponent>
+  
       <section className="bg-bg py-16 px-2 lg:px-20">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
@@ -182,7 +182,7 @@ const Mentor = () => {
           </div>
         </div>
       </section>
-    </Layoutcomponent>
+    
   );
 };
 

@@ -46,7 +46,7 @@ const Explore = () => {
     };
 
     return (
-        <Layout>
+    
             <section className="bg-bg px-2">
                 <div className="max-w-7xl mx-auto">
                     <h1 className="text-2xl lg:text-4xl font-bold text-brand-blue pt-4">
@@ -129,7 +129,7 @@ const Explore = () => {
                     )}
                 </div>
             </section>
-        </Layout>
+        
     );
 };
 
