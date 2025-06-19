@@ -147,12 +147,12 @@ class UserController {
     }
 
     async getCourseProgress(request, response) {
-        const { resourceId } = request.params;
-        if (!resourceId) {
-            return new APIError(statusCodeUtility.BadRequest, "No resource ID provided");
+        const { resourceId, userId } = request.query;
+        if (!resourceId || !userId) {
+            return new APIError(statusCodeUtility.BadRequest, "No resource ID or user ID provided");
         }
 
-        const progressData = await userService.getCourseProgress(resourceId);
+        const progressData = await userService.getCourseProgress(resourceId, userId);
 
         return ResponseHandler(
             statusCodeUtility.Success,

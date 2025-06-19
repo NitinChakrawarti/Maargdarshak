@@ -196,11 +196,12 @@ export const GetResourceById = async (resourceId) => {
   }
 }
 
-export const getCourseProgress = async (resourceId) => {
+export const getCourseProgress = async (resourceId, userId) => {
 
   try {
-    const response = await instance.get(`/user/get-progress/${resourceId}`, {
+    const response = await instance.get(`/user/get-progress`, {
       withCredentials: true,
+      params: { userId, resourceId }
     });
     return response;
   } catch (error) {

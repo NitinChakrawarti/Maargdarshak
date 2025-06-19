@@ -180,8 +180,8 @@ class UserService {
         return response;
     }
 
-    async getCourseProgress(resourceId) {
-        const progress = await Progress.findOne({ courseId: resourceId });
+    async getCourseProgress(resourceId, userId) {
+        const progress = await Progress.findOne({ courseId: resourceId, userId: userId });
         if (!progress) {
             throw new APIError(statusCodeUtility.NotFound, "Course progress not found");
         }

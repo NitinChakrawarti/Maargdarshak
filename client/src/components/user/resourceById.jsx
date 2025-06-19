@@ -75,8 +75,8 @@ const ResourceDetailView = () => {
         }
     };
 
-    const fetchCourseProgress = async (resourceId) => {
-        const response = await getCourseProgress(resourceId);
+    const fetchCourseProgress = async (resourceId, userId) => {
+        const response = await getCourseProgress(resourceId, userId);
 
         if (response.status === 200) {
             setCourseProgress(response.data.data.Progress);
@@ -108,7 +108,7 @@ const ResourceDetailView = () => {
         const isEnrolled = usercourse.some(course => course.courseId === resourceId);
         if (isEnrolled) {
 
-            fetchCourseProgress(resourceId);
+            fetchCourseProgress(resourceId, user._id);
             setIsAddedToList(true);
         }
 
@@ -299,7 +299,7 @@ const ResourceDetailView = () => {
         </div>
     )
     return (
-    detailContent
+        detailContent
     );
 };
 
