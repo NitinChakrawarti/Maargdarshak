@@ -6,7 +6,7 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
         {/* Logo and Description */}
         <div>
-          <h2 className="text-2xl font-bold text-brand-orange">Margdarshak</h2>
+          <h2 className="text-2xl font-bold font-serif">Margdarshak</h2>
           <p className="mt-4 text-brand-sky">
             Your go-to platform for career guidance, resources, and opportunities to reach your professional goals.
           </p>

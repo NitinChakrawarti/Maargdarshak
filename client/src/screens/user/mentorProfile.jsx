@@ -15,7 +15,6 @@ import Layout from '../../layout/auth/layout';
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { GetMentorById, IntializeChat } from '../../api';
 import { useSelector } from 'react-redux';
-import Layoutcomponent from '../../layout/landing/layoutcomponent';
 import MentorProfileSkeleton from '../../components/skeleton/mentorprofileskeleton';
 
 
@@ -33,7 +32,7 @@ const MentorProfile = () => {
             setLoading(true);
             const response = await IntializeChat({ userId1: mentorId, userId2: data._id });
             if (response.status === 200) {
-                navigate("/user/chat", );
+                navigate("/user/chat",);
             } else {
                 console.error("Error initiating chat", response.data.message);
             }
@@ -54,7 +53,6 @@ const MentorProfile = () => {
         fetchMentorData()
     }, [mentorId]);
 
-
     const formatDate = (dateString) => {
         return new Date(dateString).toLocaleDateString('en-US', {
             year: 'numeric',
@@ -64,7 +62,7 @@ const MentorProfile = () => {
     };
 
     const mentorContent = (
-        <div className="max-w-4xl mx-auto p-6 bg-white rounded-2xl shadow-lg border border-gray-100">
+        <div className="max-w-4xl mx-auto p-6 mb-10 bg-white rounded-2xl shadow-lg border border-gray-100">
             {/* Header Section */}
             <div className="relative bg-gradient-to-r from-brand-navy to-light-blue rounded-xl p-8 mb-8">
                 <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
@@ -249,9 +247,11 @@ const MentorProfile = () => {
     )
 
     return (
-        data?._id &&
+        // data?._id &&
 
-            (mentorData ? mentorContent : <MentorProfileSkeleton />)
+        <div className='pt-20'>
+            {mentorData ? mentorContent : <MentorProfileSkeleton />}
+        </div>
 
     );
 };

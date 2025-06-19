@@ -38,7 +38,7 @@ const Navbar = () => {
           <div className="flex-shrink-0">
             <Link
               to="/"
-              className="text-2xl font-bold bg-gradient-to-r from-brand-navy to-brand-blue bg-clip-text text-transparent"
+              className="text-2xl mukta-extrabold   bg-gradient-to-r from-brand-navy to-brand-blue bg-clip-text text-transparent"
             >
               मार्गदर्शक
             </Link>

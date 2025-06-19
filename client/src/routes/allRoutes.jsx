@@ -72,6 +72,11 @@ export const AllRoutes = () => {
                     path="/verify-certificate"
                     element={<VerifyCertificate />}
                 />
+                <Route path="mentor/:mentorId"
+                    element={
+                        <MentorProfile />
+                    }
+                />
             </Route>
 
             {/* User Routes */}
