@@ -1,4 +1,3 @@
-import { AllRoutes } from "./routes/route";
 import { Provider, useDispatch } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from './redux/store';
@@ -11,13 +10,15 @@ import { useAuth } from "@clerk/clerk-react";
 import { setUser } from "./redux/features/userSlice";
 import InstallPrompt from "./components/insatallationprompt";
 import { AnimatePresence } from "framer-motion";
+import { AllRoutes } from './routes/allRoutes';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 
 // Loading fallback component
 const LoadingFallback = () => (
-  <div className="loading-container">
-    <div className="loading-spinner"></div>
-    <p>Loading...</p>
+  <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50">
+    <div className="w-12 h-12 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
+    <p className="mt-4 text-lg text-gray-600 font-medium">Loading...</p>
   </div>
 );
 
@@ -96,7 +97,10 @@ const AppContent = () => {
   return (
     <div>
       <Suspense fallback={<LoadingFallback />}>
-        <AllRoutes />
+        <AnimatePresence mode="wait" initial={false}>
+          <AllRoutes />
+
+        </AnimatePresence>
       </Suspense>
     </div>
   );
@@ -107,8 +111,10 @@ const App = () => {
     <Provider store={store}>
       <PersistGate loading={<LoadingFallback />} persistor={persistor}>
         <ToastContainer position="top-right" autoClose={2000} />
-        <AppContent />
-        <InstallPrompt />
+        <Router>
+          <AppContent />
+          <InstallPrompt />
+        </Router>
       </PersistGate>
     </Provider>
   );

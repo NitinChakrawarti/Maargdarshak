@@ -1,12 +1,17 @@
+import { Outlet } from "react-router-dom";
 import Footer from "./footer";
 import Navbar from "./navbar";
+import { useEffect } from "react";
 
-const Layoutcomponent = ({ children }) => {
+const Layoutcomponent = () => {
+  useEffect(() => {
+    console.log("Layoutcomponent mounted");
+  }, []);
   return (
     <div className="max-w-8xl">
-      
+
       <Navbar />
-      <main>{children}</main>
+      <Outlet />
       <Footer />
     </div>
   );

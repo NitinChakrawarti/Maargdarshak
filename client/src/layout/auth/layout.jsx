@@ -4,8 +4,9 @@ import Header from "../../components/header";
 import BottomNav from "../../components/bottomNav";
 import { usePWAMobile } from "../../hooks/usePWA";
 import PageWrapper from "../../components/pagewrapper";
+import { Outlet } from "react-router-dom";
 
-const Layout = ({ children }) => {
+const Layout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const isPWAMobile = usePWAMobile();
@@ -31,6 +32,11 @@ const Layout = ({ children }) => {
   const handleSidebarCollapse = (collapsed) => {
     setIsSidebarCollapsed(collapsed);
   };
+
+  useEffect(() => {
+    console.log('auth layout mounted');
+
+  }, [isPWAMobile]);
 
   return (
     <div className="max-w-8xl relative h-screen bg-bg flex">
@@ -58,8 +64,8 @@ const Layout = ({ children }) => {
           <Header toggleSidebar={toggleSidebar} />
         }
         <PageWrapper>
-          <main className="flex-1 mb-20 overflow-auto">
-            {children}
+          <main className={`flex-1 no-scroll  ${isPWAMobile ? "mb-20" : ""}`}>
+            <Outlet />
           </main>
         </PageWrapper>
         {isPWAMobile && <BottomNav />}
@@ -69,3 +75,4 @@ const Layout = ({ children }) => {
 };
 
 export default Layout;
+

@@ -8,7 +8,7 @@ import User from "../screens/auth/user";
 import { Protectedroute, Publicroute } from "./protection";
 import MentorSignUp from "../screens/mentorSignup";
 import Mentor from "../screens/auth/mentor";
-import MentorChat from "../screens/mentor/mentorchat";
+import MentorChat from "../screens/auth/chat";
 import MentorResources from "../screens/mentor/resources";
 import Mentorblog from "../screens/mentor/blog";
 import Learners from "../screens/mentor/learners";

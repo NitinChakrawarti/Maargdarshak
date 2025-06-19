@@ -32,7 +32,8 @@ const Home = () => {
   };
 
   return (
-    <Layoutcomponent>
+
+    <div className="bg-bg min-h-screen">
       {/* Hero Section */}
       <motion.section
         className="relative bg-gradient-to-b from-white to-brand-sky/10 pt-20 md:pt-36 pb-10 px-5 md:px-10 lg:px-20 overflow-hidden bg-hero-pattern"
@@ -178,7 +179,7 @@ const Home = () => {
 
       {/* Career Planning and Resources */}
       <motion.div
-        className= " pt-6 md:pt-16 px-5 md:px-10 lg:px-20 bg-bg"
+        className=" pt-6 md:pt-16 px-5 md:px-10 lg:px-20 bg-bg"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true }}
@@ -362,11 +363,9 @@ const Home = () => {
         </motion.div>
       </motion.section> */}
 
-      
-      <FAQ />
 
-    </Layoutcomponent>
-  );
+      <FAQ />
+    </div>);
 };
 
 export default Home;

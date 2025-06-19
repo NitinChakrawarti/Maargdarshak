@@ -12,12 +12,12 @@ const Addresources = () => {
         console.log("Submitted data:", data);
     };
     return (
-        <Layout>
+    
             <div className='container mx-auto py-4 px-4 md:px-4 max-w-7xl'>
                 {/* <ResourceHeader selectedIndex={selectedIndex} handleSelect={handleSelect} /> */}
                 <ResourceForm onSubmit={submitevent} />
             </div>
-        </Layout>
+        
     )
 }
 
