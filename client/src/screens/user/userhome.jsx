@@ -17,6 +17,7 @@ import DashboardHeader from '../../components/user/dashboardheader';
 import AnalyticsCard from '../../components/user/analyticscard';
 import RecentLearning from '../../components/user/recentlearnings';
 import CertificateList from '../../components/user/certificatelist';
+import DashboardSkeleton from '../../components/skeleton/userhomeskeleton';
 
 const UserHome = () => {
   const [userDetails, setUserDetails] = useState(null);
@@ -39,9 +40,7 @@ const UserHome = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex justify-center items-center bg-gray-50">
-        <div className="text-xl font-medium text-gray-600 animate-pulse">Loading your dashboard...</div>
-      </div>
+      <DashboardSkeleton />
     );
   }
 
@@ -146,7 +145,7 @@ const UserHome = () => {
           </div>
         </div>
 
-    
+
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <RecentLearning learnings={recentLearnings} progressDetails={progressSummary.progressDetails || []} />
