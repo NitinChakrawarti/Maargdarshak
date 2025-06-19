@@ -38,7 +38,7 @@ const CourseModule = ({
                 <div className="divide-y divide-gray-100">
                     {module.lessons.map((lesson, lessonIndex) => {
                         const lessonId = `${moduleIndex}-${lessonIndex}`;
-                        return (
+                        return ( 
                             <div
                                 key={lessonId}
                                 className="flex items-center space-x-4 p-4 hover:bg-gray-50 transition-colors"
@@ -90,7 +90,7 @@ const CourseModule = ({
                                             className="p-2 cursor-pointer text-yellow-600 hover:bg-yellow-50 rounded-lg transition-colors"
                                             title="Mark as In Progress"
                                         >
-                                            <Circle className="w-5 h-5" />
+                                            <Timer className="w-5 h-5" />
                                         </button>
                                     </div>
                                 </div>
