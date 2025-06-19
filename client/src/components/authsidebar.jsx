@@ -42,7 +42,6 @@ const Sidebar = ({ isOpen, setIsSidebarOpen, onCollapse }) => {
         setIsSidebarOpen(false);
       }
     };
-
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
@@ -125,6 +124,8 @@ const Sidebar = ({ isOpen, setIsSidebarOpen, onCollapse }) => {
           <div className="flex-1 px-3 space-y-2">
             {(role === 'mentor' ? MentorSidebar : role === 'user' ? UserSidebar : []).map((item) => (
               <Link
+                onClick={() => setIsSidebarOpen(false)}
+
                 key={item.component}
                 to={item.component}
                 className={`group flex items-center justify-start w-full text-left text-[15px] font-medium px-3 py-3 rounded-xl transition-all duration-300 ${location.pathname.startsWith(item.component)

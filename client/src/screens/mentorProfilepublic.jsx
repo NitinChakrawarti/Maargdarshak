@@ -61,7 +61,7 @@ const MentorProfilePublic = () => {
     };
 
     const mentorContent = (
-        <div className="max-w-4xl mx-auto p-6 mb-10 bg-white rounded-2xl shadow-lg border border-gray-100">
+        <div className="max-w-4xl mx-auto pt-20 px-2 mb-10 bg-white rounded-2xl shadow-lg border border-gray-100">
             {/* Header Section */}
             <div className="relative bg-gradient-to-r from-brand-navy to-light-blue rounded-xl p-8 mb-8">
                 <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
