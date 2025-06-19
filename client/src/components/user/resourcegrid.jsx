@@ -65,7 +65,7 @@ const ResourcesGrid = () => {
     };
 
     return (
-        <div className="min-h-screen pt-4  pb-12 px-0">
+        <div className="min-h-screen pt-4  md:pb-6 px-0">
             <div className="max-w-7xl mt-4 mx-auto">
                 {loading ?
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

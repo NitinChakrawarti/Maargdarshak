@@ -16,6 +16,7 @@ import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { GetMentorById, IntializeChat } from '../../api';
 import { useSelector } from 'react-redux';
 import Layoutcomponent from '../../layout/landing/layoutcomponent';
+import MentorProfileSkeleton from '../../components/skeleton/mentorprofileskeleton';
 
 
 const MentorProfile = () => {
@@ -32,7 +33,7 @@ const MentorProfile = () => {
             setLoading(true);
             const response = await IntializeChat({ userId1: mentorId, userId2: data._id });
             if (response.status === 200) {
-                navigate("/chat");
+                navigate("/user/chat", );
             } else {
                 console.error("Error initiating chat", response.data.message);
             }
@@ -248,14 +249,9 @@ const MentorProfile = () => {
     )
 
     return (
-        data?._id ?
+        data?._id &&
 
-            (mentorData ? mentorContent : <div className="text-center text-gray-500">Loading mentor data...</div>)
-
-            :
-            <div className='pt-20 pb-8' >
-                {mentorData ? mentorContent : <div className="text-center text-gray-500">Loading mentor data...</div>}
-            </div>
+            (mentorData ? mentorContent : <MentorProfileSkeleton />)
 
     );
 };
