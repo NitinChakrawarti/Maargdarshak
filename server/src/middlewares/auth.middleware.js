@@ -2,10 +2,10 @@
 import jwt from 'jsonwebtoken'
 
 // --------------- Importing Other Files --------------- //
+import APIError from '../utils/APIError.js';
+import ResponseHandler from '../utils/APIResponse.js';
+import statusCodeUtility from '../utils/statusCodeUtility.js';
 import { envProvider } from '../constants.js';
-import APIError from '../utilities/apiError.js';
-import ResponseHandler from '../utilities/apiResponse.js';
-import statusCodeUtility from '../utilities/statusCodeUtility.js';
 
 
 const moduleType = "Authentication Token";
@@ -56,7 +56,7 @@ class UserToken {
                 name: decoded.name,
                 role: decoded.role || "user",
             };
-            request.user = decoded;
+            request.decodedUser = decoded;
             next();
         } catch (error) {
             console.error("Token verification failed:", error);
@@ -68,7 +68,42 @@ class UserToken {
             );
         }
     }
-    
+
+
+    async UserTokenverify(request, response, next) {
+        let token = request.cookies.userToken
+        if (!token) {
+            return ResponseHandler(
+                statusCodeUtility.BadRequest,
+                messages.notFound,
+                null,
+                response,
+            );
+        }
+
+        try {
+            const secret = envProvider.JWT_PRIVATE_KEY;
+            let decoded = jwt.verify(token, secret);
+            decoded = {
+                id: decoded.id,
+                email: decoded.email,
+                name: decoded.name,
+                role: decoded.role || "user",
+            };
+            request.decodedUser = decoded;
+            next();
+        } catch (error) {
+            console.error("Token verification failed:", error);
+            return ResponseHandler(
+                statusCodeUtility.Unathorized,
+                messages.fetchMessages[1],
+                null,
+                response,
+            );
+        }
+    }
+
+
 }
 
 export default new UserToken();

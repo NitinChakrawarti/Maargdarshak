@@ -75,6 +75,7 @@ const AppContent = () => {
       } catch (error) {
         console.error('Error verifying token:', error.data);
         dispatch(setAuth({ role: null, data: null }));
+        dispatch(setUser({ user: null, isverified: false, savedItems: [] }));
         dispatch(setError('Token verification failed'));
       }
     };

@@ -318,3 +318,16 @@ export const VerifyCertificateApi = async (data) => {
   }
 }
 
+
+
+export const GetUserDetails = async ({ userId }) => {
+  try {
+    const response = await instance.get(`/user/get-user-details`, {
+      withCredentials: true,
+      params: { userId }
+    });
+    return response;
+  } catch (error) {
+    return error.response.data;
+  }
+}

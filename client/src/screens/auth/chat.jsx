@@ -120,13 +120,11 @@ const ChatComponent = () => {
                     </div>
                 </div>
                 <div className="overflow-y-auto h-full pb-20">
-                    {
-                        loading && (
-                            <div className="flex justify-center mt-2 items-center h-64">
-                                <ChatSkeleton />
-                            </div>
-                        )}
-                    {filteredUsers?.length > 0 ? (
+                    {loading ? (
+                        <div className="flex justify-center mt-2 items-center h-64">
+                            <ChatSkeleton />
+                        </div>
+                    ) : filteredUsers?.length > 0 ? (
                         filteredUsers?.map(user => (
                             <div
                                 key={user.id}
@@ -139,7 +137,7 @@ const ChatComponent = () => {
                                         <div className="relative">
                                             {
                                                 !user?.profile ? <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center text-gray-600 font-medium">
-                                                    {user.name.charAt(0).toUpperCase()}
+                                                    {user?.name?.charAt(0)?.toUpperCase()}
                                                 </div>
                                                     :
                                                     <img
@@ -151,11 +149,11 @@ const ChatComponent = () => {
                                                 }`}></span>
                                         </div>
                                         <div className="ml-3">
-                                            <h3 className="font-medium text-gray-800">{user.name}</h3>
-                                            <p className="text-sm text-gray-500 truncate max-w-[180px]">{user.lastMessage}</p>
+                                            <h3 className="font-medium text-gray-800">{user?.name}</h3>
+                                            <p className="text-sm text-gray-500 truncate max-w-[180px]">{user?.lastMessage}</p>
                                         </div>
                                     </div>
-                                    {user.unread > 0 && (
+                                    {user?.unread > 0 && (
                                         <span className="bg-blue-500 text-white rounded-full px-2 py-1 text-xs font-medium">
                                             {user.unread}
                                         </span>
@@ -164,7 +162,6 @@ const ChatComponent = () => {
                             </div>
                         ))
                     ) : (
-                        !loading &&
                         <div className="p-4 text-center text-gray-500">
                             No conversations found
                         </div>

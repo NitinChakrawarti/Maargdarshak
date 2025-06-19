@@ -7,6 +7,9 @@ import Otp from "../utils/generateotp.js";
 import authService from "../services/auth.service.js";
 import User from "../models/user.model.js";
 import { paginate } from "../utils/pagination.js";
+import progressService from "../services/progress.service.js";
+import certificateService from "../services/certificate.service.js";
+import userModel from "../models/user.model.js";
 
 class UserController {
 
@@ -167,12 +170,12 @@ class UserController {
             return new APIError(statusCodeUtility.BadRequest, "No data Provided");
         }
 
-        const { userId, courseId, Progress } = request.body;
-        if (!userId || !courseId || !Progress) {
+        const { userId, courseId, progress } = request.body;
+        if (!userId || !courseId || !progress) {
             return new APIError(statusCodeUtility.BadRequest, "Missing required fields");
         }
 
-        const progressData = await userService.updateCourseProgress({ userId, courseId, Progressdata: Progress });
+        const progressData = await userService.updateCourseProgress({ userId, courseId, Progressdata: progress });
 
         return ResponseHandler(
             statusCodeUtility.Success,
@@ -228,7 +231,7 @@ class UserController {
             return new APIError(statusCodeUtility.BadRequest, "No certificate ID provided");
         }
 
-        const isValid = await userService.verifyCertificate(certificateId);
+        const isValid = await certificateService.verifyCertificate(certificateId);
 
         if (!isValid) {
             return new APIError(statusCodeUtility.NotFound, "Certificate not found or invalid");
@@ -238,6 +241,39 @@ class UserController {
             statusCodeUtility.Success,
             "Certificate is valid",
             isValid,
+            response
+        );
+    }
+
+    async getUserDetails(request, response) {
+        
+        const { userId } = request.query;
+        console.log("Fetching user details for userId:", userId);
+        
+        if (!userId) {
+            return new APIError(statusCodeUtility.BadRequest, "No user ID provided");
+        }
+
+        const progressSummary = await Promise.all([
+            progressService.getProgressSummary(userId),
+            progressService.recentLearnings(userId),
+            certificateService.verifyCertificate(userId)
+        ]);
+
+
+        if (!progressSummary) {
+            return new APIError(statusCodeUtility.NotFound, "User not found");
+        }
+
+        return ResponseHandler(
+            statusCodeUtility.Success,
+            "Fetched User Details Successfully",
+            {
+                user: await userModel.findById(userId).select("name email role"),
+                progressSummary: progressSummary[0],
+                recentLearnings: progressSummary[1],
+                certificates: progressSummary[2]
+            },
             response
         );
     }

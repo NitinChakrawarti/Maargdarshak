@@ -78,6 +78,18 @@ class ResourceService {
         }
         return count;
     }
+
+    async getTotalLessons(courseId) {
+        const totalLessons = await Resource.aggregate([
+            { $match: { _id: courseId } },
+            { $unwind: "$modules" },
+            { $group: { _id: null, totalLessons: { $sum: { $size: "$modules.lessons" } } } }
+        ]);
+        if (!totalLessons || totalLessons.length === 0) {
+            throw new APIError(statusCodeUtility.InternalServerError, "Failed to calculate total lessons");
+        }
+        return totalLessons[0].totalLessons;
+    }
 }
 
 export default new ResourceService();
