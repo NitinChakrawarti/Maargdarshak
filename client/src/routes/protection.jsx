@@ -8,7 +8,7 @@ export const Publicroute = ({ children }) => {
   const location = useLocation();
 
   if (data && role === "user") {
-    return <Navigate to="/user" state={{ from: location }} />;
+    return <Navigate to="/user/home" state={{ from: location }} />;
   }
 
   if (data && role === "mentor") {
