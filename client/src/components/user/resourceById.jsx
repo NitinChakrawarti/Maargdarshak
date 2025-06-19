@@ -27,26 +27,8 @@ const ResourceDetailView = () => {
     const resourceId = location.pathname.split('/').pop();
     const { user } = useSelector((state) => state.user);
 
-
-
-    const handleProgressChange = (lessonId, status) => {
-        setCourseProgress(prev => ({
-            ...prev,
-            [lessonId]: status
-        }));
-        const data = {
-            userId: user._id,
-            courseId: resourceId,
-            Progress: {
-                ...courseProgress,
-                [lessonId]: status
-            }
-        };
-
-        handleProgressChangeImmediate(data);
-    };
-
     const [resource, setResource] = useState({
+
         modules: [],
         domain: [],
         reviews: [],
@@ -58,18 +40,15 @@ const ResourceDetailView = () => {
         const response = await GetResourceById(resourceId);
         if (response.status === 200) {
             const data = response.data.data;
-            if (data) {
-                setResource(data);
-            } else {
-                console.warn("API returned null data");
-                setResource({
-                    modules: [],
-                    domain: [],
-                    reviews: [],
-                    studentsEnrolled: 0,
-                    rating: 0
-                });
-            }
+            setResource(data || {
+                mentorname: "",
+                mentorId: "",
+                modules: [],
+                domain: [],
+                reviews: [],
+                studentsEnrolled: 0,
+                rating: 0
+            });
         } else {
             console.error("Failed to fetch resource:", response.message);
         }
@@ -77,9 +56,8 @@ const ResourceDetailView = () => {
 
     const fetchCourseProgress = async (resourceId, userId) => {
         const response = await getCourseProgress(resourceId, userId);
-
         if (response.status === 200) {
-            setCourseProgress(response.data.data.Progress);
+            setCourseProgress(response.data.data?.progress || {});
         } else {
             toast.error("Failed to fetch course progress");
         }
@@ -87,44 +65,55 @@ const ResourceDetailView = () => {
 
     const handleProgressChangeImmediate = useCallback(
         debounce(async (data) => {
-            console.log(data);
-
             const response = await UpdateCourseProgress(data);
             if (response.status === 200) {
-                toast.success("Course progress updated successfully");
+                toast.success("Progress saved"); // no need to re-fetch
             } else {
-                toast.error("Failed to update course progress");
+                toast.error("Failed to update progress");
             }
         }, 1000),
         [user?._id]
     );
 
+    const handleProgressChange = (lessonId, status) => {
+        const newProgress = {
+            ...courseProgress,
+            [lessonId]: status
+        };
+        setCourseProgress(newProgress);
+
+        const data = {
+            userId: user._id,
+            courseId: resourceId,
+            progress: newProgress
+        };
+
+        handleProgressChangeImmediate(data);
+    };
 
     useEffect(() => {
-        if (resourceId) {
-            fetchResource(resourceId);
-        }
-        const usercourse = user?.courses || [];
-        const isEnrolled = usercourse.some(course => course.courseId === resourceId);
+        fetchResource(resourceId);
+        if (!resourceId || !user?._id) return;
+
+        fetchResource(resourceId);
+
+        const enrolledCourses = user?.courses || [];
+        const isEnrolled = enrolledCourses.some(course => course.courseId === resourceId);
+        setIsAddedToList(isEnrolled);
+
         if (isEnrolled) {
-
             fetchCourseProgress(resourceId, user._id);
-            setIsAddedToList(true);
         }
 
-        const userFavorites = user?.savedItems || [];
-        const isBookmarked = userFavorites.some(favorite => favorite === resourceId);
+        const savedItems = user?.savedItems || [];
+        setIsBookmarked(savedItems.includes(resourceId));
 
-        if (isBookmarked) {
-            setIsBookmarked(true);
-        }
     }, [resourceId, user]);
 
-
     const calculateProgress = () => {
-        const total = resource.modules.reduce((count, module) => count + (module.lessons?.length || 0), 0)
-        const completed = Object.values(courseProgress).filter(status => status === 'completed').length;
-        return Math.round((completed / total) * 100);
+        const totalLessons = resource.modules.reduce((count, module) => count + (module.lessons?.length || 0), 0);
+        const completedLessons = Object.values(courseProgress).filter(status => status === 'completed').length;
+        return totalLessons ? Math.round((completedLessons / totalLessons) * 100) : 0;
     };
 
     const renderStars = (rating) => {

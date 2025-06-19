@@ -105,7 +105,7 @@ class UserService {
             Progress.create({
                 userId: userId,
                 courseId: courseId,
-                Progress: {}
+                progress: {}
             }),
             Resource.findByIdAndUpdate(
                 courseId,
@@ -182,8 +182,13 @@ class UserService {
 
     async getCourseProgress(resourceId, userId) {
         const progress = await Progress.findOne({ courseId: resourceId, userId: userId });
+
         if (!progress) {
-            throw new APIError(statusCodeUtility.NotFound, "Course progress not found");
+            await Progress.create({
+                userId: userId,
+                courseId: resourceId,
+                progress: {}
+            });
         }
         return progress;
     }
@@ -194,7 +199,7 @@ class UserService {
             { userId, courseId },
             {
                 $set: {
-                    Progress: Progressdata
+                    progress: Progressdata
                 }
             },
             { new: true }
@@ -215,7 +220,7 @@ class UserService {
             throw new APIError(statusCodeUtility.NotFound, "Course progress not found");
         }
 
-        const courseProgress = progress.Progress;
+        const courseProgress = progress.progress;
         const resource = course.toObject();
         const completedLessons = courseProgress.size;
         const totalLessons = resource.modules.reduce((count, module) => count + (module.lessons?.length || 0), 0);
@@ -275,13 +280,9 @@ class UserService {
         });
     }
 
-    async verifyCertificate(certificateId) {
-        const certificate = await Certificate.findById(certificateId);
-        if (!certificate) {
-            return false; // Certificate not found
-        }
-        return certificate; // Certificate is valid
-    }
+
+
+
 }
 
 export default new UserService();

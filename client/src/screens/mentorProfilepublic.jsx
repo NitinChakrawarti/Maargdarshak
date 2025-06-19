@@ -11,14 +11,13 @@ import {
     Clock,
     Star
 } from 'lucide-react';
-import Layout from '../../layout/auth/layout';
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { GetMentorById, IntializeChat } from '../../api';
 import { useSelector } from 'react-redux';
-import MentorProfileSkeleton from '../../components/skeleton/mentorprofileskeleton';
+import { GetMentorById } from '../api';
+import MentorProfileSkeleton from '../components/skeleton/mentorprofileskeleton';
 
 
-const MentorProfile = () => {
+const MentorProfilePublic = () => {
     const [mentorData, setMentorData] = React.useState();
 
     const navigate = useNavigate();
@@ -256,4 +255,4 @@ const MentorProfile = () => {
     );
 };
 
-export default MentorProfile;
+export default MentorProfilePublic;

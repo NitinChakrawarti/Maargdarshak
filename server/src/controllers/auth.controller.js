@@ -61,7 +61,7 @@ class authController {
         }
         if (!token) {
             throw new APIError(
-                statusCodeUtility.Unauthorized,
+                statusCodeUtility.Unathorized,
                 "No token provided",
             );
         }
@@ -85,8 +85,6 @@ class authController {
             response,
         );
     }
-
-
 
     async chatDetails(request, response) {
         if (!request.body) {

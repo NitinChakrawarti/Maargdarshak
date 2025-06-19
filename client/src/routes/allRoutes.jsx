@@ -23,6 +23,8 @@ import VerifyCertificate from "../screens/verifyCertificate";
 import Layoutcomponent from "../layout/landing/layoutcomponent";
 import Layout from "../layout/auth/layout";
 import ChatComponent from "../screens/auth/chat";
+import UserHome from "../screens/user/userhome";
+import MentorProfilePublic from "../screens/mentorProfilepublic";
 
 
 
@@ -74,7 +76,7 @@ export const AllRoutes = () => {
                 />
                 <Route path="mentor/:mentorId"
                     element={
-                        <MentorProfile />
+                        <MentorProfilePublic />
                     }
                 />
             </Route>
@@ -91,7 +93,7 @@ export const AllRoutes = () => {
                 <Route
                     path="home"
                     element={
-                        <User />
+                        <UserHome />
                     }
                 />
                 <Route
