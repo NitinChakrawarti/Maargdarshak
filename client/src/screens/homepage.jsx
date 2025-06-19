@@ -69,7 +69,7 @@ const Home = () => {
             }}
           >
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-2">
-              <span className="bg-gradient-to-r from-brand-navy to-brand-blue bg-clip-text text-transparent px-2">
+              <span className="bg-gradient-to-r font-mukta-extrabold from-brand-navy to-brand-blue bg-clip-text text-transparent px-2">
                 मार्गदर्शक
               </span>
             </h1>
