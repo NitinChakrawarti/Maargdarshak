@@ -14,7 +14,7 @@ import { setAuth } from "../redux/features/authSlice";
 import { setUser } from "../redux/features/userSlice";
 import { setMentor } from "../redux/features/mentorSlice";
 import { useClerk, useUser } from "@clerk/clerk-react";
-import { use } from "react";
+
 
 const Sidebar = ({ isOpen, setIsSidebarOpen, onCollapse }) => {
   const navigate = useNavigate();
@@ -54,6 +54,7 @@ const Sidebar = ({ isOpen, setIsSidebarOpen, onCollapse }) => {
     const logout = await LogOutFunc({ role: role });
     if (logout.status === 200) {
       dispatch(setAuth({ role: null, data: null }));
+      dispatch(setMentor({ mentor: null }));
       dispatch(setUser({ user: null, isverified: false, savedItems: [] }));
       return navigate("/");
     }
