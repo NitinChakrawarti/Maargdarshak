@@ -12,6 +12,7 @@ import InstallPrompt from "./components/insatallationprompt";
 import { AnimatePresence } from "framer-motion";
 import { AllRoutes } from './routes/allRoutes';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { setMentor } from './redux/features/mentorSlice';
 
 
 // Loading fallback component
@@ -71,9 +72,10 @@ const AppContent = () => {
             isverified: userData.isverified,
           }
         }));
-        dispatch(userData.role === 'user' ? setUser(userData) : setUser(userData));
+        dispatch(userData.role === 'user' ? setUser(userData) : setMentor(userData));
       } catch (error) {
         console.error('Error verifying token:', error.data);
+        dispatch(setMentor({ mentor: null }));
         dispatch(setAuth({ role: null, data: null }));
         dispatch(setUser({ user: null, isverified: false, savedItems: [] }));
         dispatch(setError('Token verification failed'));

@@ -38,6 +38,7 @@ const Header = ({ toggleSidebar }) => {
     const logout = await LogOutFunc({ role: role });
     if (logout.status === 200) {
       dispatch(setAuth({ role: null, data: null }));
+      dispatch(setMentor({ mentor: null }));
       dispatch(setUser({ user: null, isverified: false, savedItems: [] }));
       return navigate("/");
     }

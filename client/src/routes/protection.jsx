@@ -12,7 +12,7 @@ export const Publicroute = ({ children }) => {
   }
 
   if (data && role === "mentor") {
-    return <Navigate to="/mentor" state={{ from: location }} />;
+    return <Navigate to="/mentor/home" state={{ from: location }} />;
   }
 
   return children;
@@ -27,11 +27,11 @@ export const Protectedroute = ({ children }) => {
   }
 
   if (role === "user" && path.startsWith("/mentor")) {
-    return <Navigate to="/user" />;
+    return <Navigate to="/user/home" />;
   }
 
   if (role === "mentor" && path.startsWith("/user")) {
-    return <Navigate to="/mentor" />;
+    return <Navigate to="/mentor/home" />;
   }
 
   return children;
