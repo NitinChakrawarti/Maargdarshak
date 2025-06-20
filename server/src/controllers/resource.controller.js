@@ -29,6 +29,40 @@ class Resources {
         );
     }
 
+    async getResourceById(req, res) {
+        const { id } = req.params;
+        const resource = await resourceService.getResourceById(id);
+        return ResponseHandler(
+            statusCodeUtility.Success,
+            "Resource fetched successfully",
+            resource,
+            res
+        );
+    }
+
+
+    async getResourceByMentorId(req, res) {
+        const { mentorId } = req.params;
+        const { page = 1, limit = 10 } = req.query;
+        const totalItems = await resourceService.countDocumentsByMentorId(mentorId);
+        const { skip, totalPages } = paginate(totalItems, page, limit);
+        const resources = await resourceService.getResourcesByMentorId(mentorId , { skip, limit });
+        return ResponseHandler(
+            statusCodeUtility.Success,
+            "Resources by mentor fetched successfully",
+            {
+                resources,
+                pagination: {
+                    totalItems,
+                    currentPage: parseInt(page),
+                    totalPages: totalPages,
+                    limit: parseInt(limit)
+                }
+            },
+            res
+        );
+    }
+
     async addResource(req, res) {
 
         if (!req.body) {

@@ -185,6 +185,19 @@ export const GetResources = async ({ page, limit }) => {
   }
 }
 
+
+export const GetResourceByMentorId = async (mentorId, { page, limit }) => {
+  try {
+    const response = await instance.get(`/resource/get-resources-by-mentor/${mentorId}`, {
+      params: { page, limit },
+      withCredentials: true,
+    });
+    return response;
+  } catch (error) {
+    return error.response.data;
+  }
+};
+
 export const GetResourceById = async (resourceId) => {
   try {
     const response = await instance.get(`/resource/get-resource/${resourceId}`, {

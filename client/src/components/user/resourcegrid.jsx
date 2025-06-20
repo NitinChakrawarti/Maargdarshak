@@ -1,11 +1,11 @@
 import { useEffect, useState, React } from "react";
 import { Star, ExternalLink, Eye, Tag, ArrowRight, Pen, DeleteIcon, Delete, Trash2 } from "lucide-react";
-import { GetResources } from "../../api";
+import { GetResourceById, GetResourceByMentorId, GetResources } from "../../api";
 import { Link } from "react-router-dom";
 import SkeletonCard from "../skeleton/resourcegrid";
 import Pagination from "../pagination";
 
-const ResourcesGrid = () => {
+const ResourcesGrid = ({ mentorId }) => {
     const [resources, setResources] = useState([]);
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
@@ -13,19 +13,14 @@ const ResourcesGrid = () => {
 
     const handleFetchResources = async () => {
         try {
-            const response = await GetResources({ page: currentPage, limit: 9 });
-            if (response.status === 200) {
-                const data = response.data.data.resources;
-                setTotalPages(response.data.data.pagination.totalPages);
-                // setCurrentPage(response.data.data.pagination.currentPage);
-                if (Array.isArray(data)) {
-                    setResources(data);
-                } else {
-                    console.warn("API returned non-array data. Setting empty array.");
-                    setResources([]);
-                }
+            const response = await (mentorId ? GetResourceByMentorId(mentorId, { page: currentPage, limit: 9 }) : GetResources({ page: currentPage, limit: 9 }));
+            const data = response.data.data.resources;
+            setTotalPages(response.data.data.pagination.totalPages);
+            if (Array.isArray(data)) {
+                setResources(data);
             } else {
-                console.error("Failed to fetch resources:", response.message);
+                console.warn("API returned non-array data. Setting empty array.");
+                setResources([]);
             }
         } catch (error) {
             console.error("Error fetching resources:", error);
@@ -34,9 +29,10 @@ const ResourcesGrid = () => {
             setLoading(false);
         }
     };
+
     useEffect(() => {
         handleFetchResources();
-    }, [currentPage]);
+    }, [currentPage, mentorId]);
 
     const renderStars = (rating) => {
         const fullStars = Math.floor(rating);
