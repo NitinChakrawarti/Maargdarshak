@@ -1,4 +1,5 @@
 import Resource from "../models/resource.model.js";
+import APIError from "../utils/APIError.js";
 import statusCodeUtility from "../utils/statusCodeUtility.js";
 
 
@@ -8,6 +9,14 @@ class ResourceService {
         const resources = await Resource.find().skip(skip).limit(limit).sort({ createdAt: -1 });
         if (!resources) {
             throw new APIError(statusCodeUtility.NotFound, "No resources found");
+        }
+        return resources;
+    }
+
+    async getResourcesByMentorId(mentorId, { skip = 0, limit = 10 }) {
+        const resources = await Resource.find({ mentorId }).skip(skip).limit(limit).sort({ createdAt: -1 });
+        if (!resources) {   
+            throw new APIError(statusCodeUtility.NotFound, "No resources found for this mentor");
         }
         return resources;
     }
@@ -75,6 +84,14 @@ class ResourceService {
         const count = await Resource.countDocuments();
         if (count === null || count === undefined) {
             throw new APIError(statusCodeUtility.InternalServerError, "Failed to count resources");
+        }
+        return count;
+    }
+
+    async countDocumentsByMentorId(mentorId) {
+        const count = await Resource.countDocuments({ mentorId });
+        if (count === null) {
+            throw new APIError(statusCodeUtility.InternalServerError, "Failed to count resources by mentor ID");
         }
         return count;
     }

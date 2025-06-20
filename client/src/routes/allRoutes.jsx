@@ -161,7 +161,7 @@ export const AllRoutes = () => {
                     </Protectedroute>
                 }>
                 <Route
-                    index
+                    path="home"
                     element={
                         <Mentor />
                     }
@@ -197,6 +197,12 @@ export const AllRoutes = () => {
                     path="learners"
                     element={
                         <Learners />
+                    }
+                />
+                <Route
+                    path="chat"
+                    element={
+                        <ChatComponent />
                     }
                 />
             </Route>
