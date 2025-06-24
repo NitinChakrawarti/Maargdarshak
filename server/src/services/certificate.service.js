@@ -10,6 +10,16 @@ class CertificateService {
 
         return certificate;
     }
+
+    async getUserCertificates(userId) {
+        const certificates = await Certificate.find({ userId });
+        if (!certificates || certificates.length === 0) {
+            return [];
+        }
+        console.log("Certificates found for user:", userId, certificates);
+
+        return certificates;
+    }
 }
 
 export default new CertificateService();

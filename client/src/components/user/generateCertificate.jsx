@@ -12,14 +12,10 @@ const GenerateCertificate = ({ resourceId, user, courseProgress, resource }) => 
     const isEligibleForCertificate = completed === totalLessons && totalLessons > 0;
 
     useEffect(() => {
-        const checkEligibility = async () => {
-            const response = await CheckEligibilityForCertificate({
-                userId: user._id,
-                courseId: resourceId
-            });
-            setEligible(response.data.data.eligible);
-        };
-        checkEligibility();
+        const timeout = setTimeout(() => {
+            setEligible(isEligibleForCertificate);
+        }, 300);
+        return () => clearTimeout(timeout);
     }, [courseProgress]);
 
 

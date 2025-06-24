@@ -38,7 +38,7 @@ const CourseModule = ({
                 <div className="divide-y divide-gray-100">
                     {module.lessons.map((lesson, lessonIndex) => {
                         const lessonId = `${moduleIndex}-${lessonIndex}`;
-                        return ( 
+                        return (
                             <div
                                 key={lessonId}
                                 className="flex items-center space-x-4 p-4 hover:bg-gray-50 transition-colors"
@@ -46,7 +46,9 @@ const CourseModule = ({
 
 
                                 {/* Progress Status */}
-                                <div className="flex-shrink-0">{getProgressIcon(lessonId)}</div>
+                                <div className="flex-shrink-0 cursor-pointer"
+                                    onClick={() => handleProgressChange(lessonId, 'completed')}
+                                >{getProgressIcon(lessonId)}</div>
 
                                 {/* Content Type Icon */}
 
@@ -78,13 +80,13 @@ const CourseModule = ({
                                         className={`flex items-center space-x-2 p-1 rounded-lg ${!isAddedToList ? 'opacity-50 pointer-events-none select-none' : ''
                                             }`}
                                     >
-                                        <button
+                                        {/* <button
                                             onClick={() => handleProgressChange(lessonId, 'completed')}
                                             className="p-2 cursor-pointer text-green-600 hover:bg-green-50 rounded-lg transition-colors"
                                             title="Mark as Completed"
                                         >
                                             <Check className="w-5 h-5" />
-                                        </button>
+                                        </button> */}
                                         <button
                                             onClick={() => handleProgressChange(lessonId, 'in-progress')}
                                             className="p-2 cursor-pointer text-yellow-600 hover:bg-yellow-50 rounded-lg transition-colors"
@@ -94,10 +96,6 @@ const CourseModule = ({
                                         </button>
                                     </div>
                                 </div>
-
-
-
-
                             </div>
                         );
                     })}

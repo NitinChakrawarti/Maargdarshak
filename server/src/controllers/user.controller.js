@@ -257,7 +257,7 @@ class UserController {
         const progressSummary = await Promise.all([
             progressService.getProgressSummary(userId),
             progressService.recentLearnings(userId),
-            certificateService.verifyCertificate(userId)
+            certificateService.getUserCertificates(userId)
         ]);
 
 
