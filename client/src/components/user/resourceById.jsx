@@ -67,6 +67,7 @@ const ResourceDetailView = () => {
         debounce(async (data) => {
             const response = await UpdateCourseProgress(data);
             if (response.status === 200) {
+                calculateProgress();
                 toast.success("Progress saved"); // no need to re-fetch
             } else {
                 toast.error("Failed to update progress");
@@ -87,7 +88,6 @@ const ResourceDetailView = () => {
             courseId: resourceId,
             progress: newProgress
         };
-
         handleProgressChangeImmediate(data);
     };
 
@@ -213,7 +213,7 @@ const ResourceDetailView = () => {
                                 />
                             ))}
                             {
-                                calculateProgress() >= 100 && isAddedToList ? (
+                                calculateProgress() === 100 && isAddedToList ? (
                                     <GenerateCertificate
                                         resourceId={resourceId}
                                         user={user}
@@ -235,7 +235,7 @@ const ResourceDetailView = () => {
                                             />
                                         </svg>
                                         <p className="text-amber-800 font-medium">
-                                            You need to complete all lessons to get a certificate.
+                                            You need to complete all lessons.
                                         </p>
                                     </div>
                             }
