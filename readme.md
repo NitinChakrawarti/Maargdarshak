@@ -32,7 +32,7 @@ _**Empowering Connections, Igniting Learning, Transforming Futures**_
 ![ESLint](https://img.shields.io/badge/ESLint-4B32C3.svg?style=flat&logo=ESLint&logoColor=white)
 ![Axios](https://img.shields.io/badge/Axios-5A29E4.svg?style=flat&logo=Axios&logoColor=white)
 ![date-fns](https://img.shields.io/badge/datefns-770C56.svg?style=flat&logo=date-fns&logoColor=white)
-![GraphQL](https://img.shields.io/badge/GraphQL-E10098.svg?style=flat&logo=GraphQL&logoColor=white)
+
 
 </div>
 
